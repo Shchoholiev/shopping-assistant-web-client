@@ -183,9 +183,6 @@ public class AuthenticationService
         var jsonResponse = JsonConvert.SerializeObject(response.Data.refreshUserToken);
         var tokens = JsonConvert.DeserializeObject<TokensModel>(jsonResponse);
         _httpContext.Response.Cookies.Append("accessToken", tokens.AccessToken, new CookieOptions { Expires = DateTime.UtcNow.AddDays(180) });
-        var newRefreshToken = new Cookie("refreshToken", tokens.RefreshToken);
-        newRefreshToken.Expires = DateTime.UtcNow.AddDays(180);
-        _httpContext.Request.Head
         _httpContext.Response.Cookies.Append("refreshToken", tokens.RefreshToken, new CookieOptions { Expires = DateTime.UtcNow.AddDays(180) });
 
         return tokens.AccessToken;

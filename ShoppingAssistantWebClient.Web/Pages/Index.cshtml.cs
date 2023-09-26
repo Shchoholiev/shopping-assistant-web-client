@@ -17,7 +17,5 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        var token = _authenticationService.GetAuthTokenAsync().Result;
-        ViewData["Token"] = token;
     }
 }
