@@ -1,25 +1,21 @@
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ShoppingAssistantWebClient.Web.Models;
 
 namespace ShoppingAssistantWebClient.Web.Pages
 {
     public class CartModel : PageModel
     {
-        public List<Product> products = new List<Product> {
-                new Product {Description = "HDMI cabel HDMI cabel HDMI cabel HDMI cabel HDMI cabel HDMI cabelHDMI cabel", Rating = 4.0, Price = 12},
-                new Product {Description = "super mega hdmi cabel", Rating = 3.8, Price = 13.11},
-                new Product {Description = "", Rating = 4.0}
+        public List<ProductModel> products = new List<ProductModel> {
+                new ProductModel {Id = "0", Url = "some link", Name = "HDMI", Description = "super mega hdmi cabel", Rating = 3.8, ImagesUrls = new string[] {"link"}, WasOpened = false, WishlistId = "0"},
+                new ProductModel {Id = "1", Url = "some link", Name = "HDMI", Description = "super mega hdmi cabel", Rating = 3.8, ImagesUrls = new string[] {"link"}, WasOpened = false, WishlistId = "1"},
+                new ProductModel {Id = "2", Url = "some link", Name = "HDMI", Description = "super mega hdmi cabel", Rating = 3.8, ImagesUrls = new string[] {"link"}, WasOpened = false, WishlistId = "2"}
         };
     
         public void OnGet()
         {
 
         }
-    }
-
-    public class Product {
-        public string Description {get; set;}
-        public double? Rating {get; set;}
-        public double? Price {get; set;}
     }
 }

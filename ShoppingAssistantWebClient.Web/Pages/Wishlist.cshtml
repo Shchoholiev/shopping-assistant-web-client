@@ -45,7 +45,7 @@
                     <th> </th>
                     <th style="text-align: left;">Chat name</th>
                     <th>Type</th>
-                    <th>Time</th>
+                    <th>CreatedById</th>
                     <th></th>
                 </tr>
             </thead>
@@ -58,7 +58,7 @@
                         </form>
                         <td style="text-align: left">@Html.DisplayFor(modelItem => item.Name)</td>
                         <td>@Html.DisplayFor(modelItem => item.Type)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CreateById)</td>
                         <form method="post" asp-page="Wishlist">
                             <td><input type="image" src="~/assets/shopping-cart.png" asp-page-handler="MoveToChat"></td>
                         </form>

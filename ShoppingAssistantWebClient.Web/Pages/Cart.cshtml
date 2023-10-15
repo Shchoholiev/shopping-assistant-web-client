@@ -84,9 +84,6 @@
                 <label class="rating">@Html.DisplayFor(modelproduct => product.Rating)</label>
                 @{
                     string price = "N/A";
-                    if(!(product.Price is null)) {
-                        price = "$" + product.Price.ToString();
-                    }
                 }
                 <label class="price-label">@price</label>
             </div>
