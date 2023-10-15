@@ -21,8 +21,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//app.UseAuthorization();
-app.ConfigureGlobalUserMiddleware();
+app.UseAuthorization();
+//app.ConfigureGlobalUserMiddleware();
 
 app.MapRazorPages();
 
