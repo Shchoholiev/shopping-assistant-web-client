@@ -1,0 +1,227 @@
+@page "/chat/1"
+@model ChatModel
+@{
+    ViewData["Title"] = "Gift for Jessica";
+}
+
+
+<div class="container-fluid">
+
+    <div class="left_frame" id="leftFrame">
+
+        
+        <div class="logo">
+            <img src="/images/logo.png" alt="Logo site">
+            <span class="logo_name">CARTAID</span>
+        </div>
+
+        <div class="menu">
+
+            <div class="elements_wishlisht">
+
+            <div class="close_menu">
+                <span >Wishlists</span>
+                <a class="button_close_menu" >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
+
+            <div class="add_chat">
+                <a href="/">
+                    <span >Add chat +</span>
+                </a>  
+            </div>
+
+            <div class="wishlist_names">
+                <section>
+                    <span id ="wishlist_id_1" class="wishlist_name">Gift for Jessica</span>
+                </section>
+
+                <section>
+                    <span id ="wishlist_id_2" class="wishlist_name">Secret Santa</span>
+                </section>
+
+                <section>
+                    <span  id ="wishlist_id_3" class="wishlist_name">Phone charger</span>
+                </section>
+
+                <section>
+                    <span class="wishlist_name">Phone</span>
+                </section>
+
+                <section>
+                    <span class="wishlist_name">Printer</span>
+                <section>
+
+                    <span class="wishlist_name">Books</span>
+                </section>
+            </div>
+
+        </div>
+        <div class="line"></div>  
+            <div class="elements">
+                <div class="info_user">
+                    <img src="/images/avatar.jpg" alt="Avatar user">
+                    <span class="user_name">Username</span>
+                </div>
+
+            </div>
+
+            
+        </div>
+
+
+    </div>
+
+    <div class="right_frame" id="rightFrame">
+
+            <div class="open_menu">
+                <a class="button_open_menu" >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
+
+
+            <div class="chat_frame">              
+
+            <div class="new_chat">              
+
+                <div class="title_one_frame">Gift for Jessica</div>
+              
+                <ul class="chat_box">
+
+                    <li class="chat_outgoing">
+                        <p>Give me product recommendation. Ask me questions if you need more directions. I am looking for: hub for my macbook to connect external monitors</p>
+                    </li>
+                    <li class=" chat_incoming">
+                        <p>Sure! I can help you with that. I will ask you some leading questions. This is the first:
+                        <br>
+                        How many external monitors do you want to connect to your MacBook?</p>
+                    </li>
+                    <li class="chat_outgoing">
+                        <p>7</p>
+                    </li>  
+                    <li class=" chat_incoming">
+                        <p>Thank you. Here is the next question:
+                        <br>
+                        What type of external monitors do you have? (e.g., HDMI, DisplayPort, VGA)</p>
+                    </li>
+
+                </ul>
+
+
+
+
+                <div class="chat_input">
+
+                    <input type="text" id="chatInput" placeholder="Describe what you are looking for....">
+
+                    <a class="button_sende">
+                        <img  src="/images/send.png" alt="Send message">
+                    </a>      
+
+
+                </div>
+
+
+            </div>
+
+    </div>
+</div>
+
+
+<script>
+const leftFrame = document.getElementById("leftFrame");
+const rightFrame = document.getElementById("rightFrame");
+const openMenuButton = document.querySelector(".button_open_menu");
+const closeMenuButton = document.querySelector(".button_close_menu");
+
+
+
+const choose_gift = document.getElementById("choose_gift");
+const choose_product = document.getElementById("choose_product");
+const switchGift = document.querySelector(".switch_gift");
+const switchProduct = document.querySelector(".switch_product");
+
+
+const isLeftFrameOpen = localStorage.getItem('leftFrameOpen');
+
+if (isLeftFrameOpen) {
+     requestAnimationFrame(() => {
+        leftFrame.style.transform = "translateX(0%)";
+        rightFrame.style.transform = "translateX(calc(30% - 40px))";
+        rightFrame.style.width = "calc(80% - 60px)";
+    });
+    openMenuButton.style.visibility = "hidden";
+    closeMenuButton.style.visibility = "visible";
+} else {
+      requestAnimationFrame(() => {
+        leftFrame.style.transform = "translateX(-100%)";
+                rightFrame.style.transform = "translateX(0%)";
+        rightFrame.style.width = "calc(100% - 40px)";
+    });
+    closeMenuButton.style.visibility = "hidden";
+    openMenuButton.style.visibility = "visible";
+}
+
+
+openMenuButton.addEventListener("click", function () {
+    requestAnimationFrame(() => {
+        leftFrame.style.transform = "translateX(0%)";
+        rightFrame.style.transform = "translateX(calc(30% - 40px))";
+        rightFrame.style.width = "calc(80% - 60px)";
+    });
+    openMenuButton.style.visibility = "hidden";
+    closeMenuButton.style.visibility = "visible";
+});
+
+closeMenuButton.addEventListener("click", function () {
+    requestAnimationFrame(() => {
+        leftFrame.style.transform = "translateX(-100%)";
+                rightFrame.style.transform = "translateX(0%)";
+        rightFrame.style.width = "calc(100% - 40px)";
+    });
+    closeMenuButton.style.visibility = "hidden";
+    openMenuButton.style.visibility = "visible";
+});
+
+switchGift.addEventListener("click", function () {
+    requestAnimationFrame(() => {
+        choose_gift.style.backgroundColor = "#0052CC";
+        choose_product.style.backgroundColor = "transparent";
+        switchGift.style.color = "white";
+        switchProduct.style.color = "#202124";
+
+    });
+
+});
+
+switchProduct.addEventListener("click", function () {
+    requestAnimationFrame(() => {
+        choose_product.style.backgroundColor = "#0052CC";
+        choose_gift.style.backgroundColor = "transparent";
+        switchProduct.style.color = "white";
+        switchGift.style.color = "#202124";       
+
+    });
+
+});
+
+
+
+
+const new_chat = document.querySelector(".button_add_chat");
+new_chat.addEventListener("click", function () {
+   alert(3)
+});
+
+
+
+
+
+
+</script>
