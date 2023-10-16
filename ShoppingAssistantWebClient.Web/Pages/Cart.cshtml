@@ -1,0 +1,97 @@
+﻿@page
+@model ShoppingAssistantWebClient.Web.Pages.CartModel
+@{
+}
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .product-div {
+        height: 310px;
+        width: 200px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+        padding: 0 10px 0 10px;
+        margin: 30px;
+    }
+    
+    .product-img {
+        height: 130px;
+        width: 100%;
+        align-self: center;
+        display: block;
+        margin: 10px;
+    }
+    .product-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .button-amazon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #009FFF;
+        border: none;
+        border-radius: 10px;
+        position: absolute;
+        width: 90%;
+        height: 40px;
+        bottom: 10px;
+    }
+    .star {
+        position: absolute;
+        bottom: 60px;
+    }
+    .rating {
+        position: absolute;
+        bottom: 60px;
+        left: 35px;
+        height: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .button-row {
+        display: flex;
+        align-items: 
+    }
+    .price-label {
+        position: absolute;
+        right: 10px;
+        font-weight: bold;
+        font-size: larger;
+        height: 16px;
+        bottom: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<h1 style="text-align: center; margin-bottom: 50px">Cart</h1>
+<div class="container">
+    @foreach (var product in Model.products) {
+        <div class="product-div">
+            <img class="product-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe7MHcuWUvuNJsttl3MEVxEayUGVNH4tA2Ha0K4szpgKvH7QYuiaBa_hCzUgW96I6LXqM&usqp=CAU">
+            <label class="product-description">@Html.DisplayFor(modelproduct => product.Description)</label>
+            <div class="button-row">
+                <img class="star" src="~/assets/star.png">
+                <label class="rating">@Html.DisplayFor(modelproduct => product.Rating)</label>
+                @{
+                    string price = "N/A";
+                }
+                <label class="price-label">@price</label>
+            </div>
+            <form class="button">
+                <button class="button-amazon">
+                    <img src="~/assets/amazon.png">
+                </button>
+            </form>
+        </div>
+    }
+</div>
