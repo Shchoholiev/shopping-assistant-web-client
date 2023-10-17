@@ -6,10 +6,10 @@ namespace ShoppingAssistantWebClient.Web.Pages
 {
     public class WishlistModel : PageModel
     {
-        public List<Models.WishlistModel> wishlist = new List<Models.WishlistModel>{
-                new Models.WishlistModel {Id = "0", Name = "Chat1", Type="product", CreateById="0"},
-                new Models.WishlistModel {Id = "1", Name = "Chat2", Type="gift", CreateById="1"},
-                new Models.WishlistModel {Id = "2", Name = "Chat3", Type="product", CreateById="2"}
+        public List<Models.Wishlist> wishlist = new List<Models.Wishlist>{
+                new Models.Wishlist {Id = "0", Name = "Chat1", Type="product", CreateById="0"},
+                new Models.Wishlist {Id = "1", Name = "Chat2", Type="gift", CreateById="1"},
+                new Models.Wishlist {Id = "2", Name = "Chat3", Type="product", CreateById="2"}
             };
         public void OnGet()
         {

@@ -3,7 +3,7 @@
 {
 	"name": "Shopping Assistant Web Client C# (.NET)",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0"
+	"image": "mcr.microsoft.com/devcontainers/dotnet:0-7.0",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -20,7 +20,16 @@
 	// "postCreateCommand": "dotnet restore",
 
 	// Configure tool-specific properties.
-	// "customizations": {},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"kreativ-software.csharpextensions",
+				"patcx.vscode-nuget-gallery",
+				"fernandoescolar.vscode-solution-explorer",
+				"GitHub.copilot"
+			]
+		}
+	}
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"

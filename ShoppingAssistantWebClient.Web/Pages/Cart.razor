@@ -1,0 +1,24 @@
+@page "/cart"
+
+<h1 style="text-align: center; margin-bottom: 50px">Cart</h1>
+<div class="container">
+    @foreach (var product in Products) {
+        <div class="product-div">
+            <img class="product-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe7MHcuWUvuNJsttl3MEVxEayUGVNH4tA2Ha0K4szpgKvH7QYuiaBa_hCzUgW96I6LXqM&usqp=CAU">
+            <label class="product-description">@product.Description</label>
+            <div class="button-row">
+                <img class="star" src="~/assets/star.png">
+                <label class="rating">@product.Rating</label>
+                @{
+                    string price = "N/A";
+                }
+                <label class="price-label">@price</label>
+            </div>
+            <form class="button">
+                <button class="button-amazon">
+                    <img src="~/assets/amazon.png">
+                </button>
+            </form>
+        </div>
+    }
+</div>

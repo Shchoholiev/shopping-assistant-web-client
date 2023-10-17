@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GraphQL.Client" Version="6.0.0" />
-    <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="6.0.0" />
+    <PackageReference Include="GraphQL.Client" Version="6.0.1" />
+    <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="6.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.2" />
   </ItemGroup>
 
 </Project>
