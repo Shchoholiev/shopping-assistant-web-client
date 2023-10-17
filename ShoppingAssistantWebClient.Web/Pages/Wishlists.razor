@@ -1,0 +1,42 @@
+@page "/wishlists"
+
+<h1 style="text-align: center; margin-bottom: 50px">My Wishlist</h1>
+
+<div class="table-container">
+
+    @if(WishlistList != null)
+    {
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th style="text-align: left;">Chat name</th>
+                    <th>Type</th>
+                    <th>CreatedById</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in WishlistList) 
+                {
+                    <tr>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id">
+                            <td><input type="image" src="~/assets/x-button.png"></td>
+                        </form>
+                        <td style="text-align: left">@item.Name</td>
+                        <td>@item.Type</td>
+                        <td>@item.CreateById</td>
+                        <form method="post" asp-page="Wishlist">
+                            <td><input type="image" src="~/assets/shopping-cart.png" asp-page-handler="MoveToChat"></td>
+                        </form>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else 
+    {
+        <h3>You don't have a wishlist</h3>
+    }
+    
+</div>

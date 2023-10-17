@@ -1,0 +1,28 @@
+.table-container {
+    width: 95%;
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+}
+.styled-table th {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    font-size: larger;
+    background-color: rgba(0, 159, 255, 0.1);
+}
+.styled-table td {
+    border-bottom: 5px solid #FFF;
+    border-top: 5px solid #FFF;
+    text-align: center;
+    font-size: large;
+    padding: 20px;
+    background-color: rgba(248, 248, 255, 1);
+}

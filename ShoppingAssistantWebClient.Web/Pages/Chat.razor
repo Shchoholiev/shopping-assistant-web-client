@@ -1,9 +1,4 @@
 @page "/chat/1"
-@model ShoppingAssistantWebClient.Web.Pages.ChatModel
-@{
-    ViewData["Title"] = "Gift for Jessica";
-}
-
 
 <div class="container-fluid">
 
@@ -53,6 +48,8 @@
 
                 <section>
                     <span class="wishlist_name">Printer</span>
+                </section>
+
                 <section>
 
                     <span class="wishlist_name">Books</span>
@@ -88,46 +85,47 @@
 
             <div class="chat_frame">              
 
-            <div class="new_chat">              
+                <div class="new_chat">              
 
-                <div class="title_one_frame">Gift for Jessica</div>
-              
-                <ul class="chat_box">
+                    <div class="title_one_frame">Gift for Jessica</div>
+                
+                    <ul class="chat_box">
 
-                    <li class="chat_outgoing">
-                        <p>Give me product recommendation. Ask me questions if you need more directions. I am looking for: hub for my macbook to connect external monitors</p>
-                    </li>
-                    <li class=" chat_incoming">
-                        <p>Sure! I can help you with that. I will ask you some leading questions. This is the first:
-                        <br>
-                        How many external monitors do you want to connect to your MacBook?</p>
-                    </li>
-                    <li class="chat_outgoing">
-                        <p>7</p>
-                    </li>  
-                    <li class=" chat_incoming">
-                        <p>Thank you. Here is the next question:
-                        <br>
-                        What type of external monitors do you have? (e.g., HDMI, DisplayPort, VGA)</p>
-                    </li>
+                        <li class="chat_outgoing">
+                            <p>Give me product recommendation. Ask me questions if you need more directions. I am looking for: hub for my macbook to connect external monitors</p>
+                        </li>
+                        <li class=" chat_incoming">
+                            <p>Sure! I can help you with that. I will ask you some leading questions. This is the first:
+                            <br>
+                            How many external monitors do you want to connect to your MacBook?</p>
+                        </li>
+                        <li class="chat_outgoing">
+                            <p>7</p>
+                        </li>  
+                        <li class=" chat_incoming">
+                            <p>Thank you. Here is the next question:
+                            <br>
+                            What type of external monitors do you have? (e.g., HDMI, DisplayPort, VGA)</p>
+                        </li>
 
-                </ul>
-
-
+                    </ul>
 
 
-                <div class="chat_input">
 
-                    <input type="text" id="chatInput" placeholder="Describe what you are looking for....">
 
-                    <a class="button_sende">
-                        <img  src="/images/send.png" alt="Send message">
-                    </a>      
+                    <div class="chat_input">
+
+                        <input type="text" id="chatInput" placeholder="Describe what you are looking for....">
+
+                        <a class="button_sende">
+                            <img  src="/images/send.png" alt="Send message">
+                        </a>      
+
+
+                    </div>
 
 
                 </div>
-
-
             </div>
 
     </div>
@@ -218,10 +216,5 @@ const new_chat = document.querySelector(".button_add_chat");
 new_chat.addEventListener("click", function () {
    alert(3)
 });
-
-
-
-
-
 
 </script>

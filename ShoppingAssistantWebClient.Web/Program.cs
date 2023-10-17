@@ -1,9 +1,12 @@
 using ShoppingAssistantWebClient.Web.Configurations;
+using ShoppingAssistantWebClient.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddApiClient(builder.Configuration);
 
 var app = builder.Build();
@@ -17,13 +20,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
-//app.ConfigureGlobalUserMiddleware();
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
-app.MapRazorPages();
+// app.ConfigureGlobalUserMiddleware();
 
 app.Run();
