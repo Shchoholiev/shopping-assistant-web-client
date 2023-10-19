@@ -189,11 +189,20 @@
   line-height: 2.5em;
 }
 .add_chat a {
+  justify-content: center;
+  align-items: center;
   border-radius: 0.6em;
   padding-left: 0.7em;
   text-decoration: none;
   color: #FFFFFF;
 }
+.plus {
+  position: absolute;
+  right: 1em;
+  top: -0.1em;
+  font-size: 1.9em; 
+}
+
 .user_name {
   padding-left: 0.4375em;
   font-size: 1em;
