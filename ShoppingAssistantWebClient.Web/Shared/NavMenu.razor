@@ -1,4 +1,4 @@
-﻿<div style="@leftFrameStyle" class="left_frame">
+﻿<div id="leftframe" class="left_frame">
 
 
     <div class="logo">
@@ -8,7 +8,7 @@
 
     <div class="menu">
 
-        <a @onclick="ChangeButtonStyle" class="button_close_menu">
+        <a id="button_close" class="button_close_menu">
             <span></span>
             <span></span>
             <span></span>
@@ -52,19 +52,25 @@
 </div>
 
 
+<script>
 
+        function changetyle() {
+            var element = document.getElementById('leftframe');
+            var computedStyles = getComputedStyle(element);
+            var transformValue = computedStyles.transform;
+
+            if (transformValue === 'matrix(1, 0, 0, 1, 0, 0)') {
+                element.style.transform = 'translateX(-110%)';
+            } else {
+                element.style.transform = 'translateX(0%)';
+            }
+        }
+
+    document.getElementById('button_close').addEventListener('click', changetyle);
+</script>
 
 @code {
-    private string leftFrameStyle = "transform: translateX(0%);";
-
-    private void ChangeButtonStyle()
-    {
-        if (leftFrameStyle.Contains("transform: translateX(0%);"))
-        {
-            leftFrameStyle = "transform: translateX(-110%);";
-        }
-    }
-
+   
 private List<Models.Wishlist> wishlist;
 
         protected override async Task OnInitializedAsync()
