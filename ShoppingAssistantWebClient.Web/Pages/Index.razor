@@ -1,9 +1,64 @@
 ﻿@page "/"
 
-<PageTitle>CartaId</PageTitle>
+<PageTitle>New Chat</PageTitle>
 
-<h1>Hello, world!</h1>
+    <div class="right_frame" id="rightFrame">
 
-Welcome to your new app.
+            <div id="button_open" class="open_menu">
+                <a class="button_open_menu" >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+            </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+       
+            <div class="new_chat">              
+                <div class="chat_message">  
+                    <div class="title_one_frame">New chat</div>
+                    <div class="title_two_frame">What you're looking for</div>
+
+                    <div class="switch">
+                        <div class="switch_product" id="choose_product" >
+                                Product
+                        </div>
+                        <div class="switch_gift" id="choose_gift">
+                                Gift 
+                        </div>                    
+                    </div>
+
+
+                    <div class="title_three_frame">What you're looking for, we will help you solve your problem and find it</div>
+
+                    <div class="topic" >
+                        <div class="topic_one">
+                            <a class="button_topic_one" >
+                                Date
+                            </a>
+                        </div>
+
+                        <div class="topic_two">
+                            <a class="button_topic_two" >
+                                🎃 Halloween  gift
+                            </a>                        
+                        </div>
+                        <div class="topic_three">
+                            <a class="button_topic_three" >
+                                🎁 Birthday gift
+                            </a>                          
+                        </div>
+                    </div>
+
+                </div>  
+                    <div class="chat_input">
+                        <input class="input_messages" type="text" id="chatInput" placeholder="Describe what you are looking for....">
+                        <img class="button_sende" src="/images/send.svg" alt="Send message"> 
+                    </div>
+                
+            </div>
+
+    </div>
+
+<script>
+    document.getElementById('button_open').addEventListener('click', changetyle);
+</script>
