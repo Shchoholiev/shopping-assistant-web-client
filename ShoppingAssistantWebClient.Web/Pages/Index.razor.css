@@ -46,7 +46,6 @@
 .title_two_frame {
   padding-top: 2.25em;
   padding-bottom: 1.5em;
-  color: black;
   font-size: 2.5em;
   text-align: center;
   font-weight: 600;
@@ -72,7 +71,7 @@
 
 .topic div {
   margin-top: 1.25em;
-  border:0.09em solid;
+  border: 0.09em solid;
   border-color: #009FFF;
   border-radius: 0.6em;
   justify-content: center;
@@ -86,7 +85,7 @@
 }
 
 .switch {
-  height:  2.8125em;
+  height: 2.8125em;
   width: 21.875em;
   margin: 0 auto;
   border: 0.09em solid;
