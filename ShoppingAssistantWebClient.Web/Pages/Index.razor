@@ -60,5 +60,29 @@
     </div>
 
 <script>
-    document.getElementById('button_open').addEventListener('click', changetyle);
+
+
+    var choose_gift = document.getElementById("choose_gift");
+    var choose_product = document.getElementById("choose_product");
+    var switchGi = document.querySelector(".switch_gift");
+    var switchProd = document.querySelector(".switch_product");
+
+    function switchGift() {
+            choose_gift.style.backgroundColor = "#0052CC";
+            choose_product.style.backgroundColor = "transparent";
+            switchGi.style.color = "white";
+            switchProd.style.color = "#202124";
+    }
+
+    function switchProduct() {
+            choose_product.style.backgroundColor = "#0052CC";
+            choose_gift.style.backgroundColor = "transparent";
+            switchProd.style.color = "white";
+            switchGi.style.color = "#202124";       
+    }
+
+        document.getElementById('choose_gift').addEventListener('click', switchGift);
+        document.getElementById('choose_product').addEventListener('click', switchProduct);
+
+        document.getElementById('button_open').addEventListener('click', changetyle);
 </script>
