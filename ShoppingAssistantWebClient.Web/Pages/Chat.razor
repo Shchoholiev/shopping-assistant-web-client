@@ -1,80 +1,9 @@
-@page "/chat/1"
+@page "/chat/{chatId}"
+<PageTitle>Gift for Jessica</PageTitle>
 
-<div class="container-fluid">
+ <div class="right_frame" id="rightFrame">
 
-    <div class="left_frame" id="leftFrame">
-
-        
-        <div class="logo">
-            <img src="/images/logo.png" alt="Logo site">
-            <span class="logo_name">CARTAID</span>
-        </div>
-
-        <div class="menu">
-
-            <div class="elements_wishlisht">
-
-            <div class="close_menu">
-                <span >Wishlists</span>
-                <a class="button_close_menu" >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
-            </div>
-
-            <div class="add_chat">
-                <a href="/">
-                    <span >Add chat +</span>
-                </a>  
-            </div>
-
-            <div class="wishlist_names">
-                <section>
-                    <span id ="wishlist_id_1" class="wishlist_name">Gift for Jessica</span>
-                </section>
-
-                <section>
-                    <span id ="wishlist_id_2" class="wishlist_name">Secret Santa</span>
-                </section>
-
-                <section>
-                    <span  id ="wishlist_id_3" class="wishlist_name">Phone charger</span>
-                </section>
-
-                <section>
-                    <span class="wishlist_name">Phone</span>
-                </section>
-
-                <section>
-                    <span class="wishlist_name">Printer</span>
-                </section>
-
-                <section>
-
-                    <span class="wishlist_name">Books</span>
-                </section>
-            </div>
-
-        </div>
-        <div class="line"></div>  
-            <div class="elements">
-                <div class="info_user">
-                    <img src="/images/avatar.jpg" alt="Avatar user">
-                    <span class="user_name">Username</span>
-                </div>
-
-            </div>
-
-            
-        </div>
-
-
-    </div>
-
-    <div class="right_frame" id="rightFrame">
-
-            <div class="open_menu">
+            <div id="button_open" class="open_menu">
                 <a class="button_open_menu" >
                     <span></span>
                     <span></span>
@@ -82,11 +11,11 @@
                 </a>
             </div>
 
-
-            <div class="chat_frame">              
-
-                <div class="new_chat">              
-
+       
+            <div class="new_chat">              
+                <div class="chat_message">  
+                    
+                   
                     <div class="title_one_frame">Gift for Jessica</div>
                 
                     <ul class="chat_box">
@@ -111,23 +40,30 @@
                     </ul>
 
 
+                </div>  
 
 
                     <div class="chat_input">
-
-                        <input type="text" id="chatInput" placeholder="Describe what you are looking for....">
-
-                        <a class="button_sende">
-                            <img  src="/images/send.png" alt="Send message">
-                        </a>      
-
-
+                        <input class="input_messages" type="text" id="chatInput" placeholder="Describe what you are looking for....">
+                        <img class="button_sende" src="/images/send.svg" alt="Send message"> 
                     </div>
-
-
-                </div>
+                
             </div>
 
     </div>
-</div>
+
+
+<script>
+
+    
+            document.getElementById('button_open').addEventListener('click', changetyle);
+</script>
+@code{
+
+        [Parameter] public string chatId { get; set; }
+
+}
+
+
+
 

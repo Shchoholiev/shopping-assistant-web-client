@@ -1,4 +1,7 @@
-﻿<div id="leftframe" class="left_frame">
+﻿@inject NavigationManager Navigation
+
+
+<div id="leftframe" class="left_frame">
 
 
     <div class="logo">
@@ -16,11 +19,11 @@
 
         <div class="elements_wishlisht">
 
-            <div class="add_chat">
-                <a href="/">
+            <div class="add_chat" @onclick="RedirectToNewChat" >
+                <div>
                     <span>Search</span>
                     <span class="plus">+</span>
-                </a>
+                </div>
             </div>
 
             <div class="wishlist_names">
@@ -28,11 +31,13 @@
                 @foreach (var item in wishlist)
                 {
                     <section class="cont_wishlist">
-                        <div id="wishlist_id_@item.Id" class="wishlist_name">@item.Name</div>
-                        <img class="button_delete_chat" src="/images/icon_delete.svg" alt="Delete wishlist">
-                        <img class="button_open_card" src="/images/icon_open_card.svg" alt="Card open">
+                        <div @onclick="() => RedirectToPage(item.Id)" class="wishlist_name" >@item.Name</div>
+                        <img @onclick="() => DeleteWishlist(item.Id)" class="button_delete_chat" src="/images/icon_delete.svg" alt="Delete wishlist">
+                        <img @onclick="() => RedirectToCard(item.Id)" class="button_open_card" src="/images/icon_open_card.svg" alt="Card open">
                     </section>
                 }
+
+
             </div>
 
         </div>
@@ -77,11 +82,36 @@
 
 
 
+
+
+
     document.getElementById('button_close').addEventListener('click', changetyle);
 
 </script>
 
 @code {
+
+
+
+    private void RedirectToPage(string itemId) {
+            var url = $"/chat/{itemId}";
+            Navigation.NavigateTo(url);
+        }
+    private void RedirectToNewChat() {
+            var url = $"/";
+            Navigation.NavigateTo(url);
+        }
+    private void RedirectToCard(string itemId) {
+            var url = $"/chat/{itemId}/cart";
+            Navigation.NavigateTo(url);
+        }
+    private void DeleteWishlist(string itemId) {
+         
+    
+    }
+
+
+
 
     private List<Models.Wishlist> wishlist;
 
@@ -99,5 +129,6 @@
             };
 
     }
+
 
 }
