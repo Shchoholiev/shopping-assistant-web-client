@@ -171,8 +171,8 @@ public class AuthenticationService
         var request = new GraphQLRequest
         {
             Query = @"
-                    mutation RefreshToken($model: TokensModelInput!) {
-                        refreshUserToken(model: $model) {
+                    mutation RefreshAccessToken($model: TokensModelInput!) {
+                        refreshAccessToken(model: $model) {
                             accessToken
                             refreshToken
                         }
@@ -180,7 +180,7 @@ public class AuthenticationService
             Variables = new { model = new { accessToken = accessToken, refreshToken = refreshToken } }
         };
         var response = await _graphQLClient.SendMutationAsync<dynamic>(request);
-        var jsonResponse = JsonConvert.SerializeObject(response.Data.refreshUserToken);
+        var jsonResponse = JsonConvert.SerializeObject(response.Data.refreshAccessToken);
         var tokens = JsonConvert.DeserializeObject<TokensModel>(jsonResponse);
         _httpContext.Response.Cookies.Append("accessToken", tokens.AccessToken, new CookieOptions { Expires = DateTime.UtcNow.AddDays(180) });
         _httpContext.Response.Cookies.Append("refreshToken", tokens.RefreshToken, new CookieOptions { Expires = DateTime.UtcNow.AddDays(180) });

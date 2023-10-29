@@ -1,9 +1,8 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingAssistantWebClient.Web.Old", "ShoppingAssistantWebClient.Web\ShoppingAssistantWebClient.Web.csproj", "{7D1CD0CD-916A-4007-A4BB-15EA99357992}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingAssistantWebClient.Web", "ShoppingAssistantWebClient.Web\ShoppingAssistantWebClient.Web.csproj", "{7D1CD0CD-916A-4007-A4BB-15EA99357992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

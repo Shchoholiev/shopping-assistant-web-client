@@ -30,9 +30,8 @@ public class GlobalUserMiddleware
         catch (AuthenticationException ex)
         {
             httpContext.Response.Cookies.Delete("accessToken");
-            httpContext.Response.Redirect("");
+            httpContext.Response.Redirect("/login");
         }
-
         await _next(httpContext);
     }
 }
