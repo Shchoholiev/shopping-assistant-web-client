@@ -55,8 +55,8 @@ namespace ShoppingAssistantWebClient.Web.Shared
             isLoading = false;
 
         }
-        
-        protected  async Task DeleteWish(string wishlistId)
+
+        protected async Task DeleteWish(string wishlistId)
         {
             var request = new GraphQLRequest
             {
@@ -69,7 +69,7 @@ namespace ShoppingAssistantWebClient.Web.Shared
 
                 Variables = new
                 {
-                   wishlistId
+                    wishlistId
                 }
             };
 

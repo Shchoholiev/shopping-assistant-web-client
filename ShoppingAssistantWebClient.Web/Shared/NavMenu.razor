@@ -1,7 +1,6 @@
 ﻿﻿
 @inject NavigationManager Navigation
 
-
 <div id="leftframe" class="left_frame">
 
 
@@ -98,7 +97,6 @@
 
 @code {
 
-
     private void RedirectToPage(string itemId) {
             var url = $"/chat/{itemId}";
             Navigation.NavigateTo(url);
@@ -116,6 +114,5 @@
         await DeleteWish(itemId);
          
     }
-
 
 }
