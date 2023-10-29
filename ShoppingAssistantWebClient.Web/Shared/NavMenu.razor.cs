@@ -1,25 +1,23 @@
-
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using ShoppingAssistantWebClient.Web.Models;
 
-namespace ShoppingAssistantWebClient.Web.Pages;
-
-public partial class Wishlists : ComponentBase
+namespace ShoppingAssistantWebClient.Web.Shared
 {
-private List<Wishlist> wishlist;
+    public partial class NavMenu : ComponentBase
+    {
 
-        protected override async Task OnInitializedAsync()
-        {
-
-            wishlist =  new List<Models.Wishlist>
+            public List<Wishlist> Wishlists = new()
             {
-                new Models.Wishlist {Id = "0", Name = "Gift for Jessica", Type="product", CreateById="0"},
-                new Models.Wishlist  {Id = "1", Name = "Secret Santa", Type="gift", CreateById="1"},
-                new Models.Wishlist  {Id = "2", Name = "Mark’s Birthday", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "3", Name = "Garden tools", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "4", Name = "Phone charger ", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "5", Name = "Garden tools", Type="product", CreateById="2"}
+                new Wishlist {Id = "0", Name = "Gift for Jessica", Type="product", CreateById="0"},
+                new Wishlist {Id = "1", Name = "Secret Santa", Type="gift", CreateById="1"},
+                new Wishlist  {Id = "2", Name = "Mark’s Birthday", Type="product", CreateById="2"}
             };
 
-        }
+            protected override async Task OnInitializedAsync()
+            {
+                // Get data from Back-end
+            }
+
+    }
+
 }
