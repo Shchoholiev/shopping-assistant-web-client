@@ -1,4 +1,6 @@
-﻿@inject NavigationManager Navigation
+﻿
+@inject NavigationManager Navigation
+
 
 <div id="leftframe" class="left_frame">
 
@@ -27,16 +29,22 @@
 
             <div class="wishlist_names">
 
-                @foreach (var item in Wishlists)
-                {
-                    <section class="cont_wishlist">
-                        <div @onclick="() => RedirectToPage(item.Id)" class="wishlist_name" >@item.Name</div>
-                        <img @onclick="() => DeleteWishlist(item.Id)" class="button_delete_chat" src="/images/icon_delete.svg" alt="Delete wishlist">
-                        <img @onclick="() => RedirectToCard(item.Id)" class="button_open_card" src="/images/icon_open_card.svg" alt="Card open">
-                    </section>
+                @if(!isLoading){
+
+                        @foreach (var item in Wishlists)
+                    {
+                        <section class="cont_wishlist">
+                            <div @onclick="() => RedirectToPage(item.Id)" class="wishlist_name" >@item.Name</div>
+                            <img @onclick="() => DeleteWishlist(item.Id)" class="button_delete_chat" src="/images/icon_delete.svg" alt="Delete wishlist">
+                            <img @onclick="() => RedirectToCard(item.Id)" class="button_open_card" src="/images/icon_open_card.svg" alt="Card open">
+                        </section>
+                    }
+
+                }else{
+                    <div>loading ...</div>
                 }
 
-
+                
             </div>
 
         </div>
@@ -90,6 +98,7 @@
 
 @code {
 
+
     private void RedirectToPage(string itemId) {
             var url = $"/chat/{itemId}";
             Navigation.NavigateTo(url);
@@ -102,7 +111,9 @@
             var url = $"/chat/{itemId}/cart";
             Navigation.NavigateTo(url);
         }
-    private void DeleteWishlist(string itemId) {
+    private async void DeleteWishlist(string itemId) {
+
+        await DeleteWish(itemId);
          
     }
 
