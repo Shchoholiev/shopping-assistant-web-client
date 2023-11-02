@@ -15,7 +15,7 @@ public static class DependencyInjectionExtension
             client.BaseAddress = new Uri(apiUrl + "api/");
         });
 
-        services.AddScoped<GraphQLHttpClient>(p =>
+        services.AddSingleton<GraphQLHttpClient>(p =>
             new GraphQLHttpClient(apiUrl + "graphql", new NewtonsoftJsonSerializer())
         );
 
