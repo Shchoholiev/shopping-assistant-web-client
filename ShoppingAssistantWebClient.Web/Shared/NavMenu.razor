@@ -1,4 +1,5 @@
-﻿<div id="leftframe" class="left_frame">
+﻿@inject NavigationManager Navigation
+<div id="leftframe" class="left_frame">
 
 
     <div class="logo">
@@ -16,22 +17,31 @@
 
         <div class="elements_wishlisht">
 
-            <div class="add_chat">
-                <a href="/">
+            <div class="add_chat" @onclick="RedirectToNewChat" >
+                <div>
                     <span>Search</span>
-                    <span class="plus" >+</span>
-                </a>
+                    <span class="plus">+</span>
+                </div>
             </div>
 
             <div class="wishlist_names">
 
-                @foreach(var item in wishlist){
-                <section class="cont_wishlist">
-                    <div id="wishlist_id_@item.Id" class="wishlist_name">@item.Name</div>
-                    <img class="button_delete_chat" src="/images/icon_delete.svg" alt="Delete wishlist">
-                    <img class="button_open_card" src="/images/icon_open_card.svg" alt="Card open">
-                </section>
+                @if(Wishlists!=null){
+
+                        @foreach (var item in Wishlists)
+                    {
+                        <section class="cont_wishlist">
+                            <div @onclick="() => RedirectToPage(item.Id)" class="wishlist_name" >@item.Name</div>
+                            <img @onclick="() => DeleteWishlist(item.Id)" class="button_delete_chat" src="/images/icon_delete.svg" alt="Delete wishlist">
+                            <img @onclick="() => RedirectToCard(item.Id)" class="button_open_card" src="/images/icon_open_card.svg" alt="Card open">
+                        </section>
+                    }
+
+                }else{
+                    <div>loading ...</div>
                 }
+
+                
             </div>
 
         </div>
@@ -54,38 +64,51 @@
 
 <script>
 
-        function changetyle() {
-            var element = document.getElementById('leftframe');
-            var computedStyles = getComputedStyle(element);
-            var transformValue = computedStyles.transform;
+    function changetyle() {
+        var left_frame = document.querySelector('.sidebar-menu');
+        var right_frame = document.querySelector('.right-frame');
+        var computedStyles = getComputedStyle(left_frame);
+        var transformValue = computedStyles.transform;
+        var button_open = document.querySelector('.button_open_menu');
 
-            if (transformValue === 'matrix(1, 0, 0, 1, 0, 0)') {
-                element.style.transform = 'translateX(-110%)';
-            } else {
-                element.style.transform = 'translateX(0%)';
-            }
+        if (transformValue === 'matrix(1, 0, 0, 1, 0, 0)') {
+            left_frame.style.transform = 'translateX(-110%)';
+            button_open.style.visibility = 'visible';
+            right_frame.style.left = '1.25em';
+
+        } else {
+            left_frame.style.transform = 'translateX(0)';
+            button_open.style.visibility = 'hidden';
+            right_frame.style.left = '23.25em';
         }
+    }
+
+
+
+
+
+
 
     document.getElementById('button_close').addEventListener('click', changetyle);
+
 </script>
 
 @code {
-   
-private List<Models.Wishlist> wishlist;
 
-        protected override async Task OnInitializedAsync()
-        {
-
-            wishlist =  new List<Models.Wishlist>
-            {
-                new Models.Wishlist {Id = "0", Name = "Gift for Jessica", Type="product", CreateById="0"},
-                new Models.Wishlist  {Id = "1", Name = "Secret Santa", Type="gift", CreateById="1"},
-                new Models.Wishlist  {Id = "2", Name = "Mark’s Birthday", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "3", Name = "Garden tools", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "4", Name = "Phone charger ", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "5", Name = "Garden tools", Type="product", CreateById="2"}
-            };
-
+    private void RedirectToPage(string itemId) {
+            var url = $"/chat/{itemId}";
+            Navigation.NavigateTo(url);
         }
+    private void RedirectToNewChat() {
+            var url = $"/";
+            Navigation.NavigateTo(url);
+        }
+    private void RedirectToCard(string itemId) {
+            var url = $"/chat/{itemId}/cart";
+            Navigation.NavigateTo(url);
+        }
+    private void DeleteWishlist(string itemId) {
+         
+    }
 
 }

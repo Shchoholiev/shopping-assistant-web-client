@@ -1,25 +1,50 @@
-
 using Microsoft.AspNetCore.Components;
 using ShoppingAssistantWebClient.Web.Models;
+using GraphQL;
+using Newtonsoft.Json;
+using ShoppingAssistantWebClient.Web.Models;
+using ShoppingAssistantWebClient.Web.Network;
 
-namespace ShoppingAssistantWebClient.Web.Pages;
-
-public partial class Wishlists : ComponentBase
+namespace ShoppingAssistantWebClient.Web.Shared
 {
-private List<Wishlist> wishlist;
+    public partial class NavMenu : ComponentBase
+    {
 
-        protected override async Task OnInitializedAsync()
+        public List<Wishlist> Wishlists { get; set; }
+
+        private readonly ApiClient _apiClient;
+
+        public NavMenu()
         {
-
-            wishlist =  new List<Models.Wishlist>
-            {
-                new Models.Wishlist {Id = "0", Name = "Gift for Jessica", Type="product", CreateById="0"},
-                new Models.Wishlist  {Id = "1", Name = "Secret Santa", Type="gift", CreateById="1"},
-                new Models.Wishlist  {Id = "2", Name = "Mark’s Birthday", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "3", Name = "Garden tools", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "4", Name = "Phone charger ", Type="product", CreateById="2"},
-                new Models.Wishlist  {Id = "5", Name = "Garden tools", Type="product", CreateById="2"}
-            };
-
         }
+
+        public NavMenu(ApiClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
+        public async Task OnGetAsync()
+        {
+            var request = new GraphQLRequest
+            {
+                Query = @"query PersonalWishlistsPage {
+                            personalWishlistsPage(pageNumber: $pageNumber, pageSize: $pageSize) {
+                                items {
+                                    id
+                                    name
+                                }
+                            }
+                        }
+                        ",
+
+                Variables = new
+                {
+                    pageNumber = 1,
+                    pageSize = 10,
+                }
+            };
+            var response = await _apiClient.QueryAsync(request);
+            var jsonCategoriesResponse = JsonConvert.SerializeObject(response.Data.personalWishlistsPage.items);
+            this.Wishlists = JsonConvert.DeserializeObject<List<Wishlist>>(jsonCategoriesResponse);
+        }
+    }
 }

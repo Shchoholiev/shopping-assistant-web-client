@@ -1,0 +1,86 @@
+﻿@page "/cards"
+
+<div class="card-page">
+
+        <div class="head">
+            <button class="back-button"></button>
+            <p class="header-text">Gift for Jessica</p>
+        </div>
+    
+        <div class="content">
+            <div class="back-card"></div>
+            @if (Products != null && Products.Count != 0 && currentProduct != Products.Count && currentProduct >= 0) {
+                <div class="card">
+                    <div class="slider-container">
+                        <div class="slider">
+                            @foreach (var image in Products[currentProduct].ImagesUrls) {
+                                if (currentImage == image) {
+                                    <img src="@image" class="slider-image" @onclick="(() => ChangeImage(image))"/>
+                                }
+                            }
+                        </div>
+                        <div class="dots">
+                            @for (var i = 0; i < Products[currentProduct].ImagesUrls.Length; i++) {
+                                var dotIndex = i;
+                                <div class="dot @(i == currentIndex ? "active-dot" : "")" @onclick="(() => ChangeImageDot(dotIndex))"></div>
+                            }
+                        </div>
+                    </div>
+                    <div class="product-info">
+
+                        <p class="name">@Products[currentProduct].Name</p>
+                        <p class="description">@Products[currentProduct].Description</p>
+
+                        <div class="rating-price-row">
+                            <label class="rating">@Products[currentProduct].Rating</label>
+                            @{
+                                int whole = (int)Math.Floor(Products[currentProduct].Rating);
+                                double fractal = Products[currentProduct].Rating - whole;
+                                string price = "N/A";
+                            }
+                            @for(int i = 0; i < 5; i++) {
+                                if(i < whole) {
+                                    <img class="star" src="/images/star-cards.png">
+                                    continue;
+                                }
+                                if(fractal != 0.0) {
+                                    <img class="star" src="/images/half-star.png">
+                                    fractal -= fractal;
+                                }
+                                else {
+                                    <img class="star" src="/images/empty-star.png">
+                                }
+                            }
+                            <label class="price-label">@price</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons-container">
+                    <div class="buttons-row">
+                        <button class="cancel-button" @onclick="(() => LoadNextProduct())"></button>
+                        <button class="return-button" @onclick="(() => LoadPreviousProduct())"></button>
+                        <button class="like-button" @onclick="(() => LoadNextProduct())"></button>
+                    </div>
+                </div>
+            }
+            else {
+                <style>
+                    .back-card {
+                        display: none;
+                    }
+                </style>
+                <div class="card-text">
+                    <label class="bold-text">The cards ended</label>
+                    <label class="more-text">Click <img src="/images/load-more-small.png"/> to see more<br> or <img src="/images/return-small.png"/> to exit</label>
+                </div>
+                <div class="buttons-container">
+                    <div class="buttons-row">
+                        <button class="exit-button" @onclick="(() => NavigateToMain())"></button>
+                        <button class="return-button" @onclick="(() => LoadPreviousProduct())"></button>
+                        <button class="more-button" @onclick="(() => LoadMoreProducts())"></button>
+                    </div>
+                </div>
+            }
+        </div>
+
+</div>

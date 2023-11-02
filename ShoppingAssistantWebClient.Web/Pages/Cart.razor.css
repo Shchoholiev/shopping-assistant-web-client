@@ -1,21 +1,65 @@
+.cart {
+    border-radius: 10px;
+    border: 1px solid #0052CC;
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    top: 20px;
+    bottom: 20px;
+    padding: 20px;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.cart::-webkit-scrollbar {
+    display: none;
+}
+
+.head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+}
+
+.header-text {
+    text-align: center;
+    font-size: 12;
+    color: rgba(0, 82, 204, 0.8);
+}
+
+.back-button {
+    width: 15px;
+    height: 15px;
+    background-image: url("images/back-button.png"); 
+    background-size: cover; 
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    left: 20px;
+}
+
 .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 720px;
+    overflow: auto;
 }
 
 .product-div {
-    height: 310px;
-    width: 200px;
+    height: 190px;
+    width: 130px;
     border-radius: 10px;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
     position: relative;
     padding: 0 10px 0 10px;
-    margin: 30px;
+    margin: 15px 15px 15px 15px;
 }
 
 .product-img {
-    height: 130px;
+    height: 70px;
     width: 100%;
     align-self: center;
     display: block;
@@ -27,6 +71,7 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    font-size: 12px;
 }
 
 .button-amazon {
@@ -37,24 +82,26 @@
     border: none;
     border-radius: 10px;
     position: absolute;
-    width: 90%;
-    height: 40px;
+    width: 109px;
+    height: 27px;
     bottom: 10px;
 }
 
 .star {
     position: absolute;
-    bottom: 60px;
+    bottom: 45px;
 }
 
 .rating {
     position: absolute;
-    bottom: 60px;
-    left: 35px;
-    height: 16px;
+    bottom: 45px;
+    left: 26px;
+    height: 9px;
+    width: 9px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 12px;
 }
 
 .button-row {
@@ -65,9 +112,9 @@
     position: absolute;
     right: 10px;
     font-weight: bold;
-    font-size: larger;
+    font-size: 14px;
     height: 16px;
-    bottom: 60px;
+    bottom: 45px;
     display: flex;
     justify-content: center;
     align-items: center;

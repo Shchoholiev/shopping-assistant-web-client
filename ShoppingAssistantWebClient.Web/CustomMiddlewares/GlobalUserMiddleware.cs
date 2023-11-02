@@ -13,26 +13,28 @@ public class GlobalUserMiddleware
         this._next = next;
     }
 
-    public async Task InvokeAsync(HttpContext httpContext, AuthenticationService authenticationService, ApiClient apiClient)
+public async Task InvokeAsync(HttpContext httpContext, AuthenticationService authenticationService, ApiClient apiClient)
     {
-        try
+        if (httpContext.Request.Path != "/login")
         {
-            var accessToken = await authenticationService.GetAuthTokenAsync();
-            if (!string.IsNullOrEmpty(accessToken))
+            try
             {
-                apiClient.JwtToken = accessToken;
-                GlobalUser.Roles = authenticationService.GetRolesFromJwtToken(accessToken);
-                GlobalUser.Id = authenticationService.GetIdFromJwtToken(accessToken);
-                GlobalUser.Email = authenticationService.GetEmailFromJwtToken(accessToken);
-                GlobalUser.Phone = authenticationService.GetPhoneFromJwtToken(accessToken);
+                var accessToken = await authenticationService.GetAuthTokenAsync();
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    apiClient.JwtToken = accessToken;
+                    GlobalUser.Roles = authenticationService.GetRolesFromJwtToken(accessToken);
+                    GlobalUser.Id = authenticationService.GetIdFromJwtToken(accessToken);
+                    GlobalUser.Email = authenticationService.GetEmailFromJwtToken(accessToken);
+                    GlobalUser.Phone = authenticationService.GetPhoneFromJwtToken(accessToken);
+                }
+            }
+            catch (AuthenticationException ex)
+            {
+                httpContext.Response.Cookies.Delete("accessToken");
+                httpContext.Response.Redirect("/login");
             }
         }
-        catch (AuthenticationException ex)
-        {
-            httpContext.Response.Cookies.Delete("accessToken");
-            httpContext.Response.Redirect("");
-        }
-
         await _next(httpContext);
     }
 }
