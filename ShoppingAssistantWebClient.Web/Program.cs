@@ -1,5 +1,7 @@
+using GraphQL.Client.Http;
 using ShoppingAssistantWebClient.Web.Configurations;
 using ShoppingAssistantWebClient.Web.Data;
+using ShoppingAssistantWebClient.Web.Network; 
 
 var builder = WebApplication.CreateBuilder(args);
 
