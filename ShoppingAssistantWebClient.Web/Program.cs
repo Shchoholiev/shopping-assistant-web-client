@@ -30,6 +30,7 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.ConfigureGlobalUserMiddleware();
+// Login moved to ApiClient
+// app.ConfigureGlobalUserMiddleware();
 
 app.Run();

@@ -1,3 +1,4 @@
+@using Models.GlobalInstances
 @inject NavigationManager Navigation
 
 <div id="leftframe" class="left_frame">
@@ -51,7 +52,8 @@
         <div class="elements">
             <div class="info_user">
                 <img src="/images/avatar.jpg" alt="Avatar user">
-                <span class="user_name">Semen Semenov</span>
+                <!-- Change to name -->
+                <span class="user_name">@GlobalUser.Id</span>
             </div>
 
         </div>
