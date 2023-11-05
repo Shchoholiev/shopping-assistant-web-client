@@ -11,23 +11,14 @@ namespace ShoppingAssistantWebClient.Web.Shared
 
         [Inject]
         private ApiClient _apiClient { get; set; }
-
-        //public string jwt;
-
         public List<Wishlist> Wishlists { get; set; }
         public bool isLoading = true;
         protected override async Task OnInitializedAsync()
         {
-            //jwt = _apiClient.JwtToken;
-
             await LoadMenus();
         }
-
-
         private async Task LoadMenus()
         {
-
-
             isLoading = true;
             var pageNumber = 1;
             var request = new GraphQLRequest
@@ -53,7 +44,6 @@ namespace ShoppingAssistantWebClient.Web.Shared
             var jsonCategoriesResponse = JsonConvert.SerializeObject(responseData.personalWishlistsPage.items);
             this.Wishlists = JsonConvert.DeserializeObject<List<Wishlist>>(jsonCategoriesResponse);
             isLoading = false;
-
         }
 
         protected async Task DeleteWish(string wishlistId)
@@ -74,7 +64,7 @@ namespace ShoppingAssistantWebClient.Web.Shared
             };
 
             var response = await _apiClient.QueryAsync(request);
-            var responseData = response.Data;
+            await LoadMenus();
         }
 
     }

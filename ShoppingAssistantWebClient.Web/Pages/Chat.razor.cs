@@ -9,40 +9,91 @@ namespace ShoppingAssistantWebClient.Web.Pages;
 public partial class Chat : ComponentBase
 {
 
-    [Inject]
-    private ApiClient _apiClient { get; set; }
+        [Inject]
+        private ApiClient _apiClient { get; set; }
 
-
-    protected override async Task OnInitializedAsync()
+        public List<Messages> Messages { get; set; }
+        public bool isLoading = true;
+        private string inputValue = "";
+        protected override async Task OnInitializedAsync()
         {
-            await LoadMenus();
+            await LoadMessages();
         }
 
 
-        private async Task LoadMenus()
+        private async Task LoadMessages()
         {
-            var pageNumber = 1;
+
+
+            isLoading = true;
+            int pageNumber = 1;
+            string wishlistId = chatId;
             var request = new GraphQLRequest
             {
-                Query = @"mutation StartPersonalWishlist {
-                        startPersonalWishlist(dto: { type: product, firstMessageText: hello }) {
-                            id
-                            name
-                            type
-                            createdById
-                        }
-                    }",
+                Query = @"query MessagesPageFromPersonalWishlist($wishlistId: String!, $pageNumber: Int!, $pageSize: Int!) {
+                            messagesPageFromPersonalWishlist( wishlistId: $wishlistId, pageNumber: $pageNumber, pageSize: $pageSize) 
+                            {
+                                items {
+                                    id
+                                    text
+                                    role
+                                    createdById
+                                }
+                            }
+                        }",
 
                 Variables = new
                 {
-                    pageNumber = pageNumber,
-                    pageSize = 12,
+                    wishlistId,
+                    pageNumber,
+                    pageSize = 20
+                }
+            };
+            try{
+            var response = await _apiClient.QueryAsync(request);
+                var responseData = response.Data;
+                var jsonCategoriesResponse = JsonConvert.SerializeObject(responseData.messagesPageFromPersonalWishlist.items);
+                this.Messages = JsonConvert.DeserializeObject<List<Messages>>(jsonCategoriesResponse);
+                Messages.Reverse();
+                isLoading = false;
+
+            }catch{
+
+            }
+            
+
+        }
+        private async Task AddNewMessage()
+        {
+
+            isLoading = true;
+            var pageNumber = 1;
+            var wishlistId = chatId;
+            var text = inputValue;
+            inputValue="";
+            var request = new GraphQLRequest
+            {
+                Query = @"mutation AddMessageToPersonalWishlist($wishlistId: String!, $text: String!) {
+                            addMessageToPersonalWishlist(wishlistId: $wishlistId, dto: { text: $text }) {
+                                id
+                                text
+                                role
+                                createdById
+                            }
+                        }
+                        ",
+
+                Variables = new
+                {
+                    wishlistId,
+                    text
                 }
             };
 
-        var response = await _apiClient.QueryAsync(request);
+            var response = await _apiClient.QueryAsync(request);
+            await LoadMessages();
+        }
 
-    }
 
 
 

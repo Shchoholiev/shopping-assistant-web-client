@@ -23,25 +23,26 @@
 
             <ul class="chat_box">
 
-                <li class="chat_outgoing">
-                    <p>Give me product recommendation. Ask me questions if you need more directions. I am looking for:
-                        hub for my macbook to connect external monitors</p>
-                </li>
-                <li class=" chat_incoming">
-                    <p>Sure! I can help you with that. I will ask you some leading questions. This is the first:
-                        <br>
-                        How many external monitors do you want to connect to your MacBook?
-                    </p>
-                </li>
-                <li class="chat_outgoing">
-                    <p>7</p>
-                </li>
-                <li class=" chat_incoming">
-                    <p>Thank you. Here is the next question:
-                        <br>
-                        What type of external monitors do you have? (e.g., HDMI, DisplayPort, VGA)
-                    </p>
-                </li>
+                @if(!isLoading && Messages!=null){
+
+                    @foreach (var item in Messages){
+
+                      if(item.Role!="User"){
+
+                        <li class=" chat_incoming">
+                            <p>@item.Text</p>
+                        </li>
+
+                      }else{
+
+                        <li class="chat_outgoing">
+                            <p>@item.Text</p>
+                        </li>
+
+                      }
+                    }
+
+                }
 
             </ul>
 
@@ -71,9 +72,9 @@
 
 
         <div class="chat_input">
-            <input class="input_messages" type="text" id="chatInput"
+            <input @bind="inputValue" @onkeydown="Enter" class="input_messages" type="text" id="chatInput"
                 placeholder="Describe what you are looking for....">
-            <img class="button_sende" src="/images/send.svg" alt="Send message">
+            <img @onclick="AddNewMessage" class="button_sende" src="/images/send.svg" alt="Send message">
         </div>
 
     </div>
@@ -89,4 +90,18 @@
 @code {
 
     [Parameter] public string chatId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadMessages();
+    }
+
+    public void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+           AddNewMessage();
+        }
+    }
+    
 }

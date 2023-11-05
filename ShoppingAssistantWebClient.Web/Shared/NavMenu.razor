@@ -3,7 +3,6 @@
 
 <div id="leftframe" class="left_frame">
 
-
     <div class="logo">
         <img src="/images/logo.svg" alt="Logo site">
         <span class="logo_name">CARTAID</span>
@@ -39,11 +38,8 @@
                         </section>
                     }
 
-                }else{
-                    <div>loading ...</div>
                 }
 
-                
             </div>
 
         </div>
@@ -58,9 +54,7 @@
 
         </div>
 
-
     </div>
-
 
 </div>
 
@@ -85,19 +79,11 @@
             right_frame.style.left = '23.25em';
         }
     }
-
-
-
-
-
-
-
     document.getElementById('button_close').addEventListener('click', changetyle);
 
 </script>
 
 @code {
-
 
     private void RedirectToPage(string itemId) {
             var url = $"/chat/{itemId}";
@@ -115,6 +101,11 @@
 
         await DeleteWish(itemId);
          
+    }
+
+    public void UpdateSideMenu()
+    {
+        StateHasChanged();
     }
 
 }

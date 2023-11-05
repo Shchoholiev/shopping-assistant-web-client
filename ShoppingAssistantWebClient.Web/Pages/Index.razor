@@ -19,10 +19,10 @@
             <div class="title_two_frame">What you're looking for</div>
 
             <div class="switch">
-                <div class="switch_product" id="choose_product">
+                <div @onclick="Сhoose_product"class="switch_product" id="choose_product">
                     Product
                 </div>
-                <div class="switch_gift" id="choose_gift">
+                <div @onclick="Сhoose_gift" class="switch_gift" id="choose_gift">
                     Gift
                 </div>
             </div>
@@ -52,9 +52,9 @@
 
         </div>
         <div class="chat_input">
-            <input class="input_messages" type="text" id="chatInput"
+            <input @bind="inputValue" class="input_messages" type="text" id="chatInput"
                 placeholder="Describe what you are looking for....">
-            <img class="button_sende" src="/images/send.svg" alt="Send message">
+            <img @onclick="CreateNewChat" class="button_sende" src="/images/send.svg" alt="Send message">
         </div>
 
     </div>
@@ -68,12 +68,15 @@
     var choose_product = document.getElementById("choose_product");
     var switchGi = document.querySelector(".switch_gift");
     var switchProd = document.querySelector(".switch_product");
+    var choose = "Product";
 
     function switchGift() {
         choose_gift.style.backgroundColor = "#0052CC";
         choose_product.style.backgroundColor = "transparent";
         switchGi.style.color = "white";
         switchProd.style.color = "#202124";
+        choose = "Gift";
+
     }
 
     function switchProduct() {
@@ -81,6 +84,8 @@
         choose_gift.style.backgroundColor = "transparent";
         switchProd.style.color = "white";
         switchGi.style.color = "#202124";
+        choose = "Product";
+
     }
 
     document.getElementById('choose_gift').addEventListener('click', switchGift);
@@ -88,3 +93,13 @@
 
     document.getElementById('button_open').addEventListener('click', changetyle);
 </script>
+@code{
+    private string selectedChoice = "Product";
+
+    private void Сhoose_product() {
+        selectedChoice = "Product";
+    }
+        private void Сhoose_gift() {
+        selectedChoice = "Gift";
+    }
+}
