@@ -2,6 +2,7 @@
 using GraphQL;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using ShoppingAssistantWebClient.Web.Models.GlobalInstances;
 
 namespace ShoppingAssistantWebClient.Web.Network;
 
@@ -29,7 +30,9 @@ public class ApiClient
     {
         await SetAuthenticationAsync();
 
-        return await _graphQLClient.SendQueryAsync<dynamic>(request);
+        var response = await _graphQLClient.SendQueryAsync<dynamic>(request);
+
+        return response;
     }
 
     public async Task<T> QueryAsync<T>(GraphQLRequest request, string propertyName)
@@ -116,7 +119,18 @@ public class ApiClient
 
     private async Task SetAuthenticationAsync()
     {
-        _graphQLClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.JwtToken);
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.JwtToken);
+        var accessToken = await _authenticationService.GetAuthTokenAsync();
+        if (!string.IsNullOrEmpty(accessToken))
+        {
+            this.JwtToken = accessToken;
+
+            GlobalUser.Id = _authenticationService.GetIdFromJwtToken(accessToken);
+            GlobalUser.Email = _authenticationService.GetEmailFromJwtToken(accessToken);
+            GlobalUser.Phone = _authenticationService.GetPhoneFromJwtToken(accessToken);
+            GlobalUser.Roles = _authenticationService.GetRolesFromJwtToken(accessToken);
+
+            _graphQLClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.JwtToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.JwtToken);
+        }
     }
 }

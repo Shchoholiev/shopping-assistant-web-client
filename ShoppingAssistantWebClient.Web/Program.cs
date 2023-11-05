@@ -1,5 +1,7 @@
+using GraphQL.Client.Http;
 using ShoppingAssistantWebClient.Web.Configurations;
 using ShoppingAssistantWebClient.Web.Data;
+using ShoppingAssistantWebClient.Web.Network; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,7 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.ConfigureGlobalUserMiddleware();
+// Login moved to ApiClient
+// app.ConfigureGlobalUserMiddleware();
 
 app.Run();
