@@ -3,6 +3,9 @@ using GraphQL;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using ShoppingAssistantWebClient.Web.Models.GlobalInstances;
+using ShoppingAssistantWebClient.Web.Models.ProductSearch;
+using System.Text;
+using ShoppingAssistantWebClient.Web.Models.Enums;
 
 namespace ShoppingAssistantWebClient.Web.Network;
 
@@ -91,6 +94,50 @@ public class ApiClient
 
         var model = JsonConvert.DeserializeObject<T>(responseContent);
         return model;
+    }
+
+    public async IAsyncEnumerable<ServerSentEvent> GetServerSentEventStreamed(string url, Object obj, CancellationToken cancellationToken) 
+    {
+        await SetAuthenticationAsync();
+
+        var requestUrl = $"{_httpClient.BaseAddress}{url}";
+        var response = await _httpClient.PostAsJsonAsync(requestUrl, obj);
+        using var responseStream = await response.Content.ReadAsStreamAsync();
+        using var reader = new StreamReader(responseStream, Encoding.UTF8);
+
+        SearchEventType eventType = SearchEventType.Message;
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            var jsonChunk = await reader.ReadLineAsync(cancellationToken);
+            if (jsonChunk == null) continue;
+            if (jsonChunk.StartsWith("event: "))
+            {
+                var type = jsonChunk.Substring("event: ".Length);
+                switch(type)
+                {
+                    case "Message":
+                        eventType = SearchEventType.Message; 
+                        break;
+                    case "Suggestion":
+                        eventType = SearchEventType.Suggestion;
+                        break;
+                    case "Product":
+                        eventType = SearchEventType.Product;
+                        break; 
+                    case "Wishlist":
+                        eventType = SearchEventType.Wishlist;
+                        break;
+                }
+            }
+            if (jsonChunk.StartsWith("data: "))
+            {
+                yield return new ServerSentEvent
+                {
+                    Event = eventType,
+                    Data = jsonChunk.Substring("data: ".Length),
+                };
+            }
+        }
     }
 
     private MultipartFormDataContent MapIFormCollectionToForm(IFormCollection formCollection)
