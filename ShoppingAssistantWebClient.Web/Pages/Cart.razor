@@ -10,7 +10,7 @@
                 <img class="star" src="~/assets/star.png">
                 <label class="rating">@product.Rating</label>
                 @{
-                    string price = "N/A";
+                    string price = @product.Price.ToString();
                 }
                 <label class="price-label">@price</label>
             </div>
