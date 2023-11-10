@@ -13,6 +13,7 @@ namespace ShoppingAssistantWebClient.Web.Shared
         private ApiClient _apiClient { get; set; }
         public List<Wishlist> Wishlists { get; set; }
         public bool isLoading = true;
+
         protected override async Task OnInitializedAsync()
         {
             await LoadMenus();
@@ -35,7 +36,7 @@ namespace ShoppingAssistantWebClient.Web.Shared
                 Variables = new
                 {
                     pageNumber,
-                    pageSize = 10,
+                    pageSize = 40,
                 }
             };
 
