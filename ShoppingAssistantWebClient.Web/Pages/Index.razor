@@ -1,5 +1,4 @@
 ﻿@page "/"
-
 <PageTitle>New Chat</PageTitle>
 
 <div class="right_frame" id="rightFrame">
@@ -87,6 +86,18 @@
         choose = "Product";
 
     }
+    function myJavaScriptFunction(wishlistId) {
+
+         UpdateMenu(wishlistId);
+
+    }
+
+
+
+
+
+
+
 
     document.getElementById('choose_gift').addEventListener('click', switchGift);
     document.getElementById('choose_product').addEventListener('click', switchProduct);
@@ -102,4 +113,12 @@
         private void Сhoose_gift() {
         selectedChoice = "Gift";
     }
+
+    private async Task UpdateSideMenu(string wishlistId)
+    {
+
+    await JSRuntime.InvokeVoidAsync("myJavaScriptFunction", wishlistId);
+
+    }
+
 }

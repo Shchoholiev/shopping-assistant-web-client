@@ -1,10 +1,10 @@
-
 .left_frame {
   position: relative;
   height: 100%;
   width: 100%;
   transition: 1s;
 }
+
 .logo {
   height: 5em;
   position: relative;
@@ -12,26 +12,35 @@
   align-items: center;
   padding-bottom: 1.5%;
 }
+
 .menu {
   position: absolute;
   width: 100%;
-  top: 5em; 
+  top: 5em;
   bottom: 0;
   border: 1.5px solid;
   border-color: #0052CC;
   border-radius: 0.6em;
   padding-top: 1.5%;
 }
+
 .elements_wishlisht {
-  
   position: absolute;
-  overflow-y: auto;
   top: 2.43em;
   width: 100%;
-  bottom: 4em;
+  bottom: 3.8em;
   padding-left: 1.25em;
   padding-right: 1.25em;
+  padding-bottom: 3.8em;
 }
+
+.wishlist_names {
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+  height:100%;
+}
+
 .info_user {
   position: absolute;
   display: flex;
@@ -46,6 +55,7 @@
   padding-right: 1.25em;
   border-top: 1px solid #0165FF;
 }
+
 .logo_name {
   padding-top: 0.5em;
   padding-left: 0.3em;
@@ -56,11 +66,13 @@
   font-weight: 600;
   overflow: hidden;
 }
+
 .logo img {
   float: left;
   height: 3.25em;
   width: 3.25em;
 }
+
 .wishlist_name {
   padding-left: 0.7em;
   padding-right: 5em;
@@ -68,10 +80,11 @@
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  height:  2.5em;
+  height: 2.5em;
   line-height: 2.5em;
   cursor: pointer;
 }
+
 .cont_wishlist {
   margin-top: 0.4375em;
   margin-bottom: 0.4375em;
@@ -79,23 +92,64 @@
   border-radius: 0.6em;
   font-size: 1.1em;
   width: 100%;
-  height:2.5em;
+  height: 2.5em;
 
 }
+
 .cont_wishlist:hover {
+  
   background-color: #e6e6e6;
   transition: 0.2s;
 }
-.cont_wishlist:hover .button_delete_chat{
+
+.cont_wishlist:hover .button_delete_chat {
   visibility: visible;
 }
-.cont_wishlist:hover .button_open_card{
+
+.cont_wishlist:hover .button_open_card {
   visibility: visible;
-  
+
 }
+
+.selected_wishlist {
+  margin-top: 0.4375em;
+  margin-bottom: 0.4375em;
+  color: black;
+  border-radius: 0.6em;
+  font-size: 1.1em;
+  width: 100%;
+  height: 2.5em;
+    background-color: #e6e6e6;
+  transition: 0.2s;
+
+}
+
+.sel_del {
+  visibility: visible;
+  cursor: pointer;
+  margin-top: 0.55em;
+  margin-right: 1em;
+  float: right;
+  position: relative;
+
+
+}
+
+.selected_card{
+  cursor: pointer;
+  position: relative;
+  z-index: 999;
+  margin-top: 0.55em;
+  margin-right: 1em;
+  float: right;
+  visibility: visible;
+  height: 1.4em;
+  width: 1.5em;
+}
+
 .button_delete_chat {
   cursor: pointer;
-  margin-top:  0.55em;
+  margin-top: 0.55em;
   margin-right: 1em;
   float: right;
   position: relative;
@@ -103,6 +157,7 @@
   height: 1.4em;
   width: 1.4em;
 }
+
 .button_open_card {
   cursor: pointer;
   position: relative;
@@ -114,14 +169,17 @@
   height: 1.4em;
   width: 1.5em;
 }
-.elements_wishlisht::-webkit-scrollbar {
+
+.wishlist_names::-webkit-scrollbar {
   border-radius: 20px;
   width: 0.2em;
 }
 
-.elements_wishlisht::-webkit-scrollbar-thumb {
-  background-color: #0052CC; /* Колір позиції покажчика */
-  border-radius: 10px; /* Закруглення країв позиції покажчика */
+.wishlist_names::-webkit-scrollbar-thumb {
+  background-color: #0052CC;
+  /* Колір позиції покажчика */
+  border-radius: 10px;
+  /* Закруглення країв позиції покажчика */
   width: 0.2em;
 }
 
@@ -131,10 +189,11 @@
   border-radius: 0.6em;
   font-size: 1.2em;
   width: 100%;
-  height:2.5em;
+  height: 2.5em;
   cursor: pointer;
   line-height: 2.5em;
 }
+
 .add_chat div {
   justify-content: center;
   align-items: center;
@@ -143,11 +202,12 @@
   text-decoration: none;
   color: #FFFFFF;
 }
+
 .plus {
   position: absolute;
   right: 1em;
   top: -0.1em;
-  font-size: 1.9em; 
+  font-size: 1.9em;
 }
 
 .user_name {
@@ -156,12 +216,14 @@
   justify-content: center;
   align-items: center;
 }
+
 .info_user img {
   float: left;
   border-radius: 50%;
   width: 2.3em;
   height: 2.3em;
 }
+
 .button_close_menu {
   position: relative;
   width: 1.43em;
@@ -171,6 +233,7 @@
   margin-top: 0.5em;
   margin-right: 1.30em;
 }
+
 .button_close_menu span {
   width: 20px;
   height: 1.5px;
@@ -180,9 +243,11 @@
   transform: translate(-50%, -50%);
   background-color: #4E4E4E;
 }
+
 .button_close_menu span:nth-of-type(2) {
   top: calc(50% - 5px);
 }
+
 .button_close_menu span:nth-of-type(3) {
   top: calc(50% + 5px);
 }

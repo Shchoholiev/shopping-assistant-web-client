@@ -56,7 +56,6 @@
 }
 
 .possible_options {
-  visibility: hidden;
   position: absolute;
   bottom: 5.5em;
   margin-left: 25%;
@@ -84,6 +83,7 @@
     margin: 0em 0.6em;
     flex: 1;
     text-align: center;
+    cursor: pointer;
 }
 
 .input_messages {
@@ -117,7 +117,7 @@
 .chat_message {
   position: relative;
   overflow-y: auto;
-  height: calc(100% - 5.5em);
+  height: calc(100% - 8em);
   width: 100%;
 }
 .chat_message::-webkit-scrollbar {

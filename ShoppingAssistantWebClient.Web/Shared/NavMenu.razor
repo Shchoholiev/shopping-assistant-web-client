@@ -1,5 +1,9 @@
 @using Models.GlobalInstances
+@using System.Linq
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
 @inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime;
 
 <div id="leftframe" class="left_frame">
 
@@ -16,7 +20,8 @@
             <span></span>
         </a>
 
-        <div class="elements_wishlisht">
+
+        <div class="elements_wishlisht" id="elements_wishlisht" > 
 
             <div class="add_chat" @onclick="RedirectToNewChat" >
                 <div>
@@ -29,15 +34,15 @@
 
                 @if(!isLoading){
 
-                        @foreach (var item in Wishlists)
+                    @foreach (var item in Wishlists)
                     {
-                        <section class="cont_wishlist">
-                            <div @onclick="() => RedirectToPage(item.Id)" class="wishlist_name" >@item.Name</div>
-                            <img @onclick="() => DeleteWishlist(item.Id)" class="button_delete_chat" src="/images/icon_delete.svg" alt="Delete wishlist">
-                            <img @onclick="() => RedirectToCard(item.Id)" class="button_open_card" src="/images/icon_open_card.svg" alt="Card open">
+
+                        <section class="cont_wishlist @(selectedWishlistId == item.Id ? "selected_wishlist" : "")">
+                            <div class="wishlist_name" @onclick="() => RedirectToPage(item.Id)">@item.Name</div>
+                            <img class="button_delete_chat" @onclick="() => DeleteWishlist(item.Id)" src="/images/icon_delete.svg" alt="Delete wishlist">
+                            <img class="button_open_card" @onclick="() => RedirectToCard(item.Id)" src="/images/icon_open_card.svg" alt="Card open">
                         </section>
                     }
-
                 }
 
             </div>
@@ -81,31 +86,99 @@
     }
     document.getElementById('button_close').addEventListener('click', changetyle);
 
+/*
+    window.getScrollTop = function (element) {
+        return element.scrollTop;
+    };
+
+    window.getOffsetHeight = function (element) {
+        return element.offsetHeight;
+    };
+
+    window.getScrollHeight = function (element) {
+        return element.scrollHeight;
+    };
+
+    window.setScrollTop = function (element, scrollTop) {
+        element.scrollTop = scrollTop;
+    };
+*/
+</script>
+
+
+<script>
+    
+    function UpdateMenu(wishlistId)
+    {
+
+        DotNet.invokeMethodAsync('ShoppingAssistantWebClient.Web', 'Update', wishlistId);
+
+    }
+
 </script>
 
 @code {
 
+    [Parameter] public string chatId { get; set; }
+
+
+    private string selectedWishlistId;
+
+
+    private static NavMenu _app;
+
+    public NavMenu ()
+    {
+        _app = this;
+        
+    }
+
+    [JSInvokable]
+    public static void Update(string wishlistId)
+    {
+        _app.LoadMenus(1,200);
+        _app.selectedWishlistId=wishlistId;
+    }
+
     private void RedirectToPage(string itemId) {
-            var url = $"/chat/{itemId}";
-            Navigation.NavigateTo(url);
-        }
+        _app.selectedWishlistId = itemId;
+        var url = $"/chat/{itemId}";
+        Navigation.NavigateTo(url);
+    }
     private void RedirectToNewChat() {
-            var url = $"/";
-            Navigation.NavigateTo(url);
-        }
+        var url = $"/";
+        Navigation.NavigateTo(url);
+    }
     private void RedirectToCard(string itemId) {
-            var url = $"/chat/{itemId}/cart";
-            Navigation.NavigateTo(url);
-        }
+        var url = $"/chat/{itemId}/cart";
+        Navigation.NavigateTo(url);
+    }
     private async void DeleteWishlist(string itemId) {
 
         await DeleteWish(itemId);
-         
-    }
 
-    public void UpdateSideMenu()
-    {
-        StateHasChanged();
     }
+/*
+    private int savedScrollTop = 0;
+
+    private ElementReference wishlishtRef;
+
+    private async Task OnScroll()
+    {
+        var scrollTop = await JSRuntime.InvokeAsync<int>("getScrollTop", wishlishtRef);
+        var offsetHeight = await JSRuntime.InvokeAsync<int>("getOffsetHeight", wishlishtRef);
+        var scrollHeight = await JSRuntime.InvokeAsync<int>("getScrollHeight", wishlishtRef);
+
+        if (scrollTop + offsetHeight > scrollHeight - 100)
+        {
+            savedScrollTop = scrollTop; 
+            currentPage++;
+            await LoadMenus(currentPage, pageSize);
+            await InvokeAsync(() => JSRuntime.InvokeVoidAsync("setScrollTop", wishlishtRef, savedScrollTop));
+        }
+    }
+*/
+
+
 
 }

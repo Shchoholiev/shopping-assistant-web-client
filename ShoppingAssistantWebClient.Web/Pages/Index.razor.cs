@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
+using ShoppingAssistantWebClient.Web.Models;
 using ShoppingAssistantWebClient.Web.Models.ProductSearch;
 using ShoppingAssistantWebClient.Web.Models.Input;
 using GraphQL;
 using Newtonsoft.Json;
 using ShoppingAssistantWebClient.Web.Network;
 using System;
-
+using Microsoft.JSInterop;
 
 namespace ShoppingAssistantWebClient.Web.Pages
 {
@@ -15,7 +16,11 @@ namespace ShoppingAssistantWebClient.Web.Pages
          [Inject]
         private ApiClient _apiClient { get; set; }
          [Inject]
+         
         private NavigationManager Navigation { get; set; }
+        [Inject]
+        protected IJSRuntime JSRuntime { get; set; }
+
         private MessageCreateDto messageCreateDto;
 
         private CancellationTokenSource cancelTokenSource; 
@@ -26,7 +31,7 @@ namespace ShoppingAssistantWebClient.Web.Pages
 
         private async Task CreateNewChat() {
 
-    try
+          try
             {
                 if (string.IsNullOrWhiteSpace(inputValue))
                 {
@@ -36,7 +41,7 @@ namespace ShoppingAssistantWebClient.Web.Pages
                 isLoading = true;
                 messageCreateDto = new MessageCreateDto { Text = inputValue };
                 var type = selectedChoice;
-                var firstMessageText = $"[Question] What are you looking for? [Suggestions] " + inputValue;
+                var firstMessageText = $"What are you looking for?";
 
                 var request = new GraphQLRequest
                 {
@@ -56,19 +61,67 @@ namespace ShoppingAssistantWebClient.Web.Pages
                 var response = await _apiClient.QueryAsync(request);
                 var responseData = response.Data;
                 var chatId = responseData?.startPersonalWishlist?.id;
-                isLoading = false;
-                var url = $"/chat/{chatId}";
+                                string wishlistId1 = chatId;
+                await UpdateSideMenu(wishlistId1);
+
+                var text = inputValue;
+/*
+                inputValue="";
+                request = new GraphQLRequest
+                {
+                    Query = @"mutation AddMessageToPersonalWishlist($wishlistId: String!, $text: String!) {
+                                addMessageToPersonalWishlist(wishlistId: $wishlistId, dto: { text: $text }) {
+                                    id
+                                    text
+                                    role
+                                    createdById
+                                }
+                            }
+                            ",
+
+                    Variables = new
+                    {
+                        wishlistId =chatId,
+                        text
+                    }
+                };
+
+                 await _apiClient.QueryAsync(request);
+*/
+
 
                 cancelTokenSource = new CancellationTokenSource();
                 var cancellationToken = cancelTokenSource.Token;
 
                 var serverSentEvent =  _apiClient.GetServerSentEventStreamed($"ProductsSearch/search/{chatId}", messageCreateDto, cancellationToken);
-                Navigation.NavigateTo(url);
+
                 await foreach (var sseEvent in serverSentEvent.WithCancellation(cancellationToken))
                 {
                     // Handle each ServerSentEvent as needed
                     Console.WriteLine($"Received SSE Event: {sseEvent.Event}, Data: {sseEvent.Data}");
                 }
+
+                string wishlistId = chatId;
+
+                request = new GraphQLRequest
+                {
+                    Query = @"mutation GenerateNameForPersonalWishlist($wishlistId: String!) {
+                            generateNameForPersonalWishlist(wishlistId: $wishlistId) {
+                                id
+                                name
+                            }
+                        }",
+                     Variables = new
+                    {
+                        wishlistId
+                        
+                    }
+                };
+
+                response = await _apiClient.QueryAsync(request);
+
+                var url = $"/chat/{chatId}";
+                Navigation.NavigateTo(url);
 
                 }
                 catch (Exception ex)

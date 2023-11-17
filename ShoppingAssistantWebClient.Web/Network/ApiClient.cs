@@ -99,7 +99,7 @@ public class ApiClient
     public async IAsyncEnumerable<ServerSentEvent> GetServerSentEventStreamed(string url, Object obj, CancellationToken cancellationToken) 
     {
         await SetAuthenticationAsync();
-
+        var count = 0; //
         var requestUrl = $"{_httpClient.BaseAddress}{url}";
         var response = await _httpClient.PostAsJsonAsync(requestUrl, obj);
         using var responseStream = await response.Content.ReadAsStreamAsync();
@@ -109,9 +109,14 @@ public class ApiClient
         while (!cancellationToken.IsCancellationRequested)
         {
             var jsonChunk = await reader.ReadLineAsync(cancellationToken);
+             count += 1; //
+            if (count >=5 ){ //
+                break; //
+            }; //
             if (jsonChunk == null) continue;
             if (jsonChunk.StartsWith("event: "))
             {
+                count = 0; //
                 var type = jsonChunk.Substring("event: ".Length);
                 switch(type)
                 {
