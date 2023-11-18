@@ -17,7 +17,16 @@
   cursor: pointer;
   visibility: hidden;
 }
-
+.loading {
+  margin: 0 auto;
+  margin-top: 25%;
+  height: 10em;
+  width: 10em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 .button_open_menu span {
   width: 20px;
   height: 1.5px;

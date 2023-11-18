@@ -35,55 +35,54 @@ public partial class Chat : ComponentBase
 
         private async Task LoadMessages()
         {
-            string wishlistId = chatId;
-            
-                                 Suggestion.Add("123");
-                     Suggestion.Add("456");
-                     Suggestion.Add("145623");
-
-            var request = new GraphQLRequest
-            {
-                Query = @"query PersonalWishlist( $wishlistId: String!) {
-                        personalWishlist(wishlistId: $wishlistId) {
-                            name
-                        }
-                    }",
-
-                Variables = new
+            try{
+                string wishlistId = chatId;
+        
+                var request = new GraphQLRequest
                 {
-                    wishlistId,
-                }
-            };
-
-          var response = await _apiClient.QueryAsync(request);
-          var responseData = response.Data;
-          name = responseData.personalWishlist.name;
-
-
-            isLoading = true;
-            int pageNumber = 1;
-            request = new GraphQLRequest
-            {
-                Query = @"query MessagesPageFromPersonalWishlist($wishlistId: String!, $pageNumber: Int!, $pageSize: Int!) {
-                            messagesPageFromPersonalWishlist( wishlistId: $wishlistId, pageNumber: $pageNumber, pageSize: $pageSize) 
-                            {
-                                items {
-                                    id
-                                    text
-                                    role
-                                    createdById
-                                }
+                    Query = @"query PersonalWishlist( $wishlistId: String!) {
+                            personalWishlist(wishlistId: $wishlistId) {
+                                name
                             }
                         }",
 
-                Variables = new
+                    Variables = new
+                    {
+                        wishlistId,
+                    }
+                };
+
+            var response = await _apiClient.QueryAsync(request);
+            var responseData = response.Data;
+            name = responseData.personalWishlist.name;
+
+
+                isLoading = true;
+                int pageNumber = 1;
+                request = new GraphQLRequest
                 {
-                    wishlistId,
-                    pageNumber,
-                    pageSize = 200
-                }
-            };
-            try{
+                    Query = @"query MessagesPageFromPersonalWishlist($wishlistId: String!, $pageNumber: Int!, $pageSize: Int!) {
+                                messagesPageFromPersonalWishlist( wishlistId: $wishlistId, pageNumber: $pageNumber, pageSize: $pageSize) 
+                                {
+                                    items {
+                                        id
+                                        text
+                                        role
+                                        createdById
+                                    }
+                                }
+                            }",
+
+                    Variables = new
+                    {
+                        wishlistId,
+                        pageNumber,
+                        pageSize = 200
+                    }
+                };
+            
+           
+            
              response = await _apiClient.QueryAsync(request);
             responseData = response.Data;
                 var jsonCategoriesResponse = JsonConvert.SerializeObject(responseData.messagesPageFromPersonalWishlist.items);
@@ -91,8 +90,8 @@ public partial class Chat : ComponentBase
                 Messages.Reverse();
                 isLoading = false;
 
-            }catch{
-
+            }catch(Exception ex){
+                Console.WriteLine($"Error : {ex.Message}");
             }
 
            /*
@@ -154,6 +153,7 @@ public partial class Chat : ComponentBase
         }
     private async Task AddNewMessage()
     {
+        try{
         messageCreateDto = new MessageCreateDto { Text = inputValue };;
         Message = new Messages();
         Message.Text = inputValue;
@@ -161,6 +161,7 @@ public partial class Chat : ComponentBase
         Message.Id = "";
         Message.CreatedById = "";
         inputValue = "";
+        Suggestion = new List<String>();
         Messages.Add(Message);
         StateHasChanged();
 
@@ -214,6 +215,11 @@ public partial class Chat : ComponentBase
             }
 
         }
+
+        }catch(Exception ex){
+                Console.WriteLine($"Error : {ex.Message}");
+            }
+
 
     }
 

@@ -11,8 +11,9 @@
         </a>
     </div>
 
+@if(isLoading == false){
 
-    <div class="new_chat">
+        <div class="new_chat">
         <div class="chat_message">
             <div class="title_one_frame">New chat</div>
             <div class="title_two_frame">What you're looking for</div>
@@ -57,6 +58,17 @@
         </div>
 
     </div>
+
+}else{
+
+    <div class="new_chat">
+       
+           <img  class="loading" src="/images/loading.svg" alt="Loading chat">  
+
+    </div>
+
+}
+    
 
 </div>
 

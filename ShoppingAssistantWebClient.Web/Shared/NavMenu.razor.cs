@@ -27,53 +27,65 @@ namespace ShoppingAssistantWebClient.Web.Shared
         }
         public async Task LoadMenus(int pageNumber,  int pageSize )
         {
-            isLoading = true;
-            var request = new GraphQLRequest
-            {
-                Query = @"query PersonalWishlistsPage( $pageNumber: Int!, $pageSize: Int!) {
-                            personalWishlistsPage(pageNumber: $pageNumber, pageSize: $pageSize) {
-                                items {
-                                    id
-                                    name
-                                }
-                            }
-                        }",
-
-                Variables = new
+            try{
+                    isLoading = true;
+                var request = new GraphQLRequest
                 {
-                    pageNumber,
-                    pageSize,
-                }
-            };
+                    Query = @"query PersonalWishlistsPage( $pageNumber: Int!, $pageSize: Int!) {
+                                personalWishlistsPage(pageNumber: $pageNumber, pageSize: $pageSize) {
+                                    items {
+                                        id
+                                        name
+                                    }
+                                }
+                            }",
 
-          var response = await _apiClient.QueryAsync(request);
-          var responseData = response.Data;
-          var jsonCategoriesResponse = JsonConvert.SerializeObject(responseData.personalWishlistsPage.items);
-          this.Wishlists.AddRange(JsonConvert.DeserializeObject<List<Wishlist>>(jsonCategoriesResponse));
-          Wishlists.Reverse();
-          isLoading = false;
-          StateHasChanged();
+                    Variables = new
+                    {
+                        pageNumber,
+                        pageSize,
+                    }
+                };
+
+                var response = await _apiClient.QueryAsync(request);
+                var responseData = response.Data;
+                var jsonCategoriesResponse = JsonConvert.SerializeObject(responseData.personalWishlistsPage.items);
+                this.Wishlists = JsonConvert.DeserializeObject<List<Wishlist>>(jsonCategoriesResponse);
+                Wishlists.Reverse();
+                isLoading = false;
+                StateHasChanged();
+
+            }catch(Exception ex){
+                Console.WriteLine($"Error : {ex.Message}");
+            }
+        
         }
          
         protected async Task DeleteWish(string wishlistId)
         {
-            var request = new GraphQLRequest
-            {
-                Query = @"mutation DeletePersonalWishlist($wishlistId: String!) {
-                            deletePersonalWishlist(wishlistId: $wishlistId) {
-                                id
-                            }
-                        }
-                        ",
-
-                Variables = new
+            try{
+                var request = new GraphQLRequest
                 {
-                    wishlistId
-                }
-            };
+                    Query = @"mutation DeletePersonalWishlist($wishlistId: String!) {
+                                deletePersonalWishlist(wishlistId: $wishlistId) {
+                                    id
+                                }
+                            }
+                            ",
 
-            var response = await _apiClient.QueryAsync(request);
-                  await LoadMenus(currentPage, pageSize);
+                    Variables = new
+                    {
+                        wishlistId
+                    }
+                };
+
+                var response = await _apiClient.QueryAsync(request);
+                    await LoadMenus(currentPage, pageSize);
+
+            }catch(Exception ex){
+                Console.WriteLine($"Error : {ex.Message}");
+            }
+            
         }
 
     }

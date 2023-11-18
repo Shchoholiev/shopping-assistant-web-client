@@ -26,7 +26,7 @@ namespace ShoppingAssistantWebClient.Web.Pages
         private CancellationTokenSource cancelTokenSource; 
         
         private string inputValue = "";
-        public bool isLoading = true;
+        public bool isLoading;
 
 
         private async Task CreateNewChat() {
@@ -39,6 +39,7 @@ namespace ShoppingAssistantWebClient.Web.Pages
                 }
 
                 isLoading = true;
+                StateHasChanged();
                 messageCreateDto = new MessageCreateDto { Text = inputValue };
                 var type = selectedChoice;
                 var firstMessageText = $"What are you looking for?";
@@ -62,7 +63,6 @@ namespace ShoppingAssistantWebClient.Web.Pages
                 var responseData = response.Data;
                 var chatId = responseData?.startPersonalWishlist?.id;
                                 string wishlistId1 = chatId;
-                await UpdateSideMenu(wishlistId1);
 
                 var text = inputValue;
 /*
@@ -120,6 +120,10 @@ namespace ShoppingAssistantWebClient.Web.Pages
 
                 response = await _apiClient.QueryAsync(request);
 
+                isLoading = false;
+                StateHasChanged();
+
+                await UpdateSideMenu(wishlistId1);
                 var url = $"/chat/{chatId}";
                 Navigation.NavigateTo(url);
 
