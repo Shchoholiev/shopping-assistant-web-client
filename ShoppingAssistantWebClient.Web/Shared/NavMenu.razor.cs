@@ -81,6 +81,8 @@ namespace ShoppingAssistantWebClient.Web.Shared
 
                 var response = await _apiClient.QueryAsync(request);
                     await LoadMenus(currentPage, pageSize);
+                 var url = $"/";
+                Navigation.NavigateTo(url);
 
             }catch(Exception ex){
                 Console.WriteLine($"Error : {ex.Message}");

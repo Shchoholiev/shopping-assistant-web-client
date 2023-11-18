@@ -128,12 +128,11 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await JSRuntime.InvokeVoidAsync("scrollToBottom", chatMessageRef);
-        await JSRuntime.InvokeVoidAsync("scrollToBottom", chatMessageRef);
-        await JSRuntime.InvokeVoidAsync("scrollToBottom", chatMessageRef);
     }
 
 
-    private void ClickOption(string item) {
+    private void ClickOption(string item)
+    {
         inputValue = item;
     }
 

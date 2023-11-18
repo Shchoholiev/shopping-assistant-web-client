@@ -202,7 +202,7 @@ public partial class Chat : ComponentBase
                 Messages[lengt-1].Text += Message.Text;
             }
 
-            await InvokeAsync(StateHasChanged);
+            StateHasChanged();
                 
             }else if(sseEvent.Event == SearchEventType.Product){
 
