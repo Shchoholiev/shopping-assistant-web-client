@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using ShoppingAssistantWebClient.Web.Models;
+using ShoppingAssistantWebClient.Web.Models.ProductSearch;
+using ShoppingAssistantWebClient.Web.Models.Input;
 using GraphQL;
 using Newtonsoft.Json;
 using ShoppingAssistantWebClient.Web.Network;
-
+using System;
+using Microsoft.JSInterop;
 
 namespace ShoppingAssistantWebClient.Web.Pages
 {
@@ -13,44 +16,104 @@ namespace ShoppingAssistantWebClient.Web.Pages
          [Inject]
         private ApiClient _apiClient { get; set; }
          [Inject]
+         
         private NavigationManager Navigation { get; set; }
+        [Inject]
+        protected IJSRuntime JSRuntime { get; set; }
+
+        private MessageCreateDto messageCreateDto;
+
+        private CancellationTokenSource cancelTokenSource; 
         
         private string inputValue = "";
-        public bool isLoading = true;
+        public bool isLoading;
 
 
         private async Task CreateNewChat() {
 
-            if(inputValue!=""){
-                
-            var type = selectedChoice;
-    
-            var firstMessageText= inputValue;
-            var request = new GraphQLRequest
+          try
             {
-                Query = @"mutation StartPersonalWishlist($type: String!, $firstMessageText: String!) {
-                        startPersonalWishlist(dto: { type: $type, firstMessageText: $firstMessageText }) {
-                            id
-                        }
-                    }
-                    ",
-
-                Variables = new
+                if (string.IsNullOrWhiteSpace(inputValue))
                 {
-                    type,
-                    firstMessageText
+                    return;
                 }
-            };
 
-            var response = await _apiClient.QueryAsync(request);
-            var responseData = response.Data;
-            var chat_id = responseData.startPersonalWishlist.id;
-            var url = $"/chat/{chat_id}";
-            Navigation.NavigateTo(url);
+                isLoading = true;
+                StateHasChanged();
+                messageCreateDto = new MessageCreateDto { Text = inputValue };
+                var type = selectedChoice;
+                var firstMessageText = $"What are you looking for?";
 
-            }
-                
+                var request = new GraphQLRequest
+                {
+                    Query = @"
+                        mutation StartPersonalWishlist($type: String!, $firstMessageText: String!) {
+                            startPersonalWishlist(dto: { type: $type, firstMessageText: $firstMessageText }) {
+                                id
+                            }
+                        }",
+                    Variables = new
+                    {
+                        type,
+                        firstMessageText
+                    }
+                };
 
+                var response = await _apiClient.QueryAsync(request);
+                var responseData = response.Data;
+                var chatId = responseData?.startPersonalWishlist?.id;
+                                string wishlistId1 = chatId;
+
+                var text = inputValue;
+
+                cancelTokenSource = new CancellationTokenSource();
+                var cancellationToken = cancelTokenSource.Token;
+
+                var serverSentEvent =  _apiClient.GetServerSentEventStreamed($"ProductsSearch/search/{chatId}", messageCreateDto, cancellationToken);
+
+                await foreach (var sseEvent in serverSentEvent.WithCancellation(cancellationToken))
+                {
+                    // Handle each ServerSentEvent as needed
+                    Console.WriteLine($"Received SSE Event: {sseEvent.Event}, Data: {sseEvent.Data}");
+                }
+
+                string wishlistId = chatId;
+
+                request = new GraphQLRequest
+                {
+                    Query = @"mutation GenerateNameForPersonalWishlist($wishlistId: String!) {
+                            generateNameForPersonalWishlist(wishlistId: $wishlistId) {
+                                id
+                                name
+                            }
+                        }",
+                     Variables = new
+                    {
+                        wishlistId
+                        
+                    }
+                };
+
+                response = await _apiClient.QueryAsync(request);
+
+                isLoading = false;
+                StateHasChanged();
+
+                await UpdateSideMenu(wishlistId1);
+                var url = $"/chat/{chatId}";
+                Navigation.NavigateTo(url);
+
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions appropriately
+                    Console.WriteLine($"Error in CreateNewChat: {ex.Message}");
+                }
+                finally
+                {
+                    isLoading = false;
+                    cancelTokenSource?.Dispose();
+                }
         }
 
     }

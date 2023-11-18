@@ -1,8 +1,9 @@
 @page "/chat/{chatId}"
 
 @inject IHttpClientFactory ClientFactory
+@inject IJSRuntime JSRuntime
 
-<PageTitle>Gift for Jessica</PageTitle>
+<PageTitle>@name</PageTitle>
 
 <div class="right_frame" id="rightFrame">
 
@@ -16,30 +17,35 @@
 
 
     <div class="new_chat">
-        <div class="chat_message">
 
+        <div class="title_one_frame">@name</div>
 
-            <div class="title_one_frame">Gift for Jessica</div>
+        <div class="chat_message" @ref="chatMessageRef">
 
             <ul class="chat_box">
 
-                @if(!isLoading && Messages!=null){
+                @if (!isLoading && Messages != null)
+                {
 
-                    @foreach (var item in Messages){
+                    @foreach (var item in Messages)
+                    {
 
-                      if(item.Role!="User"){
+                        if (item.Role != "User")
+                        {
 
-                        <li class=" chat_incoming">
-                            <p>@item.Text</p>
-                        </li>
+                            <li class=" chat_incoming">
+                                <p>@item.Text</p>
+                            </li>
 
-                      }else{
+                        }
+                        else
+                        {
 
-                        <li class="chat_outgoing">
-                            <p>@item.Text</p>
-                        </li>
+                            <li class="chat_outgoing">
+                                <p>@item.Text</p>
+                            </li>
 
-                      }
+                        }
                     }
 
                 }
@@ -52,21 +58,27 @@
 
         <div class="possible_options">
 
-            <div class="tite_options">Several possible options</div>
+            @if (Suggestion.Count != 0)
+            {
 
-            <div class="options">
+                <div class="tite_options">Several possible options</div>
 
-                <div class="topic_options">
-                    HDMI
-                </div>
-                <div class="topic_options">
-                    VGA
-                </div>
-                <div class="topic_options">
-                    DisplayPort
-                </div>
+                <div class="options">
 
-            </div>
+
+
+                @foreach (var item in Suggestion)
+                    {
+
+                        <div @onclick="() => ClickOption(item)" class="topic_options">
+                            @item
+                        </div>
+                    }
+
+
+
+                </div>
+            }
 
         </div>
 
@@ -84,8 +96,15 @@
 
 <script>
 
+    window.scrollToBottom = function (element) {
+        if (element) {
+            element.scrollTop = 9999;
+
+        }
+    };
 
     document.getElementById('button_open').addEventListener('click', changetyle);
+
 </script>
 @code {
 
@@ -100,8 +119,21 @@
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-           AddNewMessage();
+            AddNewMessage();
         }
     }
-    
+
+    private ElementReference chatMessageRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("scrollToBottom", chatMessageRef);
+    }
+
+
+    private void ClickOption(string item)
+    {
+        inputValue = item;
+    }
+
 }
