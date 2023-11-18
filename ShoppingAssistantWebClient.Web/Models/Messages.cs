@@ -11,11 +11,6 @@
 
         public  string CreatedById { get; set; }
 
-
-    public Messages()
-    {
-
-    }
     
     }
 

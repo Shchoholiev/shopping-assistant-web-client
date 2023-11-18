@@ -13,11 +13,11 @@ public partial class Chat : ComponentBase
 
         [Inject]
         private ApiClient _apiClient { get; set; }
-                 [Inject]
+        [Inject]
         private NavigationManager Navigation { get; set; }
 
         public List<Messages> Messages { get; set; }
-    public List<String> Suggestion { get; set; } = new List<String>();
+        public List<String> Suggestion { get; set; } = new List<String>();
         
         public Messages Message { get; set; }
 
@@ -93,63 +93,6 @@ public partial class Chat : ComponentBase
             }catch(Exception ex){
                 Console.WriteLine($"Error : {ex.Message}");
             }
-
-           /*
-            try{
-
-
-                    pageNumber = 0;
-
-            do{
-                pageNumber++;
-
-                request = new GraphQLRequest
-                            {
-                                Query = @"query MessagesPageFromPersonalWishlist($wishlistId: String!, $pageNumber: Int!, $pageSize: Int!) {
-                                            messagesPageFromPersonalWishlist( wishlistId: $wishlistId, pageNumber: $pageNumber, pageSize: $pageSize) 
-                                            {
-                                                items {
-                                                    id
-                                                    text
-                                                    role
-                                                    createdById
-                                                }
-                                                totalPages
-                                            }
-                                        }",
-
-                                Variables = new
-                                {
-                                    wishlistId,
-                                    pageNumber,
-                                    pageSize = 1
-                                }
-                            };
-
-                response = await _apiClient.QueryAsync(request);
-                responseData = response.Data;
-                var jsonCategoriesResponse = JsonConvert.SerializeObject(responseData.messagesPageFromPersonalWishlist.items);
-                if(pageNumber == 1){
-                    Messages =  JsonConvert.DeserializeObject<List<Messages>>(jsonCategoriesResponse);
-                }else{
-                    Message =  JsonConvert.DeserializeObject<List<Messages>>(jsonCategoriesResponse);
-                    Messages.InsertRange(0, Message);
-                }
-              
-
-              //  Messages.Reverse();
-                totalPages = responseData.messagesPageFromPersonalWishlist.totalPages;
-                isLoading = false;
-                StateHasChanged();
-            }while(pageNumber<totalPages);
-             
-            }catch (Exception ex)
-            {
-                // Log the exception
-                Console.WriteLine($"An error occurred: {ex.Message}");
-            }
-          */
-
         }
     private async Task AddNewMessage()
     {

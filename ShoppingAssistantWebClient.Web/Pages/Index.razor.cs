@@ -65,30 +65,6 @@ namespace ShoppingAssistantWebClient.Web.Pages
                                 string wishlistId1 = chatId;
 
                 var text = inputValue;
-/*
-                inputValue="";
-                request = new GraphQLRequest
-                {
-                    Query = @"mutation AddMessageToPersonalWishlist($wishlistId: String!, $text: String!) {
-                                addMessageToPersonalWishlist(wishlistId: $wishlistId, dto: { text: $text }) {
-                                    id
-                                    text
-                                    role
-                                    createdById
-                                }
-                            }
-                            ",
-
-                    Variables = new
-                    {
-                        wishlistId =chatId,
-                        text
-                    }
-                };
-
-                 await _apiClient.QueryAsync(request);
-*/
-
 
                 cancelTokenSource = new CancellationTokenSource();
                 var cancellationToken = cancelTokenSource.Token;
