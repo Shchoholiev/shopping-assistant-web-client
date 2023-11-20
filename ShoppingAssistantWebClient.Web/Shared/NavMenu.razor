@@ -1,4 +1,5 @@
-﻿@inject NavigationManager Navigation
+﻿@using Models.GlobalInstances
+@inject NavigationManager Navigation
 <div id="leftframe" class="left_frame">
 
 
@@ -50,7 +51,7 @@
         <div class="elements">
             <div class="info_user">
                 <img src="/images/avatar.jpg" alt="Avatar user">
-                <span class="user_name">Semen Semenov</span>
+                <span class="user_name">@GlobalUser.Id</span>
             </div>
 
         </div>
@@ -82,13 +83,6 @@
             right_frame.style.left = '23.25em';
         }
     }
-
-
-
-
-
-
-
     document.getElementById('button_close').addEventListener('click', changetyle);
 
 </script>

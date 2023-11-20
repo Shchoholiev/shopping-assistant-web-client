@@ -1,37 +1,62 @@
-@page "/cart"
+@page "/cart/{chatId}/{currentWishlistId}"
 
+@inject NavigationManager navigationManager;
+
+<head>
+    <link rel="stylesheet" href="css/Cart.css" />
+</head>
 <div class="cart">
     <div class="head">
-        <button class="back-button" @onclick="NavigateToMainPage"></button>
+        <div id="button_open" class="open_menu">
+            <a class="button_open_menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
         <p class="header-text">Cart</p>
     </div>
     <div class="container">
-        @foreach (var product in Products) {
-            <div class="product-div">
-                <img class="product-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe7MHcuWUvuNJsttl3MEVxEayUGVNH4tA2Ha0K4szpgKvH7QYuiaBa_hCzUgW96I6LXqM&usqp=CAU">
-                <label class="product-description">@product.Description</label>
-                <div class="button-row">
-                    <img class="star" src="/images/star.png">
-                    <label class="rating">@product.Rating</label>
-                    @{
-                        string price = "N/A";
-                    }
-                    <label class="price-label">@price</label>
-                </div>
-                <button class="button-amazon">
-                    <img src="/images/amazon.png">
-                </button>
-            </div>
+        @if (!isError) {
+            @if (Products != null) {
+                @foreach (var product in Products) {
+                    <div class="product-div">
+                        <img class="product-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe7MHcuWUvuNJsttl3MEVxEayUGVNH4tA2Ha0K4szpgKvH7QYuiaBa_hCzUgW96I6LXqM&usqp=CAU">
+                        <label class="product-description">@product.Description</label>
+                        <div class="button-row">
+                            <img class="star" src="/images/star.png">
+                            <label class="rating">@product.Rating</label>
+                            <label class="price-label">@product.Price</label>
+                        </div>
+                        <button class="button-amazon">
+                            <img src="/images/amazon.png">
+                        </button>
+                    </div>
+                }
+            }
+            else{
+                <p class="error">Cart is empty</p>
+            }
+        }
+        else
+        {
+            <p class="error">Something went wrong<br>We are having some trouble loading the cart</p>
         }
     </div>
 </div>
 
+<script>
+    document.getElementById('button_open').addEventListener('click', changetyle);
+</script>
+
 @code 
 {
-    [Inject]
-    private NavigationManager NavigationManager {get; set;}
+    [Parameter] public string currentWishlistId {get; set; }
+
+    [Parameter] public string chatId {get; set; }
+
     private void NavigateToMainPage()
     {
-        NavigationManager.NavigateTo("/Cards");
+        navigationManager.NavigateTo($"/chat/{chatId}");
     }
 }
