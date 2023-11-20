@@ -1,9 +1,136 @@
 ﻿@page "/"
+<PageTitle>New Chat</PageTitle>
 
-<PageTitle>CartaId</PageTitle>
+<div class="right_frame" id="rightFrame">
 
-<h1>Hello, world!</h1>
+    <div id="button_open" class="open_menu">
+        <a class="button_open_menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </a>
+    </div>
 
-Welcome to your new app.
+@if(isLoading == false){
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+        <div class="new_chat">
+        <div class="chat_message">
+            <div class="title_one_frame">New chat</div>
+            <div class="title_two_frame">What you're looking for</div>
+
+            <div class="switch">
+                <div @onclick="Сhoose_product"class="switch_product" id="choose_product">
+                    Product
+                </div>
+                <div @onclick="Сhoose_gift" class="switch_gift" id="choose_gift">
+                    Gift
+                </div>
+            </div>
+
+
+            <div class="title_three_frame">What you're looking for, we will help you solve your problem and find it
+            </div>
+
+            <div class="topic">
+                <div class="topic_one">
+                    <a class="button_topic_one">
+                        Date
+                    </a>
+                </div>
+
+                <div class="topic_two">
+                    <a class="button_topic_two">
+                        🎃 Halloween gift
+                    </a>
+                </div>
+                <div class="topic_three">
+                    <a class="button_topic_three">
+                        🎁 Birthday gift
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="chat_input">
+            <input @bind="inputValue" class="input_messages" type="text" id="chatInput"
+                placeholder="Describe what you are looking for....">
+            <img @onclick="CreateNewChat" class="button_sende" src="/images/send.svg" alt="Send message">
+        </div>
+
+    </div>
+
+}else{
+
+    <div class="new_chat">
+       
+           <img  class="loading" src="/images/loading.svg" alt="Loading chat">  
+
+    </div>
+
+}
+    
+
+</div>
+
+<script>
+
+
+    var choose_gift = document.getElementById("choose_gift");
+    var choose_product = document.getElementById("choose_product");
+    var switchGi = document.querySelector(".switch_gift");
+    var switchProd = document.querySelector(".switch_product");
+    var choose = "Product";
+
+    function switchGift() {
+        choose_gift.style.backgroundColor = "#0052CC";
+        choose_product.style.backgroundColor = "transparent";
+        switchGi.style.color = "white";
+        switchProd.style.color = "#202124";
+        choose = "Gift";
+
+    }
+
+    function switchProduct() {
+        choose_product.style.backgroundColor = "#0052CC";
+        choose_gift.style.backgroundColor = "transparent";
+        switchProd.style.color = "white";
+        switchGi.style.color = "#202124";
+        choose = "Product";
+
+    }
+    function myJavaScriptFunction(wishlistId) {
+
+         UpdateMenu(wishlistId);
+
+    }
+
+
+
+
+
+
+
+
+    document.getElementById('choose_gift').addEventListener('click', switchGift);
+    document.getElementById('choose_product').addEventListener('click', switchProduct);
+
+    document.getElementById('button_open').addEventListener('click', changetyle);
+</script>
+@code{
+    private string selectedChoice = "Product";
+
+    private void Сhoose_product() {
+        selectedChoice = "Product";
+    }
+        private void Сhoose_gift() {
+        selectedChoice = "Gift";
+    }
+
+    private async Task UpdateSideMenu(string wishlistId)
+    {
+
+    await JSRuntime.InvokeVoidAsync("myJavaScriptFunction", wishlistId);
+
+    }
+
+}
