@@ -1,7 +1,8 @@
 using GraphQL.Client.Http;
 using ShoppingAssistantWebClient.Web.Configurations;
 using ShoppingAssistantWebClient.Web.Data;
-using ShoppingAssistantWebClient.Web.Network; 
+using ShoppingAssistantWebClient.Web.Network;
+using ShoppingAssistantWebClient.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddApiClient(builder.Configuration);
+builder.Services.AddSingleton<SearchService>();
 
 var app = builder.Build();
 

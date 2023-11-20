@@ -17,17 +17,7 @@ namespace ShoppingAssistantWebClient.Web.Shared
         public int pageSize { get; set; }
         public int currentPage { get; set; }
 
-        private readonly ApiClient _apiClient;
-
-        public NavMenu()
-        {
-        }
-
-        public NavMenu(ApiClient apiClient)
-        {
-            _apiClient = apiClient;
-        }
-        public async Task OnGetAsync()
+        protected override async Task OnInitializedAsync()
         {
             pageSize = 200;
             currentPage = 1;
@@ -35,6 +25,7 @@ namespace ShoppingAssistantWebClient.Web.Shared
             await LoadMenus(currentPage, pageSize);
         
         }
+        
         public async Task LoadMenus(int pageNumber,  int pageSize )
         {
             try{

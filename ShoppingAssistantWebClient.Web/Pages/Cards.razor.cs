@@ -4,6 +4,7 @@ using ShoppingAssistantWebClient.Web.Network;
 using GraphQL;
 using Newtonsoft.Json;
 using Microsoft.JSInterop;
+using ShoppingAssistantWebClient.Web.Services;
 
 namespace ShoppingAssistantWebClient.Web.Pages;
 
@@ -11,6 +12,9 @@ public partial class Cards
 {
     [Inject]
     private ApiClient _apiClient { get; set; }
+
+    [Inject]
+    SearchService _searchService { get; set; }
 
     private int currentIndex = 0;
 
@@ -37,6 +41,7 @@ public partial class Cards
     //};
     
     public List<Product> Products {get; set;}
+    public List<String> productsNames {get; set;}
 
     protected override async Task OnInitializedAsync()
     {   
@@ -44,6 +49,7 @@ public partial class Cards
             currentImage = Products[currentProduct].ImagesUrls[currentIndex];
         }
         else {
+            productsNames = _searchService.Products;
             currentImage = "";
             isProductsNull = true;
         } 

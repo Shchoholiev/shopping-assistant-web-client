@@ -40,7 +40,7 @@
                         <section class="cont_wishlist @(selectedWishlistId == item.Id ? "selected_wishlist" : "")">
                             <div class="wishlist_name" @onclick="() => RedirectToPage(item.Id)">@item.Name</div>
                             <img class="button_delete_chat" @onclick="() => DeleteWishlist(item.Id)" src="/images/icon_delete.svg" alt="Delete wishlist">
-                            <img class="button_open_card" @onclick="() => RedirectToCard(item.Id)" src="/images/icon_open_card.svg" alt="Card open">
+                            <img class="button_open_card" @onclick="() => RedirectToCart(item.Id)" src="/images/icon_open_card.svg" alt="Card open">
                         </section>
                     }
                 }
@@ -149,8 +149,8 @@
         var url = $"/";
         Navigation.NavigateTo(url);
     }
-    private void RedirectToCard(string itemId) {
-        var url = $"/chat/{itemId}/cart";
+    private void RedirectToCart(string itemId) {
+        var url = $"/cart/{itemId}";
         Navigation.NavigateTo(url);
     }
     private async void DeleteWishlist(string itemId) {

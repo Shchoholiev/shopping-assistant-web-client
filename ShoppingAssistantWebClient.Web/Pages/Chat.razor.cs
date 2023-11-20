@@ -6,6 +6,7 @@ using ShoppingAssistantWebClient.Web.Network;
 using ShoppingAssistantWebClient.Web.Models.Input;
 using ShoppingAssistantWebClient.Web.Models.Enums;
 using System.Text.RegularExpressions;
+using ShoppingAssistantWebClient.Web.Services;
 namespace ShoppingAssistantWebClient.Web.Pages;
 
 public partial class Chat : ComponentBase
@@ -15,8 +16,12 @@ public partial class Chat : ComponentBase
         private ApiClient _apiClient { get; set; }
         [Inject]
         private NavigationManager Navigation { get; set; }
+        [Inject]
+        private SearchService _searchServise { get; set; }
 
         public List<Messages> Messages { get; set; }
+
+        public List<String> Products { get; set; } = new List<string>();
         public List<String> Suggestion { get; set; } = new List<String>();
         
         public Messages Message { get; set; }
@@ -118,52 +123,52 @@ public partial class Chat : ComponentBase
         {
             Console.WriteLine($"Received SSE Event: {sseEvent.Event}, Data: {sseEvent.Data}");
 
+            string input = sseEvent.Data;
+            Regex regex = new Regex("\"(.*?)\"");
+            Match match = regex.Match(input);
+            string result = match.Groups[1].Value;
 
             if(sseEvent.Event == SearchEventType.Message){
 
-                string input = sseEvent.Data;
-                Regex regex = new Regex("\"(.*?)\"");
-                Match match = regex.Match(input);
-                string result = match.Groups[1].Value;
-    
+                Message = new Messages();
+                Message.Text = result;
+                Message.Role = "bot";
+                Message.Id = "";
+                Message.CreatedById = "";
 
+                if (first)
+                {
+                    Messages.Add(Message);
+                    first = false;
+                }
+                else
+                {
+                    var lengt = Messages.Count();
+                    Messages[lengt-1].Text += Message.Text;
+                }
 
-            Message = new Messages();
-            Message.Text = result;
-            Message.Role = "bot";
-            Message.Id = "";
-            Message.CreatedById = "";
-
-            if (first)
-            {
-                Messages.Add(Message);
-                first = false;
-            }
-            else
-            {
-                var lengt = Messages.Count();
-                Messages[lengt-1].Text += Message.Text;
-            }
-
-            StateHasChanged();
+                StateHasChanged();
                 
-            }else if(sseEvent.Event == SearchEventType.Product){
+            } else if(sseEvent.Event == SearchEventType.Product){
 
-                var url = $"/chat/{chatId}/product";
-                Navigation.NavigateTo(url);
+                Products.Add(result);
 
-            }else if(sseEvent.Event == SearchEventType.Suggestion){
+            } else if(sseEvent.Event == SearchEventType.Suggestion){
 
-                    Suggestion.Add(sseEvent.Data);
+                Suggestion.Add(sseEvent.Data);
             }
 
         }
-
-        }catch(Exception ex){
-                Console.WriteLine($"Error : {ex.Message}");
+            if(Products != null) {
+                string n = name;
+                _searchServise.SetProducts(Products);
+                var url = $"/cards/{name}/{chatId}";
+                Navigation.NavigateTo(url);
             }
 
-
+        } catch(Exception ex){
+                Console.WriteLine($"Error : {ex.Message}");
+        }
     }
 
 }
