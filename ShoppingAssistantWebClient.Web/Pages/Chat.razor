@@ -76,7 +76,6 @@
                     }
 
 
-
                 </div>
             }
 
@@ -84,11 +83,10 @@
 
 
         <div class="chat_input">
-            <input @bind="inputValue" @onkeydown="Enter" class="input_messages" type="text" id="chatInput"
-                placeholder="Describe what you are looking for....">
+            <input @onkeydown="Enter" @oninput="InputChanged" class="input_messages" type="text" id="chatInput"
+                placeholder="Describe what you are looking for...." autocomplete="off">
             <img @onclick="AddNewMessage" class="button_sende" src="/images/send.svg" alt="Send message">
         </div>
-
     </div>
 
 </div>
@@ -102,6 +100,10 @@
 
         }
     };
+    window.clearInput = () => {
+        // Отримати елемент вводу за його ідентифікатором і обнулити його значення
+        document.getElementById('chatInput').value = '';
+    };
 
     document.getElementById('button_open').addEventListener('click', changetyle);
 
@@ -114,12 +116,19 @@
     {
         await LoadMessages();
     }
+    private void InputChanged(ChangeEventArgs e)
+    {
+        inputValue = e.Value.ToString();
+
+    }
 
     public void Enter(KeyboardEventArgs e)
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
             AddNewMessage();
+
+
         }
     }
 
