@@ -1,38 +1,10 @@
 ﻿@page "/cards/{wishlistName}/{chatId}"
 
-@inject IJSRuntime JSRuntime
 @inject NavigationManager navigationManager;
 
 <head>
     <link rel="stylesheet" href="css/Cards.css" />
 </head>
-
-<script>
-    function adjustButtonContainerPosition() {
-        var cardElements = document.querySelectorAll('.card, .back-card, .card-text');
-        var buttonContainer = document.querySelector('.buttons-container');
-
-        if (cardElements.length > 0 && buttonContainer) {
-            var totalHeight = Array.from(cardElements).reduce((max, card) => {
-                return Math.max(max, card.offsetHeight);
-            }, 0);
-
-            if (window.matchMedia('(max-width: 440px)').matches) {
-                buttonContainer.style.top = `calc(20% + ${totalHeight}px + 60px)`;
-            } else if (window.matchMedia('(max-width: 769px)').matches) {
-                buttonContainer.style.top = `calc(12% + ${totalHeight}px + 60px)`;
-            } else if (window.matchMedia('(max-width: 992px)').matches) {
-                buttonContainer.style.top = `calc(8% + ${totalHeight}px + 60px)`;
-            } else {
-                buttonContainer.style.top = `calc(3% + ${totalHeight}px + 60px)`;
-            }
-        }
-    }
-
-    window.addEventListener('load', adjustButtonContainerPosition);
-    window.addEventListener('resize', adjustButtonContainerPosition);
-
-</script>
 
 <div class="card-page">
     <button class="back-button button-animation" @onclick="NavigateToMain"></button>
@@ -41,20 +13,27 @@
             <p class="header-text">@wishlistName</p>
         </div>
     
-        <div class="content" data-generalTop="3%" data-largeTop="8%" mediumTop="12%" smallTop="20%">
+        <div class="content">
             <div class="back-card"></div>
             @if (Products != null && Products.Count != 0 && currentProduct != Products.Count && currentProduct >= 0) {
                 <div class="card">
                     <div class="slider-container">
                         <div class="slider">
-                            @for(int i = 0; i < Products[currentProduct].ImagesUrls.Length && i < 3; i++) {
-                                string image = Products[currentProduct].ImagesUrls[i];
-                                if (currentImage == image) {
-                                    <img src="@image" class="slider-image" alt="product image"/>
+                            @if(Products[currentProduct].ImagesUrls.Length > 0) {
+                                @for(int i = 0; i < Products[currentProduct].ImagesUrls.Length && i < 3; i++) {
+                                    string image = Products[currentProduct].ImagesUrls[i];
+                                    if (currentImage == image) {
+                                        <img src="@image" class="slider-image" alt="product image"/>
+                                    }
                                 }
+                                <img class="next-image" src="/images/next-image.png" alt="next image" @onclick="(() => ShowNextImage(currentImage))"/>
+                                <img class="prev-image" src="/images/prev-image.png" alt="previous image" @onclick="(() => ShowPreviousImage(currentImage))"/>
+                            } 
+                            else 
+                            {
+                                <img src="" class="slider-image" alt="product image"/>
                             }
-                            <img class="next-image" src="/images/next-image.png" alt="next image" @onclick="(() => ChangeImage(currentImage))"/>
-                            <img class="prev-image" src="/images/prev-image.png" alt="previous image" @onclick="(() => ChangeImage(currentImage))"/>
+                            
                         </div>
                         <div class="dots">
                             @for (var i = 0; i < Products[currentProduct].ImagesUrls.Length && i < 3; i++) {
@@ -99,10 +78,6 @@
                     </div>
                 </div>
 
-                if(!isProductsNull) {
-                    isProductsNull = true;
-                    StateHasChanged();
-                }
             }
             else {
                 <style>
@@ -121,25 +96,16 @@
                         <button class="more-button button-animation" @onclick="(() => LoadMoreProducts())"></button>
                     </div>
                 </div>
-
-                if(isProductsNull) {
-                    isProductsNull = false;
-                    StateHasChanged();
-                }
             }
         </div>
     </div>
 </div>
 
+
 @code {
     [Parameter] public string wishlistName { get; set; }
 
     [Parameter] public string chatId {get; set;}
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await JSRuntime.InvokeVoidAsync("adjustButtonContainerPosition");
-    }
 
     private void NavigateToMain() {
         navigationManager.NavigateTo($"/chat/{chatId}");

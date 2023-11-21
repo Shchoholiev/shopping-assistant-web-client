@@ -25,11 +25,9 @@ public partial class Cards
     private bool isProductsNull = false;
 
     //private static string[] Images = {
-    //    "/images/image2.png",
-    //    "/images/image1.png",
     //    "/images/return-card.png",
-    //    "/images/amazon.png",
-    //    "/images/avatar.png"
+    //    "/images/exit.png",
+    //    "/images/avatar.jpg"
     //};
 
     //public List<Product> Products = new()
@@ -41,25 +39,40 @@ public partial class Cards
     //};
     
     public List<Product> Products {get; set;}
-    public List<String> productsNames {get; set;}
+    //public List<String> productsNames {get; set;}
 
     protected override async Task OnInitializedAsync()
     {   
         if (Products != null) {
-            currentImage = Products[currentProduct].ImagesUrls[currentIndex];
+            if(Products[currentProduct].ImagesUrls.Length > 0) {
+                currentImage = Products[currentProduct].ImagesUrls[currentIndex];
+            }
         }
         else {
-            productsNames = _searchService.Products;
+            //productsNames = _searchService.Products;
             currentImage = "";
             isProductsNull = true;
         } 
     }
 
-    private void ChangeImage(string image) 
+    private void ShowNextImage(string image) 
     {
         currentIndex = Array.IndexOf(Products[currentProduct].ImagesUrls, image);
         currentIndex = (currentIndex + 1) % Products[currentProduct].ImagesUrls.Length;
-        currentIndex = currentIndex >= 3 ? 0 : currentIndex;
+        if(currentIndex >= 3 || currentIndex >= Products[currentProduct].ImagesUrls.Length) {
+            currentIndex = 0;
+        }
+        currentImage = Products[currentProduct].ImagesUrls[currentIndex];
+        StateHasChanged();
+    }
+
+    private void ShowPreviousImage(string image) 
+    {
+        currentIndex = Array.IndexOf(Products[currentProduct].ImagesUrls, image);
+        currentIndex = (currentIndex - 1) % Products[currentProduct].ImagesUrls.Length;
+        if(currentIndex < 0) {
+            currentIndex = Products[currentProduct].ImagesUrls.Length > 2 ? 2 : Products[currentProduct].ImagesUrls.Length - 1;
+        }
         currentImage = Products[currentProduct].ImagesUrls[currentIndex];
         StateHasChanged();
     }
