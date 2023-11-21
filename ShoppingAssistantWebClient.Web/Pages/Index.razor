@@ -11,8 +11,6 @@
         </a>
     </div>
 
-@if(isLoading == false){
-
         <div class="new_chat">
         <div class="chat_message">
             <div class="title_one_frame">New chat</div>
@@ -59,15 +57,6 @@
 
     </div>
 
-}else{
-
-    <div class="new_chat">
-       
-           <img  class="loading" src="/images/loading.svg" alt="Loading chat">  
-
-    </div>
-
-}
     
 
 </div>
@@ -103,13 +92,6 @@
          UpdateMenu(wishlistId);
 
     }
-
-
-
-
-
-
-
 
     document.getElementById('choose_gift').addEventListener('click', switchGift);
     document.getElementById('choose_product').addEventListener('click', switchProduct);
