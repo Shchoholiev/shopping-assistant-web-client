@@ -38,39 +38,44 @@ public partial class Chat : ComponentBase
         private string name = "";
         protected override async Task OnInitializedAsync()
         {
-            var input = _searchServise.firstMassage;
+            try{
+                    var input = _searchServise.firstMassage;
 
-            if (input!=null){
+                    if (input!=null){
 
-            await LoadMessages();
+                    await LoadMessages();
 
-            await  AddNewMessage(input);
+                    await  AddNewMessage(input);
 
-                string wishlistId = chatId;
-                var request = new GraphQLRequest
-                {
-                    Query = @"mutation GenerateNameForPersonalWishlist($wishlistId: String!) {
-                            generateNameForPersonalWishlist(wishlistId: $wishlistId) {
-                                id
-                                name
+                        string wishlistId = chatId;
+                        var request = new GraphQLRequest
+                        {
+                            Query = @"mutation GenerateNameForPersonalWishlist($wishlistId: String!) {
+                                    generateNameForPersonalWishlist(wishlistId: $wishlistId) {
+                                        id
+                                        name
+                                    }
+                                }",
+                            Variables = new
+                            {
+                                wishlistId
+
                             }
-                        }",
-                     Variables = new
-                    {
-                        wishlistId
+                        };
 
+                        var response = await _apiClient.QueryAsync(request);
+                        _searchServise.SetFirstMassage(null);
+                        isLoading = false;
+                        await UpdateSideMenu(wishlistId);
+                        StateHasChanged();
+
+                    }else{
+                        await LoadMessages();
                     }
-                };
-
-                var response = await _apiClient.QueryAsync(request);
-                _searchServise.SetFirstMassage(null);
-                isLoading = false;
-                await UpdateSideMenu(wishlistId);
-                StateHasChanged();
-
-            }else{
-                await LoadMessages();
+            }catch(Exception ex){
+                Console.WriteLine($"Error OnInitializedAsync: {ex.Message}");
             }
+            
         }
 
 
