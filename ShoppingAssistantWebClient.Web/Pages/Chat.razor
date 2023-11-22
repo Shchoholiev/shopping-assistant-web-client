@@ -85,7 +85,7 @@
         <div class="chat_input">
             <input @bind="inputValue" @onkeydown="Enter" class="input_messages" type="text" id="chatInput"
                 placeholder="Describe what you are looking for....">
-            <img @onclick="() => AddNewMessage(inputValue)" class="button_sende" src="/images/send.svg" alt="Send message">
+            <img @onclick="AddNewMessage" class="button_sende" src="/images/send.svg" alt="Send message">
         </div>
     </div>
 
@@ -101,12 +101,6 @@
         }
     };
 
-    function myJavaScriptFunction(wishlistId) {
-
-         UpdateMenu(wishlistId);
-
-    }
-    
     document.getElementById('button_open').addEventListener('click', changetyle);
 
 </script>
@@ -123,7 +117,7 @@
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-            AddNewMessage(inputValue);
+            AddNewMessage();
         }
     }
 
@@ -138,13 +132,6 @@
     private void ClickOption(string item)
     {
         inputValue = item;
-    }
-
-    private async Task UpdateSideMenu(string wishlistId)
-    {
-
-    await JSRuntime.InvokeVoidAsync("myJavaScriptFunction", wishlistId);
-
     }
 
 }
