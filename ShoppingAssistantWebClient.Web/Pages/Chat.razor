@@ -83,9 +83,9 @@
 
 
         <div class="chat_input">
-            <input @bind="inputValue" @onkeydown="Enter" class="input_messages" type="text" id="chatInput"
-                placeholder="Describe what you are looking for....">
-            <img @onclick="AddNewMessage" class="button_sende" src="/images/send.svg" alt="Send message">
+            <input @onkeydown="Enter" @oninput="InputChanged" class="input_messages" type="text" id="chatInput"
+                placeholder="Describe what you are looking for...." autocomplete="off">
+            <img @onclick="() => AddNewMessage(inputValue)" class="button_sende" src="/images/send.svg" alt="Send message">
         </div>
     </div>
 
@@ -100,7 +100,13 @@
 
         }
     };
+    window.clearInput = () => {
+        document.getElementById('chatInput').value = '';
+    };
 
+    function myJavaScriptFunction(wishlistId) {
+         UpdateMenu(wishlistId);
+    }
     document.getElementById('button_open').addEventListener('click', changetyle);
 
 </script>
@@ -108,16 +114,24 @@
 
     [Parameter] public string chatId { get; set; }
 
+   public string inputValue = "";
+
     protected override async Task OnParametersSetAsync()
     {
         await LoadMessages();
+    }
+
+    private void InputChanged(ChangeEventArgs e)
+    {
+        inputValue = e.Value.ToString();
+
     }
 
     public void Enter(KeyboardEventArgs e)
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-            AddNewMessage();
+            AddNewMessage(inputValue);
         }
     }
 
@@ -128,7 +142,12 @@
         await JSRuntime.InvokeVoidAsync("scrollToBottom", chatMessageRef);
     }
 
+    private async Task UpdateSideMenu(string wishlistId)
+    {
 
+        await JSRuntime.InvokeVoidAsync("myJavaScriptFunction", wishlistId);
+
+    }
     private void ClickOption(string item)
     {
         inputValue = item;

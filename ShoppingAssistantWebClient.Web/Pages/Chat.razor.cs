@@ -24,20 +24,53 @@ public partial class Chat : ComponentBase
 
         public List<Messages> Messages { get; set; }
 
+
         public List<String> Products { get; set; } = new List<string>();
         public List<String> Suggestion { get; set; } = new List<String>();
         
         public Messages Message { get; set; }
+        public Messages MessageBot { get; set; }
 
         private CancellationTokenSource cancelTokenSource; 
-
+       private bool isWaitingForResponse = false;
         private MessageCreateDto messageCreateDto;
         public bool isLoading = true;
-        private string inputValue = "";
         private string name = "";
         protected override async Task OnInitializedAsync()
         {
+            var input = _searchServise.firstMassage;
+
+            if (input!=null){
+
             await LoadMessages();
+
+            await  AddNewMessage(input);
+
+                string wishlistId = chatId;
+                var request = new GraphQLRequest
+                {
+                    Query = @"mutation GenerateNameForPersonalWishlist($wishlistId: String!) {
+                            generateNameForPersonalWishlist(wishlistId: $wishlistId) {
+                                id
+                                name
+                            }
+                        }",
+                     Variables = new
+                    {
+                        wishlistId
+
+                    }
+                };
+
+                var response = await _apiClient.QueryAsync(request);
+                _searchServise.SetFirstMassage(null);
+                isLoading = false;
+                await UpdateSideMenu(wishlistId);
+                StateHasChanged();
+
+            }else{
+                await LoadMessages();
+            }
         }
 
 
@@ -102,17 +135,24 @@ public partial class Chat : ComponentBase
                 Console.WriteLine($"Error : {ex.Message}");
             }
         }
-    private async Task AddNewMessage()
+    private async Task AddNewMessage(string inputMessage)
     {
+
+      if (!isWaitingForResponse && !string.IsNullOrWhiteSpace(inputMessage))
+        {
+            JSRuntime.InvokeVoidAsync("clearInput");
+            isWaitingForResponse = true;
+
         try{
-        messageCreateDto = new MessageCreateDto { Text = inputValue };;
+        messageCreateDto = new MessageCreateDto { Text = inputMessage };;
         Message = new Messages();
-        Message.Text = inputValue;
+        Message.Text = inputMessage;
         Message.Role = "User";
         Message.Id = "";
         Message.CreatedById = "";
-        inputValue = "";
+
         Suggestion = new List<String>();
+        Products = new List<String>();
         Messages.Add(Message);
         StateHasChanged();
 
@@ -121,6 +161,15 @@ public partial class Chat : ComponentBase
 
         var serverSentEvent = _apiClient.GetServerSentEventStreamed($"ProductsSearch/search/{chatId}", messageCreateDto, cancellationToken);
         bool first = true;
+
+        MessageBot = new Messages();
+        MessageBot.Role = "bot";
+        MessageBot.Id = "";
+        MessageBot.CreatedById = "";
+        MessageBot.Text = "Waiting for response";
+        Messages.Add(MessageBot);
+        var lengt = Messages.Count();
+        StateHasChanged();
 
         await foreach (var sseEvent in serverSentEvent.WithCancellation(cancellationToken))
         {
@@ -133,21 +182,15 @@ public partial class Chat : ComponentBase
 
             if(sseEvent.Event == SearchEventType.Message){
 
-                Message = new Messages();
-                Message.Text = result;
-                Message.Role = "bot";
-                Message.Id = "";
-                Message.CreatedById = "";
-
+ 
                 if (first)
                 {
-                    Messages.Add(Message);
+                    Messages[lengt-1].Text = result;
                     first = false;
                 }
                 else
                 {
-                    var lengt = Messages.Count();
-                    Messages[lengt-1].Text += Message.Text;
+                    Messages[lengt-1].Text += result;
                 }
 
                 StateHasChanged();
@@ -158,20 +201,20 @@ public partial class Chat : ComponentBase
 
             } else if(sseEvent.Event == SearchEventType.Suggestion){
 
-                Suggestion.Add(sseEvent.Data);
+                Suggestion.Add(result);
             }
 
         }
-            if(Products != null) {
+            if(Products.Count!=0) {
                 string n = name;
                 _searchServise.SetProducts(Products);
                 var url = $"/cards/{name}/{chatId}";
                 Navigation.NavigateTo(url);
             }
-
+          isWaitingForResponse = false;
         } catch(Exception ex){
                 Console.WriteLine($"Error : {ex.Message}");
         }
     }
-
+    }
 }
