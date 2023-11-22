@@ -7,7 +7,10 @@ using ShoppingAssistantWebClient.Web.Models.Input;
 using ShoppingAssistantWebClient.Web.Models.Enums;
 using System.Text.RegularExpressions;
 using ShoppingAssistantWebClient.Web.Services;
+using Microsoft.JSInterop;
+
 namespace ShoppingAssistantWebClient.Web.Pages;
+
 
 public partial class Chat : ComponentBase
 {
