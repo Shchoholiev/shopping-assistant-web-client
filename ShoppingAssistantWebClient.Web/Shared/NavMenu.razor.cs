@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using ShoppingAssistantWebClient.Web.Models;
 using GraphQL;
 using Newtonsoft.Json;
@@ -25,6 +25,7 @@ namespace ShoppingAssistantWebClient.Web.Shared
             await LoadMenus(currentPage, pageSize);
         
         }
+        
         public async Task LoadMenus(int pageNumber,  int pageSize )
         {
             try{

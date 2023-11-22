@@ -6,6 +6,7 @@ using ShoppingAssistantWebClient.Web.Network;
 using ShoppingAssistantWebClient.Web.Models.Input;
 using ShoppingAssistantWebClient.Web.Models.Enums;
 using System.Text.RegularExpressions;
+using ShoppingAssistantWebClient.Web.Services;
 using Microsoft.JSInterop;
 
 namespace ShoppingAssistantWebClient.Web.Pages;
@@ -18,22 +19,63 @@ public partial class Chat : ComponentBase
         private ApiClient _apiClient { get; set; }
         [Inject]
         private NavigationManager Navigation { get; set; }
+        [Inject]
+        private SearchService _searchServise { get; set; }
 
         public List<Messages> Messages { get; set; }
+
+
+        public List<String> Products { get; set; } = new List<string>();
         public List<String> Suggestion { get; set; } = new List<String>();
         
         public Messages Message { get; set; }
+        public Messages MessageBot { get; set; }
 
         private CancellationTokenSource cancelTokenSource; 
-
+       private bool isWaitingForResponse = false;
         private MessageCreateDto messageCreateDto;
-        private bool isWaitingForResponse = false;
         public bool isLoading = true;
-        private string inputValue = "";
         private string name = "";
         protected override async Task OnInitializedAsync()
         {
-            await LoadMessages();
+            try{
+                    var input = _searchServise.firstMassage;
+
+                    if (input!=null){
+
+                    await LoadMessages();
+
+                    await  AddNewMessage(input);
+
+                        string wishlistId = chatId;
+                        var request = new GraphQLRequest
+                        {
+                            Query = @"mutation GenerateNameForPersonalWishlist($wishlistId: String!) {
+                                    generateNameForPersonalWishlist(wishlistId: $wishlistId) {
+                                        id
+                                        name
+                                    }
+                                }",
+                            Variables = new
+                            {
+                                wishlistId
+
+                            }
+                        };
+
+                        var response = await _apiClient.QueryAsync(request);
+                        _searchServise.SetFirstMassage(null);
+                        isLoading = false;
+                        await UpdateSideMenu(wishlistId);
+                        StateHasChanged();
+
+                    }else{
+                        await LoadMessages();
+                    }
+            }catch(Exception ex){
+                Console.WriteLine($"Error OnInitializedAsync: {ex.Message}");
+            }
+            
         }
 
 
@@ -98,85 +140,86 @@ public partial class Chat : ComponentBase
                 Console.WriteLine($"Error : {ex.Message}");
             }
         }
-    private async Task AddNewMessage()
+    private async Task AddNewMessage(string inputMessage)
     {
 
-
-        if (!isWaitingForResponse && !string.IsNullOrWhiteSpace(inputValue))
+      if (!isWaitingForResponse && !string.IsNullOrWhiteSpace(inputMessage))
         {
             JSRuntime.InvokeVoidAsync("clearInput");
             isWaitingForResponse = true;
 
-            try{
-                
-            messageCreateDto = new MessageCreateDto { Text = inputValue };;
-            Message = new Messages();
-            Message.Text = inputValue;
-            Message.Role = "User";
-            Message.Id = "";
-            Message.CreatedById = "";
-            inputValue = "";
-            Suggestion = new List<String>();
-            Messages.Add(Message);
-            StateHasChanged();
+        try{
+        messageCreateDto = new MessageCreateDto { Text = inputMessage };;
+        Message = new Messages();
+        Message.Text = inputMessage;
+        Message.Role = "User";
+        Message.Id = "";
+        Message.CreatedById = "";
 
-            cancelTokenSource = new CancellationTokenSource();
-            var cancellationToken = cancelTokenSource.Token;
+        Suggestion = new List<String>();
+        Products = new List<String>();
+        Messages.Add(Message);
+        StateHasChanged();
 
-            var serverSentEvent = _apiClient.GetServerSentEventStreamed($"ProductsSearch/search/{chatId}", messageCreateDto, cancellationToken);
-            bool first = true;
+        cancelTokenSource = new CancellationTokenSource();
+        var cancellationToken = cancelTokenSource.Token;
 
-            await foreach (var sseEvent in serverSentEvent.WithCancellation(cancellationToken))
-            {
-                Console.WriteLine($"Received SSE Event: {sseEvent.Event}, Data: {sseEvent.Data}");
+        var serverSentEvent = _apiClient.GetServerSentEventStreamed($"ProductsSearch/search/{chatId}", messageCreateDto, cancellationToken);
+        bool first = true;
 
+        MessageBot = new Messages();
+        MessageBot.Role = "bot";
+        MessageBot.Id = "";
+        MessageBot.CreatedById = "";
+        MessageBot.Text = "Waiting for response";
+        Messages.Add(MessageBot);
+        var lengt = Messages.Count();
+        StateHasChanged();
 
-                if(sseEvent.Event == SearchEventType.Message){
+        await foreach (var sseEvent in serverSentEvent.WithCancellation(cancellationToken))
+        {
+            Console.WriteLine($"Received SSE Event: {sseEvent.Event}, Data: {sseEvent.Data}");
 
-                    string input = sseEvent.Data;
-                    Regex regex = new Regex("\"(.*?)\"");
-                    Match match = regex.Match(input);
-                    string result = match.Groups[1].Value;
-        
+            string input = sseEvent.Data;
+            Regex regex = new Regex("\"(.*?)\"");
+            Match match = regex.Match(input);
+            string result = match.Groups[1].Value;
 
+            if(sseEvent.Event == SearchEventType.Message){
 
-                Message = new Messages();
-                Message.Text = result;
-                Message.Role = "bot";
-                Message.Id = "";
-                Message.CreatedById = "";
-
+ 
                 if (first)
                 {
-                    Messages.Add(Message);
+                    Messages[lengt-1].Text = result;
                     first = false;
                 }
                 else
                 {
-                    var lengt = Messages.Count();
-                    Messages[lengt-1].Text += Message.Text;
+                    Messages[lengt-1].Text += result;
                 }
 
                 StateHasChanged();
-                    
-                }else if(sseEvent.Event == SearchEventType.Product){
+                
+            } else if(sseEvent.Event == SearchEventType.Product){
 
-                    var url = $"/chat/{chatId}/product";
-                    Navigation.NavigateTo(url);
+                Products.Add(result);
 
-                }else if(sseEvent.Event == SearchEventType.Suggestion){
+            } else if(sseEvent.Event == SearchEventType.Suggestion){
 
-                        Suggestion.Add(sseEvent.Data);
-                }
-
+                Suggestion.Add(result);
             }
 
-            isWaitingForResponse = false;
-            }catch(Exception ex){
-                    Console.WriteLine($"Error : {ex.Message}");
-                }
         }
-
+            if(Products.Count!=0) {
+                string n = name;
+                _searchServise.SetProducts(Products);
+                var url = $"/cards/{name}/{chatId}";
+                Navigation.NavigateTo(url);
+            }
+          isWaitingForResponse = false;
+        } catch(Exception ex){
+                Console.WriteLine($"Error : {ex.Message}");
+        }
     }
-
+    }
 }

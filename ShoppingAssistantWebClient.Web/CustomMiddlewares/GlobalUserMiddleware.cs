@@ -13,7 +13,7 @@ public class GlobalUserMiddleware
         this._next = next;
     }
 
-    public async Task InvokeAsync(HttpContext httpContext, AuthenticationService authenticationService, ApiClient apiClient)
+public async Task InvokeAsync(HttpContext httpContext, AuthenticationService authenticationService, ApiClient apiClient)
     {
         if (httpContext.Request.Path != "/login")
         {
