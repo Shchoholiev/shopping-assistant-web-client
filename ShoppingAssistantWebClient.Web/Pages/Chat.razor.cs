@@ -7,6 +7,7 @@ using ShoppingAssistantWebClient.Web.Models.Input;
 using ShoppingAssistantWebClient.Web.Models.Enums;
 using System.Text.RegularExpressions;
 using Microsoft.JSInterop;
+using ShoppingAssistantWebClient.Web.Services;
 
 namespace ShoppingAssistantWebClient.Web.Pages;
 
@@ -18,9 +19,11 @@ public partial class Chat : ComponentBase
         private ApiClient _apiClient { get; set; }
         [Inject]
         private NavigationManager Navigation { get; set; }
-
+        [Inject]
+        private SearchService _searchServise { get; set; }
         public List<Messages> Messages { get; set; }
         public List<String> Suggestion { get; set; } = new List<String>();
+        public List<String> Products { get; set; } = new List<string>();
         
         public Messages Message { get; set; }
 
@@ -33,7 +36,39 @@ public partial class Chat : ComponentBase
         private string name = "";
         protected override async Task OnInitializedAsync()
         {
+            var input = _searchServise.firstMassage;
+
+            if (input!=null){
+
             await LoadMessages();
+
+            await  AddNewMessage(input);
+
+                string wishlistId = chatId;
+                var request = new GraphQLRequest
+                {
+                    Query = @"mutation GenerateNameForPersonalWishlist($wishlistId: String!) {
+                            generateNameForPersonalWishlist(wishlistId: $wishlistId) {
+                                id
+                                name
+                            }
+                        }",
+                     Variables = new
+                    {
+                        wishlistId
+
+                    }
+                };
+
+                var response = await _apiClient.QueryAsync(request);
+                _searchServise.SetFirstMassage(null);
+                isLoading = false;
+                await UpdateSideMenu(wishlistId);
+                StateHasChanged();
+
+            }else{
+                await LoadMessages();
+            }
         }
 
 
@@ -98,7 +133,7 @@ public partial class Chat : ComponentBase
                 Console.WriteLine($"Error : {ex.Message}");
             }
         }
-    private async Task AddNewMessage()
+    private async Task AddNewMessage(string inputMessage)
     {
 
 
@@ -117,14 +152,30 @@ public partial class Chat : ComponentBase
             Message.CreatedById = "";
             inputValue = "";
             Suggestion = new List<String>();
+            Products = new List<String>();
             Messages.Add(Message);
             StateHasChanged();
 
             cancelTokenSource = new CancellationTokenSource();
             var cancellationToken = cancelTokenSource.Token;
 
+
             var serverSentEvent = _apiClient.GetServerSentEventStreamed($"ProductsSearch/search/{chatId}", messageCreateDto, cancellationToken);
             bool first = true;
+
+                Message = new Messages();
+                Message.Role = "bot";
+                Message.Id = "";
+                Message.CreatedById = "";
+                Message.Text = "Waiting for response";
+                Messages.Add(Message);
+
+
+
+            StateHasChanged();
+
+
+
 
             await foreach (var sseEvent in serverSentEvent.WithCancellation(cancellationToken))
             {
@@ -139,23 +190,17 @@ public partial class Chat : ComponentBase
                     string result = match.Groups[1].Value;
         
 
-
-                Message = new Messages();
-                Message.Text = result;
-                Message.Role = "bot";
-                Message.Id = "";
-                Message.CreatedById = "";
-
-                if (first)
-                {
-                    Messages.Add(Message);
-                    first = false;
-                }
-                else
-                {
-                    var lengt = Messages.Count();
-                    Messages[lengt-1].Text += Message.Text;
-                }
+                    if (first)
+                    {
+                        var lengt = Messages.Count();
+                        Messages[lengt-1].Text = result;
+                        first = false;
+                    }
+                    else
+                    {
+                        var lengt = Messages.Count();
+                        Messages[lengt-1].Text += result;
+                    }
 
                 StateHasChanged();
                     
@@ -169,6 +214,13 @@ public partial class Chat : ComponentBase
                         Suggestion.Add(sseEvent.Data);
                 }
 
+            }
+            
+            if(Products.Count!=0) {
+                string n = name;
+                _searchServise.SetProducts(Products);
+                var url = $"/cards/{name}/{chatId}";
+                Navigation.NavigateTo(url);
             }
 
             isWaitingForResponse = false;

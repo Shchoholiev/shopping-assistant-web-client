@@ -85,7 +85,7 @@
         <div class="chat_input">
             <input @onkeydown="Enter" @oninput="InputChanged" class="input_messages" type="text" id="chatInput"
                 placeholder="Describe what you are looking for...." autocomplete="off">
-            <img @onclick="AddNewMessage" class="button_sende" src="/images/send.svg" alt="Send message">
+            <img @onclick="() => AddNewMessage(inputValue)" class="button_sende" src="/images/send.svg" alt="Send message">
         </div>
     </div>
 
@@ -97,13 +97,15 @@
     window.scrollToBottom = function (element) {
         if (element) {
             element.scrollTop = 9999;
-
         }
     };
     window.clearInput = () => {
-        // Отримати елемент вводу за його ідентифікатором і обнулити його значення
         document.getElementById('chatInput').value = '';
     };
+
+    function myJavaScriptFunction(wishlistId) {
+         UpdateMenu(wishlistId);
+    }
 
     document.getElementById('button_open').addEventListener('click', changetyle);
 
@@ -123,12 +125,10 @@
     }
 
     public void Enter(KeyboardEventArgs e)
-    {
+  {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-            AddNewMessage();
-
-
+            AddNewMessage(inputValue);
         }
     }
 
@@ -139,7 +139,12 @@
         await JSRuntime.InvokeVoidAsync("scrollToBottom", chatMessageRef);
     }
 
+    private async Task UpdateSideMenu(string wishlistId)
+    {
 
+        await JSRuntime.InvokeVoidAsync("myJavaScriptFunction", wishlistId);
+
+    }
     private void ClickOption(string item)
     {
         inputValue = item;
