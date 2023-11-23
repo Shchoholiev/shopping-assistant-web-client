@@ -11,7 +11,7 @@ public class SearchService
         Products = products;
     }
 
-    public void SetFirstMassage(string message) {
+    public void SetFirstMessage(string message) {
         FirstMessage = message;
     }
 }

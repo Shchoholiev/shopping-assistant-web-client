@@ -40,7 +40,7 @@ public partial class Chat : ComponentBase
         protected override async Task OnInitializedAsync()
         {
             try{
-                    var input = _searchServise.firstMassage;
+                    var input = _searchServise.FirstMessage;
 
                     if (input!=null){
 
@@ -65,7 +65,7 @@ public partial class Chat : ComponentBase
                         };
 
                         var response = await _apiClient.QueryAsync(request);
-                        _searchServise.SetFirstMassage(null);
+                        _searchServise.SetFirstMessage(null);
                         isLoading = false;
                         await UpdateSideMenu(wishlistId);
                         StateHasChanged();

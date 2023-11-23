@@ -62,7 +62,7 @@ namespace ShoppingAssistantWebClient.Web.Pages
                 string wishlistId = chatId;
 
 
-                _searchServise.SetFirstMassage(inputValue);
+                _searchServise.SetFirstMessage(inputValue);
                 await UpdateSideMenu(wishlistId);
 
                 var url = $"/chat/{chatId}";
