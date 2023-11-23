@@ -11,8 +11,6 @@
         </a>
     </div>
 
-@if(isLoading == false){
-
         <div class="new_chat">
         <div class="chat_message">
             <div class="title_one_frame">New chat</div>
@@ -52,22 +50,12 @@
 
         </div>
         <div class="chat_input">
-            <input @bind="inputValue" class="input_messages" type="text" id="chatInput"
-                placeholder="Describe what you are looking for....">
+            <input @bind="inputValue" @onkeydown="Enter" @oninput="InputChanged" class="input_messages" type="text" id="chatInput"
+                placeholder="Describe what you are looking for...." autocomplete="off">
             <img @onclick="CreateNewChat" class="button_sende" src="/images/send.svg" alt="Send message">
         </div>
 
     </div>
-
-}else{
-
-    <div class="new_chat">
-       
-           <img  class="loading" src="/images/loading.svg" alt="Loading chat">  
-
-    </div>
-
-}
     
 
 </div>
@@ -133,4 +121,20 @@
 
     }
 
+    private void InputChanged(ChangeEventArgs e)
+    {
+        // Оновіть значення поля введення при кожному введенні тексту
+        inputValue = e.Value.ToString();
+    }
+    public void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+
+            if (!string.IsNullOrWhiteSpace(inputValue))
+            {
+                CreateNewChat();
+            }
+        }
+    }
 }

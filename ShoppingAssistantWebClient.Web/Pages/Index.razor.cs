@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using ShoppingAssistantWebClient.Web.Network;
 using System;
 using Microsoft.JSInterop;
+using ShoppingAssistantWebClient.Web.Services;
 
 namespace ShoppingAssistantWebClient.Web.Pages
 {
@@ -20,13 +21,10 @@ namespace ShoppingAssistantWebClient.Web.Pages
         private NavigationManager Navigation { get; set; }
         [Inject]
         protected IJSRuntime JSRuntime { get; set; }
-
+        [Inject]
+        private SearchService _searchServise { get; set; }
         private MessageCreateDto messageCreateDto;
-
-        private CancellationTokenSource cancelTokenSource; 
-        
         private string inputValue = "";
-        public bool isLoading;
 
 
         private async Task CreateNewChat() {
@@ -38,7 +36,6 @@ namespace ShoppingAssistantWebClient.Web.Pages
                     return;
                 }
 
-                isLoading = true;
                 StateHasChanged();
                 messageCreateDto = new MessageCreateDto { Text = inputValue };
                 var type = selectedChoice;
@@ -62,58 +59,22 @@ namespace ShoppingAssistantWebClient.Web.Pages
                 var response = await _apiClient.QueryAsync(request);
                 var responseData = response.Data;
                 var chatId = responseData?.startPersonalWishlist?.id;
-                                string wishlistId1 = chatId;
-
-                var text = inputValue;
-
-                cancelTokenSource = new CancellationTokenSource();
-                var cancellationToken = cancelTokenSource.Token;
-
-                var serverSentEvent =  _apiClient.GetServerSentEventStreamed($"ProductsSearch/search/{chatId}", messageCreateDto, cancellationToken);
-
-                await foreach (var sseEvent in serverSentEvent.WithCancellation(cancellationToken))
-                {
-                    // Handle each ServerSentEvent as needed
-                    Console.WriteLine($"Received SSE Event: {sseEvent.Event}, Data: {sseEvent.Data}");
-                }
-
                 string wishlistId = chatId;
 
-                request = new GraphQLRequest
-                {
-                    Query = @"mutation GenerateNameForPersonalWishlist($wishlistId: String!) {
-                            generateNameForPersonalWishlist(wishlistId: $wishlistId) {
-                                id
-                                name
-                            }
-                        }",
-                     Variables = new
-                    {
-                        wishlistId
-                        
-                    }
-                };
 
-                response = await _apiClient.QueryAsync(request);
+                _searchServise.SetFirstMassage(inputValue);
+                await UpdateSideMenu(wishlistId);
 
-                isLoading = false;
-                StateHasChanged();
-
-                await UpdateSideMenu(wishlistId1);
                 var url = $"/chat/{chatId}";
                 Navigation.NavigateTo(url);
 
-                }
-                catch (Exception ex)
-                {
-                    // Handle exceptions appropriately
-                    Console.WriteLine($"Error in CreateNewChat: {ex.Message}");
-                }
-                finally
-                {
-                    isLoading = false;
-                    cancelTokenSource?.Dispose();
-                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately
+                Console.WriteLine($"Error in CreateNewChat: {ex.Message}");
+            }
+
         }
 
     }
