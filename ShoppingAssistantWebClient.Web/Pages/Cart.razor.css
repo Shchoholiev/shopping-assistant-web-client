@@ -31,7 +31,7 @@
 .back-button {
     width: 15px;
     height: 15px;
-    background-image: url("/images/back-button.png"); 
+    background-image: url("/images/back-button.svg"); 
     background-size: cover; 
     border: none;
     background-color: transparent;

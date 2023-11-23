@@ -55,7 +55,7 @@
 .back-button {
     width: 20px;
     height: 20px;
-    background-image: url("/images/back-button.png"); 
+    background-image: url("/images/back-button.svg"); 
     background-size: cover; 
     border: none;
     background-color: transparent;
@@ -120,7 +120,7 @@
     .cancel-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/cancel-button.png"); 
+        background-image: url("/images/cancel-button.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -129,7 +129,7 @@
     .return-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/return-card.png"); 
+        background-image: url("/images/return-card.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -138,7 +138,7 @@
     .like-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/like-button.png"); 
+        background-image: url("/images/like-button.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -147,7 +147,7 @@
     .exit-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/exit.png"); 
+        background-image: url("/images/exit.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -156,7 +156,7 @@
     .more-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/load-more.png"); 
+        background-image: url("/images/load-more.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -276,7 +276,7 @@
     .cancel-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/cancel-button.png"); 
+        background-image: url("/images/cancel-button.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -285,7 +285,7 @@
     .return-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/return-card.png"); 
+        background-image: url("/images/return-card.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -294,7 +294,7 @@
     .like-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/like-button.png"); 
+        background-image: url("/images/like-button.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -303,7 +303,7 @@
     .exit-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/exit.png"); 
+        background-image: url("/images/exit.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -312,7 +312,7 @@
     .more-button {
         width: 25px !important;
         height: 25px !important;
-        background-image: url("/images/load-more.png"); 
+        background-image: url("/images/load-more.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -353,7 +353,7 @@
     .back-button {
         width: 15px !important;
         height: 15px !important;
-        background-image: url("/images/back-button.png"); 
+        background-image: url("/images/back-button.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -425,7 +425,7 @@
     .cancel-button {
         width: 20px !important;
         height: 20px !important;
-        background-image: url("/images/cancel-button.png"); 
+        background-image: url("/images/cancel-button.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -434,7 +434,7 @@
     .return-button {
         width: 20px !important;
         height: 20px !important;
-        background-image: url("/images/return-card.png"); 
+        background-image: url("/images/return-card.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -443,7 +443,7 @@
     .like-button {
         width: 20px !important;
         height: 20px !important;
-        background-image: url("/images/like-button.png"); 
+        background-image: url("/images/like-button.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -452,7 +452,7 @@
     .exit-button {
         width: 20px !important;
         height: 20px !important;
-        background-image: url("/images/exit.png"); 
+        background-image: url("/images/exit.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -461,7 +461,7 @@
     .more-button {
         width: 20px !important;
         height: 20px !important;
-        background-image: url("/images/load-more.png"); 
+        background-image: url("/images/load-more.svg"); 
         background-size: cover; 
         border: none;
         background-color: transparent;
@@ -662,7 +662,7 @@
 .cancel-button {
     width: 30px;
     height: 30px;
-    background-image: url("/images/cancel-button.png"); 
+    background-image: url("/images/cancel-button.svg"); 
     background-size: cover; 
     border: none;
     background-color: transparent;
@@ -671,7 +671,7 @@
 .return-button {
     width: 30px;
     height: 30px;
-    background-image: url("/images/return-card.png"); 
+    background-image: url("/images/return-card.svg"); 
     background-size: cover; 
     border: none;
     background-color: transparent;
@@ -680,7 +680,7 @@
 .like-button {
     width: 30px;
     height: 30px;
-    background-image: url("/images/like-button.png"); 
+    background-image: url("/images/like-button.svg"); 
     background-size: cover; 
     border: none;
     background-color: transparent;
@@ -689,7 +689,7 @@
 .exit-button {
     width: 30px;
     height: 30px;
-    background-image: url("/images/exit.png"); 
+    background-image: url("/images/exit.svg"); 
     background-size: cover; 
     border: none;
     background-color: transparent;
@@ -698,7 +698,7 @@
 .more-button {
     width: 30px;
     height: 30px;
-    background-image: url("/images/load-more.png"); 
+    background-image: url("/images/load-more.svg"); 
     background-size: cover; 
     border: none;
     background-color: transparent;

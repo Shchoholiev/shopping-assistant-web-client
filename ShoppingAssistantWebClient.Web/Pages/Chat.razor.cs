@@ -164,7 +164,7 @@ public partial class Chat : ComponentBase
             }
 
         }
-            if(Products != null) {
+            if(Products.Any()) {
                 string n = name;
                 _searchServise.SetProducts(Products);
                 Products = null;

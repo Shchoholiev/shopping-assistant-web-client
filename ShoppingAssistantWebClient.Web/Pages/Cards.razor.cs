@@ -23,36 +23,49 @@ public partial class Cards
     private string currentImage {get; set;}
 
     private bool isProductsNull = false;
-
-    //private static string[] Images = {
-    //    "/images/return-card.png",
-    //    "/images/exit.png",
-    //    "/images/avatar.jpg"
-    //};
-
-    //public List<Product> Products = new()
-    //{
-    //    new Product {Id = "0", Url = "some link", Name = "Belkin USB C to VGA + Charge Adapter - USB C to VGA Cable for MacBook", 
-    //                 Description = "The USB C to VGA + Charge Adapter connects to your laptop or tablet via USB-C port, giving you both a VGA port for video display and a USB-C port for power", Rating = 3.8, Price = 120, ImagesUrls = Images, WasOpened = false, WishlistId = "0"},
-    //    new Product {Id = "1", Url = "some link", Name = "Second product", 
-    //                 Description = "Test description", Rating = 4.2, Price = 30, ImagesUrls = Images, WasOpened = false, WishlistId = "0"}
-    //};
     
-    public List<Product> Products {get; set;}
-    //public List<String> productsNames {get; set;}
+    public List<Product> Products {get; set;} = new List<Product>();
+
+    public List<String> ProductsNames {get; set;}
+
+    private List<bool> isProductSaved { get; set; }
 
     protected override async Task OnInitializedAsync()
     {   
-        if (Products != null) {
-            if(Products[currentProduct].ImagesUrls.Length > 0) {
-                currentImage = Products[currentProduct].ImagesUrls[currentIndex];
+        ProductsNames = _searchService.Products;
+
+        if (ProductsNames != null && ProductsNames.Any())
+        {
+        
+            foreach (var productName in ProductsNames)
+            {
+                var newProduct = new Product
+                {   
+                    Id = "",
+                    Url = "link",
+                    Name = productName,
+                    Description = "",
+                    Rating = 0.0,
+                    Price = 0.0,
+                    ImagesUrls = new string[0],
+                    WasOpened = false,
+                    WishlistId = chatId
+                };
+
+                Products.Add(newProduct);
             }
+
+            isProductSaved = new List<bool>(new bool[Products.Count]);
+        }
+
+        if (Products[currentProduct].ImagesUrls.Length > 0) 
+        {
+            currentImage = Products[currentProduct].ImagesUrls[currentIndex];
         }
         else {
-            //productsNames = _searchService.Products;
             currentImage = "";
             isProductsNull = true;
-        } 
+        }
     }
 
     private void ShowNextImage(string image) 
@@ -86,15 +99,70 @@ public partial class Cards
         }
     }
 
-    private async void LoadNextProduct() 
+    private async void LoadNextProduct(string type) 
     {
+        if(type == "like" && isProductSaved[currentProduct] == false) {
+            isProductSaved[currentProduct] = true;
+            await AddProductToCart(Products[currentProduct]);
+        }
         currentProduct += 1;
         StateHasChanged();
     }
 
     private async void LoadPreviousProduct() {
-        currentProduct -= 1;
+        currentProduct = currentProduct == 0 ? 0 : --currentProduct;
         StateHasChanged();
+    }
+
+    private async Task AddProductToCart(Product product) {
+        try {
+            var request = new GraphQLRequest {
+                Query = @"mutation AddProductToPersonalWishlist($wishlistId: String!, $url: String!, $name: String!, $description: String!, $rating: Float!, $price: Float!, $imagesUrls: [String!]!, $wasOpened: Boolean!) {
+                        addProductToPersonalWishlist(
+                            wishlistId: $wishlistId
+                            dto: {
+                                url: $url
+                                name: $name
+                                description: $description
+                                rating: $rating
+                                price: $price
+                                imagesUrls: $imagesUrls
+                                wasOpened: $wasOpened
+                            }
+                        ) {
+                            id
+                            url
+                            name
+                            description
+                            rating
+                            price
+                            imagesUrls
+                            wasOpened
+                            wishlistId
+                        }
+                    }",
+                    Variables = new {
+                        wishlistId = product.WishlistId,
+                        url = product.Url,
+                        name = product.Name,
+                        description = product.Description,
+                        rating = product.Rating,
+                        price = product.Price,
+                        imagesUrls = product.ImagesUrls,
+                        wasOpened = product.WasOpened
+                    }
+                };
+
+            Console.WriteLine("Sending GraphQL request: " + request);
+
+            var response = await _apiClient.QueryAsync(request);
+            var responseData = response.Data;
+
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error in AddProductToCart: {ex}");
+        }
     }
 
     private void LoadMoreProducts() {
