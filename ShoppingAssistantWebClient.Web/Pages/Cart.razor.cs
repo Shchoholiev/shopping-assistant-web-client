@@ -12,7 +12,7 @@ public partial class Cart : ComponentBase
     [Inject]
     private ApiClient _apiClient { get; set; }
 
-    public List<Product> Products { get; set; }
+    public List<Product> Products { get; set; } = new List<Product>();
 
     public bool isError = false;
 

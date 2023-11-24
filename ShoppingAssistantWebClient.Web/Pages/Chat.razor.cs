@@ -26,6 +26,7 @@ public partial class Chat : ComponentBase
 
 
         public List<String> Products { get; set; } = new List<string>();
+
         public List<String> Suggestion { get; set; } = new List<String>();
         
         public Messages Message { get; set; }
@@ -39,7 +40,7 @@ public partial class Chat : ComponentBase
         protected override async Task OnInitializedAsync()
         {
             try{
-                    var input = _searchServise.firstMassage;
+                    var input = _searchServise.FirstMessage;
 
                     if (input!=null){
 
@@ -64,7 +65,7 @@ public partial class Chat : ComponentBase
                         };
 
                         var response = await _apiClient.QueryAsync(request);
-                        _searchServise.SetFirstMassage(null);
+                        _searchServise.SetFirstMessage(null);
                         isLoading = false;
                         await UpdateSideMenu(wishlistId);
                         StateHasChanged();
@@ -201,8 +202,12 @@ public partial class Chat : ComponentBase
                 StateHasChanged();
                 
             } else if(sseEvent.Event == SearchEventType.Product){
+                
+                string pattern = "[\\\\\"]";
 
-                Products.Add(result);
+                input = Regex.Replace(input, pattern, "");
+
+                Products.Add(input);
 
             } else if(sseEvent.Event == SearchEventType.Suggestion){
 
@@ -213,6 +218,7 @@ public partial class Chat : ComponentBase
             if(Products.Count!=0) {
                 string n = name;
                 _searchServise.SetProducts(Products);
+                Products = null;
                 var url = $"/cards/{name}/{chatId}";
                 Navigation.NavigateTo(url);
             }

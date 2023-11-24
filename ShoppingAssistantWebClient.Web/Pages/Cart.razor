@@ -18,23 +18,28 @@
     </div>
     <div class="container">
         @if (!isError) {
-            @if (Products != null) {
+            @if (Products.Count > 0) {
                 @foreach (var product in Products) {
                     <div class="product-div">
-                        <img class="product-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe7MHcuWUvuNJsttl3MEVxEayUGVNH4tA2Ha0K4szpgKvH7QYuiaBa_hCzUgW96I6LXqM&usqp=CAU">
-                        <label class="product-description">@product.Description</label>
+                        @if(product.ImagesUrls != null && product.ImagesUrls.Length > 0) {
+                            <img class="product-img" src="@product.ImagesUrls[0]" alt="product image">
+                        }
+                        else {
+                            <img class="product-img" alt="product image">
+                        }
+                        <label class="product-description">@product.Name</label>
                         <div class="button-row">
-                            <img class="star" src="/images/star.png">
+                            <img class="star" src="/images/star.svg" alt="star">
                             <label class="rating">@product.Rating</label>
                             <label class="price-label">@product.Price</label>
                         </div>
                         <button class="button-amazon">
-                            <img src="/images/amazon.png">
+                            <img src="/images/amazon.svg" alt="amazon">
                         </button>
                     </div>
                 }
             }
-            else{
+            else {
                 <p class="error">Cart is empty</p>
             }
         }
