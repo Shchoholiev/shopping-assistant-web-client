@@ -4,9 +4,6 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - shopping-assistant-dev
 
 on:
-  push:
-    branches:
-      - develop
   workflow_dispatch:
 
 jobs:
