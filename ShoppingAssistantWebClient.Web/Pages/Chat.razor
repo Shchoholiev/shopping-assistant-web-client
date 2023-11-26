@@ -1,0 +1,156 @@
+@page "/chat/{chatId}"
+
+@inject IHttpClientFactory ClientFactory
+@inject IJSRuntime JSRuntime
+
+<PageTitle>@name</PageTitle>
+
+<div class="right_frame" id="rightFrame">
+
+    <div id="button_open" class="open_menu">
+        <a class="button_open_menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </a>
+    </div>
+
+
+    <div class="new_chat">
+
+        <div class="title_one_frame">@name</div>
+
+        <div class="chat_message" @ref="chatMessageRef">
+
+            <ul class="chat_box">
+
+                @if (!isLoading && Messages != null)
+                {
+
+                    @foreach (var item in Messages)
+                    {
+
+                        if (item.Role != "User")
+                        {
+
+                            <li class=" chat_incoming">
+                                <p>@item.Text</p>
+                            </li>
+
+                        }
+                        else
+                        {
+
+                            <li class="chat_outgoing">
+                                <p>@item.Text</p>
+                            </li>
+
+                        }
+                    }
+
+                }
+
+            </ul>
+
+
+        </div>
+
+
+        <div class="possible_options">
+
+            @if (Suggestion.Count != 0)
+            {
+
+                <div class="tite_options">Several possible options</div>
+
+                <div class="options">
+
+
+
+                @foreach (var item in Suggestion)
+                    {
+
+                        <div @onclick="() => ClickOption(item)" class="topic_options">
+                            @item
+                        </div>
+                    }
+
+
+                </div>
+            }
+
+        </div>
+
+
+        <div class="chat_input">
+            <input @onkeydown="Enter" @oninput="InputChanged" class="input_messages" type="text" id="chatInput"
+                placeholder="Describe what you are looking for...." autocomplete="off">
+            <img @onclick="() => AddNewMessage(inputValue)" class="button_sende" src="/images/send.svg" alt="Send message">
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+    window.scrollToBottom = function (element) {
+        if (element) {
+            element.scrollTop = 9999;
+
+        }
+    };
+    window.clearInput = () => {
+        document.getElementById('chatInput').value = '';
+    };
+
+    function myJavaScriptFunction(wishlistId) {
+         UpdateMenu(wishlistId);
+    }
+    document.getElementById('button_open').addEventListener('click', changetyle);
+
+</script>
+@code {
+
+    [Parameter] public string chatId { get; set; }
+
+   public string inputValue = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadMessages();
+    }
+
+    private void InputChanged(ChangeEventArgs e)
+    {
+        inputValue = e.Value.ToString();
+
+    }
+
+    public void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            AddNewMessage(inputValue);
+        }
+    }
+
+    private ElementReference chatMessageRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("scrollToBottom", chatMessageRef);
+    }
+
+    private async Task UpdateSideMenu(string wishlistId)
+    {
+
+        await JSRuntime.InvokeVoidAsync("myJavaScriptFunction", wishlistId);
+
+    }
+    private void ClickOption(string item)
+    {
+        inputValue = item;
+    }
+
+}
