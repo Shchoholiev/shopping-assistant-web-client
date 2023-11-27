@@ -23,3 +23,17 @@
     bottom: 1.25em;
     transition: 1s;
 }
+.amazon-associate {
+    position: fixed;
+    bottom: 0;
+    left: calc(50% + 20em);
+    transform: translateX(-50%);
+    font-size: 0.7em;
+    color: #000;
+    text-decoration: none;
+    cursor: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 1s;
+}
