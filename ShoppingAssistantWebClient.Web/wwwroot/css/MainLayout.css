@@ -1,7 +1,7 @@
 .page {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 1.5em);
     border: 1.5% solid;
     padding: 1.25em;
 }
@@ -10,30 +10,42 @@
     position: absolute;
     width: 20em;
     top: 1.25em;
-    bottom: 1.25em;
+    bottom: 0em;
     margin-right: 1.5em;
     transition: 1s;
+
+    @media screen and (max-width: 900px) {
+        transform: translateX(-110%);
+    }
 }
 
 .right-frame {
     position: absolute;
     right: 1.25em;
-    left: 23.25em; 
+    left: 23.25em;
     top: 1.25em;
-    bottom: 1.25em;
+    bottom: 0em;
     transition: 1s;
+
+    @media screen and (max-width: 900px) {
+        left: 1.25em;
+    }
 }
+
 .amazon-associate {
-    position: fixed;
-    bottom: 0;
-    left: calc(50% + 20em);
+    position: relative;
+    left: 50%;
     transform: translateX(-50%);
+    bottom: 0;
     font-size: 0.7em;
     color: #000;
     text-decoration: none;
-    cursor: none;
-    display: flex;
     align-items: center;
     justify-content: center;
-    transition: 1s;
+    transition: 0.5s;
+
+    @media screen and (max-width: 900px) {
+        left: calc(50% - 12.5em);
+    }
+
 }
