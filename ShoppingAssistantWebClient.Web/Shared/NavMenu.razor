@@ -69,6 +69,8 @@
     function changetyle() {
         var left_frame = document.querySelector('.sidebar-menu');
         var right_frame = document.querySelector('.right-frame');
+        var amazonAssociate = document.querySelector('.amazon-associate');
+        
         var computedStyles = getComputedStyle(left_frame);
         var transformValue = computedStyles.transform;
         var button_open = document.querySelector('.button_open_menu');
@@ -77,11 +79,13 @@
             left_frame.style.transform = 'translateX(-110%)';
             button_open.style.visibility = 'visible';
             right_frame.style.left = '1.25em';
+            amazonAssociate.style.left ='calc(50% - 12.5em)';
 
         } else {
             left_frame.style.transform = 'translateX(0)';
             button_open.style.visibility = 'hidden';
-            right_frame.style.left = '23.25em';
+            right_frame.style. left = '23.25em';
+            amazonAssociate.style.left ='50%';
         }
     }
     document.getElementById('button_close').addEventListener('click', changetyle);

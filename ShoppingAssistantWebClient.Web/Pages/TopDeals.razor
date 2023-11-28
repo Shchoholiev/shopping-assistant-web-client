@@ -1,0 +1,93 @@
+﻿@page "/top-deals"
+
+@inject NavigationManager navigationManager;
+
+<head>
+    <link rel="stylesheet" href="css/Cart.css" />
+</head>
+<div class="cart">
+    <div class="head">
+        <div id="button_open" class="open_menu">
+            <a class="button_open_menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+        <p class="header-text">Top Deals 🔥</p>
+
+        
+    </div>
+    <div class="container">
+
+            <div class="types-products">
+                    <p class="type-product-text">Shop best holiday gifts🎁</p>
+
+                        <div class="products">  
+                            @foreach (var product in TopDealsGift) {
+
+                                        <a href="@product.Url">
+                                            <div class="product-div">
+                                                @if(product.ImagesUrls != null) {
+                                                    <img class="product-img" src="@product.ImagesUrls" alt="product image">
+                                                }
+                                                else {
+                                                    <img class="product-img" alt="product image">
+                                                }
+                                                <label class="product-description">@product.Name</label>
+                                                <div class="button-row">
+                                                    <label class="price-label">$ @product.Price</label>
+                                                </div>
+                                                <button class="button-amazon">
+                                                    <img src="/images/amazon.svg" alt="amazon">
+                                                </button>
+                                            </div>
+                                        </a>
+                            }
+                        </div> 
+            </div>
+
+            
+            <div class="types-products">
+                    <p class="type-product-text">Deals in PCs and gaming accessories 🎧</p>
+
+                        <div class="products">  
+                                @foreach (var product in TopDealsGaming) {
+                                    <a href="@product.Url">
+                                            <div class="product-div">
+                                                @if(product.ImagesUrls != null) {
+                                                    <img class="product-img" src="@product.ImagesUrls" alt="product image">
+                                                }
+                                                else {
+                                                    <img class="product-img" alt="product image">
+                                                }
+                                                <label class="product-description">@product.Name</label>
+                                                <div class="button-row">
+                                                    <label class="price-label">$ @product.Price</label>
+                                                </div>
+                                                <button class="button-amazon">
+                                                    <img src="/images/amazon.svg" alt="amazon">
+                                                </button>
+                                            </div>
+                                        </a>
+                                }
+                        </div> 
+            </div>
+    </div>      
+</div>
+
+<script>
+    document.getElementById('button_open').addEventListener('click', changetyle);
+</script>
+
+@code 
+{
+    [Parameter] public string currentWishlistId {get; set; }
+
+    [Parameter] public string chatId {get; set; }
+
+    private void NavigateToMainPage()
+    {
+        navigationManager.NavigateTo($"/chat/{chatId}");
+    }
+}

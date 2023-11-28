@@ -16,6 +16,10 @@
   left: 1.56em;
   cursor: pointer;
   visibility: hidden;
+
+  @media screen and (max-width: 900px) {
+    visibility: visible;
+  }
 }
 .loading {
   margin: 0 auto;
