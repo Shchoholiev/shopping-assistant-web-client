@@ -21,10 +21,10 @@ public partial class TopDeals : ComponentBase
         TopDealsGift.Add(new TopDealsProduct
         {
             Id = "1",
-            Name = "Belkin USB C to VGA + Charge Adapter...",
-            Price = 19.91,
-            ImagesUrls = "https://m.media-amazon.com/images/I/51AhAbvnQ1L._AC_SL1000_.jpg",
-            Url = "https://www.amazon.com/Belkin-Resolution-Passthrough-Connected-AVC001btBK/dp/B088ZWJHHP?th=1"
+            Name = "Earth Rated Dog Poop Bags",
+            Price = 7.59,
+            ImagesUrls = "https://m.media-amazon.com/images/I/71o3gZtswWL._AC_SL1500_.jpg",
+            Url = "https://www.amazon.com/dp/B00EJXIZ60?th=1&linkCode=ll1&tag=cartaid-20&linkId=a3d56ac5cb63d2ec31711694f2146227&language=en_US&ref_=as_li_ss_tl"
         });
 
         TopDealsGift.Add(new TopDealsProduct
