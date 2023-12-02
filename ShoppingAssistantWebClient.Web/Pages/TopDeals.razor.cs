@@ -30,10 +30,10 @@ public partial class TopDeals : ComponentBase
         TopDealsGift.Add(new TopDealsProduct
         {
             Id = "2",
-            Name = "Playmobil A-Team Van",
-            Price = 45.99,
-            ImagesUrls = "https://m.media-amazon.com/images/I/81x-2k0wQPL._AC_SL1500_.jpg",
-            Url = "https://www.amazon.com/dp/B095KP2T5V/ref=cm_gf_adjq_d_p0_e0_qd0_wDMrpoirWfFUdKIYB3rB"
+            Name = "AstroAI 40\" Snow Brush and Detachable Ice Scraper",
+            Price = 24.99,
+            ImagesUrls = "https://m.media-amazon.com/images/I/619MbCzNBwL._AC_SL1500_.jpg",
+            Url = "https://www.amazon.com/dp/B0BFW4SYYM?th=1&linkCode=ll1&tag=cartaid-20&linkId=e29b2809b46ef1312ba2fb18fc1a2f4f&language=en_US&ref_=as_li_ss_tl"
         });
 
 
