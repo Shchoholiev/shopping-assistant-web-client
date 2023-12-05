@@ -30,25 +30,28 @@
             </div>
 
             <div class="topic">
-                <div class="topic_one">
+                <div @onclick="() => ClickTopic(1)" class="topic_one">
                     <a class="button_topic_one">
                         Date
                     </a>
                 </div>
 
-                <div class="topic_two">
+                <div @onclick="() => ClickTopic(2)" class="topic_two">
                     <a class="button_topic_two">
                         🎃 Halloween gift
                     </a>
                 </div>
-                <div class="topic_three">
+
+                <div @onclick="() => ClickTopic(3)" class="topic_three">
                     <a class="button_topic_three">
                         🎁 Birthday gift
                     </a>
                 </div>
             </div>
 
+
         </div>
+
         <div class="chat_input">
             <input @bind="inputValue" @onkeydown="Enter" @oninput="InputChanged" class="input_messages" type="text" id="chatInput"
                 placeholder="Describe what you are looking for...." autocomplete="off">
@@ -121,6 +124,20 @@
 
     }
 
+
+    public void ClickTopic(int input)
+    {
+        if (input == 1){
+            inputValue ="I need a present for a date";
+        }
+        if (input == 2){
+            inputValue ="I need a present for halloween";
+        }
+        if (input == 3){
+            inputValue ="I need a present for a birthday";
+        }
+        CreateNewChat();
+    }
     private void InputChanged(ChangeEventArgs e)
     {
         // Оновіть значення поля введення при кожному введенні тексту
