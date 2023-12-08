@@ -117,7 +117,7 @@
 .chat_message {
   position: relative;
   overflow-y: auto;
-  height: calc(100% - 8em);
+  height: calc(100% - 8.5em);
   width: 100%;
 }
 .chat_message::-webkit-scrollbar {
@@ -150,6 +150,19 @@
   .chat_incoming{
     display: flex;
   }
+  .chat_incoming_wait {
+    display: inline-flex; /* Использовать inline-flex-контейнер */
+    align-items: center; /* Выравнивание по центру */
+    font-size: 0.9em;
+    background-color: #EAEAEA;
+    border-radius: 10px;
+    color: black;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    max-width: 70%; /* Максимальная ширина по вашему усмотрению */
+  }
+  
   .chat_box .chat_outgoing p {
     margin-left: auto;
     background-color: #009FFF;
@@ -168,3 +181,25 @@
     margin-bottom: 20px ;
     margin-top: 20px ;
   }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-spinner {
+    border: 4px solid rgba(0, 82, 204, 0.1);
+    border-top: 4px solid #0052CC;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin-left: 10px; /* Добавлен отступ для разделения текста и загрузки */
+  }
+ .gradient{
+  background: linear-gradient(rgb(255, 255, 255), rgba(0, 0, 0, 0));
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  z-index: 1;
+ } 
