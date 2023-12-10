@@ -16,7 +16,6 @@
   left: 1.56em;
   cursor: pointer;
   visibility: hidden;
-
   @media screen and (max-width: 900px) {
     visibility: visible;
   }
@@ -62,6 +61,11 @@
   font-size: 2.5em;
   text-align: center;
   font-weight: 600;
+  @media screen and (max-width: 480px) {
+
+    font-size: 1.7125em;
+
+  }
 }
 
 .title_three_frame {
@@ -71,6 +75,13 @@
   font-size: 1.25em;
   text-align: center;
   font-weight: 400;
+  @media screen and (max-width: 480px) {
+
+    font-size: 1.0125em;
+    padding-left: 4%;
+    padding-right: 4%;
+
+  }
 }
 
 .topic {
@@ -80,6 +91,12 @@
   color: #009FFF;
   width: 15.625em;
   margin: 0 auto;
+  @media screen and (max-width: 480px) {
+
+    width: 11.875em;
+    font-size: 0.9125em;
+
+  }
 }
 
 .topic div {
@@ -106,6 +123,11 @@
   border-radius: 0.6em;
   text-align: center;
   position: relative;
+  @media screen and (max-width: 480px) {
+    height: 2.4125em;
+    width: 16.875em;
+
+  }
 }
 
 .switch_product {
@@ -148,13 +170,24 @@
 .chat_input {
   background-color: #EAEAEA;
   position: absolute;
-  display: flex;
+  display: inline-flex; /* Использовать inline-flex-контейнер */
   align-items: center;
   bottom: 2em;
   margin-left: 25%;
   width: 50%;
   border-radius: 0.6em;
+  @media screen and (max-width: 750px) {
+    margin-left: 15%;
+    width: 70%;
+
+  }
+  @media screen and (max-width: 480px) {
+    margin-left: 2%;
+    width: 96%;
+
+  }
 }
+
 
 .input_messages {
   width: 100%;

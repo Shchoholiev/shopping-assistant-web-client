@@ -9,10 +9,12 @@
 .sidebar-menu {
     position: absolute;
     width: 20em;
-    top: 1.25em;
+    top: 1.33em;
     bottom: 0em;
     margin-right: 1.5em;
+
     transition: 1s;
+    border-radius: 0.7em;
 
     @media screen and (max-width: 900px) {
         transform: translateX(-110%);

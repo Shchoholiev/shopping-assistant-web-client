@@ -11,6 +11,10 @@
   display: flex;
   align-items: center;
   padding-bottom: 1.5%;
+  background-color: white;
+  margin-left: 0.3em;
+  border-radius: 0.6em 0 0em 0em;
+
 }
 
 .menu {
@@ -22,6 +26,7 @@
   border-color: #0052CC;
   border-radius: 0.6em;
   padding-top: 1.5%;
+  background-color: white;
 }
 
 .elements_wishlisht {
@@ -222,6 +227,7 @@
   border-radius: 50%;
   width: 2.3em;
   height: 2.3em;
+
 }
 
 .button_close_menu {

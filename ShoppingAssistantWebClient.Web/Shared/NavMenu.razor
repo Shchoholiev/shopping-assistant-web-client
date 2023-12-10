@@ -52,9 +52,9 @@
         <div class="line"></div>
         <div class="elements">
             <div class="info_user">
-                <img src="/images/avatar.jpg" alt="Avatar user">
+                <img src="/images/avatar.svg" alt="Avatar user">
                 <!-- Change to name -->
-                <span class="user_name">@GlobalUser.Id</span>
+                <span class="user_name">Unknown user</span>
             </div>
 
         </div>
@@ -76,48 +76,65 @@
         var button_open = document.querySelector('.button_open_menu');
 
         if (transformValue === 'matrix(1, 0, 0, 1, 0, 0)') {
-            left_frame.style.transform = 'translateX(-110%)';
-            button_open.style.visibility = 'visible';
-            right_frame.style.left = '1.25em';
-            amazonAssociate.style.left ='calc(50% - 12.5em)';
+
+            // меню закрите
+            if (window.innerWidth < 1100) {
+                right_frame.style.left = '1.25em';
+                amazonAssociate.style.left ='calc(50% - 12.5em)';
+                right_frame.style.zIndex = '0';
+                left_frame.style.transform = 'translateX(-110%)';
+                button_open.style.visibility = 'visible';
+            }else{
+                amazonAssociate.style.left ='calc(50% - 12.5em)';
+                left_frame.style.transform = 'translateX(-110%)';
+                button_open.style.visibility = 'visible';
+                right_frame.style.left = '1.25em';
+            }
+
 
         } else {
-            left_frame.style.transform = 'translateX(0)';
-            button_open.style.visibility = 'hidden';
-            right_frame.style. left = '23.25em';
-            amazonAssociate.style.left ='50%';
+          
+                // меню відкрите
+            if (window.innerWidth < 1100) {
+                right_frame.style.left = '1.25em';
+                amazonAssociate.style.left ='calc(50% - 12.5em)';
+                right_frame.style.zIndex = '0';
+                left_frame.style.zIndex = '1';
+                left_frame.style.transform = 'translateX(0)';
+                button_open.style.visibility = 'hidden';
+            }else{
+                amazonAssociate.style.left ='50%';
+                left_frame.style.transform = 'translateX(0)';
+                button_open.style.visibility = 'hidden';
+                right_frame.style. left = '23.25em';
+            }
+
+
         }
     }
     document.getElementById('button_close').addEventListener('click', changetyle);
 
-/*
-    window.getScrollTop = function (element) {
-        return element.scrollTop;
-    };
-
-    window.getOffsetHeight = function (element) {
-        return element.offsetHeight;
-    };
-
-    window.getScrollHeight = function (element) {
-        return element.scrollHeight;
-    };
-
-    window.setScrollTop = function (element, scrollTop) {
-        element.scrollTop = scrollTop;
-    };
-*/
 </script>
 
 
 <script>
-    
+        var left_frame = document.querySelector('.sidebar-menu');
+        var right_frame = document.querySelector('.right-frame');
+        var amazonAssociate = document.querySelector('.amazon-associate');
+        
+        var computedStyles = getComputedStyle(left_frame);
+        var transformValue = computedStyles.transform;
+        var button_open = document.querySelector('.button_open_menu');
+
+
     function UpdateMenu(wishlistId)
     {
 
         DotNet.invokeMethodAsync('ShoppingAssistantWebClient.Web', 'Update', wishlistId);
 
     }
+
+
 
 </script>
 
