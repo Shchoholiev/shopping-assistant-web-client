@@ -210,8 +210,9 @@ public partial class Chat : ComponentBase
                 Products.Add(input);
 
             } else if(sseEvent.Event == SearchEventType.Suggestion){
-
-                Suggestion.Add(result);
+                if(Suggestion.Count<6){
+                    Suggestion.Add(result);
+                }
             }
 
         }
