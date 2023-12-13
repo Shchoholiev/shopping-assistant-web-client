@@ -72,34 +72,34 @@
 
             </ul>
 
+         </div>
+            <div class="possible_options">
 
-        </div>
+                @if (Suggestion.Count != 0)
+                {
 
+                    <div class="tite_options">Several possible options</div>
 
-        <div class="possible_options">
-
-            @if (Suggestion.Count != 0)
-            {
-
-                <div class="tite_options">Several possible options</div>
-
-                <div class="options">
+                    <div class="options">
 
 
 
-                @foreach (var item in Suggestion)
-                    {
+                    @foreach (var item in Suggestion)
+                        {
 
-                        <div @onclick="() => ClickOption(item)" class="topic_options">
-                            @item
-                        </div>
-                    }
+                            <div @onclick="() => ClickOption(item)" class="topic_options">
+                                @item
+                            </div>
+                        }
 
 
-                </div>
-            }
+                    </div>
+                }
 
-        </div>
+            </div>
+
+
+
 
 
         <div class="chat_input">
@@ -127,9 +127,24 @@
     function myJavaScriptFunction(wishlistId) {
         UpdateMenu(wishlistId);
     }
+
+
+
     document.getElementById('button_open').addEventListener('click', changetyle);
 
 </script>
+
+<script>
+    function myJavaScriptHeight() {
+
+        var myDiv = document.querySelector('.possible_options');
+
+        var posth = document.querySelector('.chat_message');
+        var height = myDiv.offsetHeight*0.063
+        posth.style.height = 'calc(100% - ' + (8.5 + height) + 'em)';
+    }
+        document.getElementById('button_open').addEventListener('click', myJavaScriptHeight);
+</script> 
 @code {
 
     [Parameter] public string chatId { get; set; }
@@ -159,7 +174,9 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+                await JSRuntime.InvokeVoidAsync("myJavaScriptHeight");
         await JSRuntime.InvokeVoidAsync("scrollToBottom", chatMessageRef);
+
     }
 
     private async Task UpdateSideMenu(string wishlistId)
@@ -171,6 +188,7 @@
     private void ClickOption(string item)
     {
         inputValue = item;
+        AddNewMessage(inputValue);
     }
 
 }

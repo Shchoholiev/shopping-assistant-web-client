@@ -84,6 +84,18 @@
   margin-left: 25%;
   width: 50%;
   border-radius: 0.6em;
+
+  @media screen and (max-width: 750px) {
+    margin-left: 15%;
+    width: 70%;
+
+  }
+
+  @media screen and (max-width: 480px) {
+    margin-left: 2%;
+    width: 96%;
+
+  }
 }
 
 .tite_options {
@@ -105,7 +117,7 @@
   border: 0.09em solid;
   border-color: #009FFF;
   border-radius: 0.6em;
-  margin: 0em 0.6em;
+  margin: 0.2em 0.2em;
   flex: 1;
   text-align: center;
   cursor: pointer;
