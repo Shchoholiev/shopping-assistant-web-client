@@ -159,7 +159,41 @@
   transition: 0.8s;
   color: #202124;
 }
+button::before {
+  content: attr(text);
 
+}
+
+button:hover::before {
+  content: attr(hover-text);
+}
+button {
+  outline: none; /* Для синий ободки */
+  border: 0;
+  background: transparent;
+}
+.message {
+  right: 0;
+  position: absolute;
+  border-radius: 0.6em;
+  margin: 0.3125em;
+  width: calc(50% - 0.625em);
+  height: calc(100% - 0.625em);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.8s;
+  color: #202124;
+  padding: 4px; /* Добавьте подходящий отступ, если необходимо */
+}
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
 .chat_message {
   position: relative;
   overflow-y: auto;
