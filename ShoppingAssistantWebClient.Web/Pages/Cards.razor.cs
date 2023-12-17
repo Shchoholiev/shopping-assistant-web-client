@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Components;
 using ShoppingAssistantWebClient.Web.Models;
 using ShoppingAssistantWebClient.Web.Network;
 using GraphQL;
-using Newtonsoft.Json;
-using Microsoft.JSInterop;
 using ShoppingAssistantWebClient.Web.Services;
 
 namespace ShoppingAssistantWebClient.Web.Pages;
