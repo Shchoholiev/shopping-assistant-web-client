@@ -51,7 +51,6 @@
   display: flex;
   align-items: center;
   border-radius: 0 0 0.6em 0.6em;
-  background-color: rgb(255, 255, 255);
   height: 3.6em;
   left: 0;
   bottom: 0;
@@ -59,6 +58,9 @@
   padding-left: 1.25em;
   padding-right: 1.25em;
   border-top: 1px solid #0165FF;
+}
+.info_user:hover{
+  background-color: #e6e6e6;
 }
 
 .logo_name {
@@ -216,17 +218,17 @@
 }
 
 .user_name {
-  padding-left: 0.4375em;
-  font-size: 1em;
+  padding-left: 0.4em;
+  font-size: 1.2em;
   justify-content: center;
   align-items: center;
 }
 
 .info_user img {
   float: left;
-  border-radius: 50%;
-  width: 2.3em;
-  height: 2.3em;
+  width: 2.4em;
+  height: 2.4em;
+  margin-left: 3.3em;
 
 }
 
