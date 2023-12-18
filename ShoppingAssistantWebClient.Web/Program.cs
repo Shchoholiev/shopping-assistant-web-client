@@ -3,6 +3,7 @@ using ShoppingAssistantWebClient.Web.Configurations;
 using ShoppingAssistantWebClient.Web.Data;
 using ShoppingAssistantWebClient.Web.Network;
 using ShoppingAssistantWebClient.Web.Services;
+using Blazored.Modal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.De
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddApiClient(builder.Configuration);
 builder.Services.AddSingleton<SearchService>();
+builder.Services.AddBlazoredModal();
+
 
 var app = builder.Build();
 
