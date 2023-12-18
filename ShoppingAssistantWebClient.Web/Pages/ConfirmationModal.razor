@@ -1,0 +1,24 @@
+<div class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal-backdrop fade show" @onclick="Cancel"></div>
+    <div class="modal-dialog modal-dialog-centered modal-sm" style="z-index: 1050">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title medium-text">Are you sure you want to delete this chat?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-yes" @onclick="ConfirmDelete">Yes</button>
+                <button type="button" class="btn btn-secondary btn-sm" @onclick="Cancel">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    private async Task Close() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    private async Task ConfirmDelete() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    private async Task Cancel() => await BlazoredModal.CloseAsync(ModalResult.Cancel());
+
+}

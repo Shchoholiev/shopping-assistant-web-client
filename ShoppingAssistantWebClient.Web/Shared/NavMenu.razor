@@ -2,8 +2,10 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Components
 @using Microsoft.JSInterop
+@using ShoppingAssistantWebClient.Web.Pages
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime;
+@inject IModalService Modal;
 
 <div id="leftframe" class="left_frame">
 
@@ -39,8 +41,10 @@
 
                         <section class="cont_wishlist @(selectedWishlistId == item.Id ? "selected_wishlist" : "")">
                             <div class="wishlist_name" @onclick="() => RedirectToPage(item.Id)">@item.Name</div>
-                            <img class="button_delete_chat" @onclick="() => DeleteWishlist(item.Id)" src="/images/icon_delete.svg" alt="Delete wishlist">
-                            <img class="button_open_card" @onclick="() => RedirectToCart(item.Id)" src="/images/icon_open_card.svg" alt="Card open">
+                            <div class="wishlist_buttons">
+                                <img class="button_delete_chat" @onclick="() => DeleteWishlist(item.Id)" src="/images/icon_delete.svg" alt="Delete wishlist">
+                                <img class="button_open_card" @onclick="() => RedirectToCart(item.Id)" src="/images/icon_open_card.svg" alt="Card open">
+                            </div>
                         </section>
                     }
                 }
@@ -175,8 +179,17 @@
     }
     private async void DeleteWishlist(string itemId) {
 
-        await DeleteWish(itemId);
+        var options = new ModalOptions
+        { 
+            UseCustomLayout = true 
+        };
 
+        var parameters = new ModalParameters();
+
+        var result = await Modal.Show<ConfirmationModal>("", parameters, options).Result;
+
+        if (!result.Cancelled)
+            await DeleteWish(itemId);
     }
 /*
     private int savedScrollTop = 0;
@@ -198,7 +211,5 @@
         }
     }
 */
-
-
 
 }

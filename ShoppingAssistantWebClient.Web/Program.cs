@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using GraphQL.Client.Http;
 using ShoppingAssistantWebClient.Web.Configurations;
 using ShoppingAssistantWebClient.Web.Data;
@@ -13,6 +14,7 @@ builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.De
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddApiClient(builder.Configuration);
 builder.Services.AddSingleton<SearchService>();
+builder.Services.AddBlazoredModal();
 
 var app = builder.Build();
 
