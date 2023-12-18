@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using GraphQL.Client.Http;
 using ShoppingAssistantWebClient.Web.Configurations;
 using ShoppingAssistantWebClient.Web.Data;

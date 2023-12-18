@@ -1,0 +1,48 @@
+.modal-dialog.modal-sm {
+    max-width: 300px;
+}
+
+.medium-text {
+    font-size: 1rem;
+}
+
+.btn-sm {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+}
+
+.btn-yes {
+    color: #FFFFFF;
+    background-color: #FF0000;
+}
+
+.btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); 
+}
+
+.btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.modal-header, .modal-footer {
+    padding: 8px;
+}
+
+@media (max-width: 600px) {
+    .modal-dialog {
+        max-width: 100%;
+        margin: 10px auto;
+    }
+    .modal-content {
+        margin: 0;
+    }
+}
+
+
+.close {
+    background: none;
+    border: none;
+    outline: none;
+}
