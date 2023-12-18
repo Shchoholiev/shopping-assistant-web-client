@@ -26,7 +26,6 @@ namespace ShoppingAssistantWebClient.Web.Pages
         private MessageCreateDto messageCreateDto;
         private string inputValue = "";
 
-
         private async Task CreateNewChat() {
 
           try

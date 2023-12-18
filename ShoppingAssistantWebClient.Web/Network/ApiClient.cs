@@ -101,17 +101,24 @@ public class ApiClient
         await SetAuthenticationAsync();
         var count = 0; //
         var requestUrl = $"{_httpClient.BaseAddress}{url}";
-        var response = await _httpClient.PostAsJsonAsync(requestUrl, obj);
-        using var responseStream = await response.Content.ReadAsStreamAsync();
-        using var reader = new StreamReader(responseStream, Encoding.UTF8);
+        var jsonBody = JsonConvert.SerializeObject(obj);
 
-        SearchEventType eventType = SearchEventType.Message;
-        while (!cancellationToken.IsCancellationRequested)
+        var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Post, requestUrl)
         {
-            var jsonChunk = await reader.ReadLineAsync(cancellationToken);
+            Content = body
+        };
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+
+        using var httpResponse = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        using var streamReader = new StreamReader(await httpResponse.Content.ReadAsStreamAsync(cancellationToken));
+        var eventType = SearchEventType.Message;
+        while (!streamReader.EndOfStream)
+        {
+            var jsonChunk = await streamReader.ReadLineAsync(cancellationToken);
              count += 1; //
             if (count >=5 ){ //
-                break; //
+                yield break; //
             }; //
             if (jsonChunk == null) continue;
             if (jsonChunk.StartsWith("event: "))
