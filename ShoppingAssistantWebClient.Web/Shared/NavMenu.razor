@@ -55,7 +55,7 @@
 
         <div class="line"></div>
         <div class="elements">
-            <div class="info_user">
+            <div class="info_user" @onclick="ShowModal" style="cursor: pointer;">
                 <img src="/images/avatar.svg" alt="Avatar user">
                 <span class="user_name">User Settings</span>
             </div>
@@ -155,6 +155,17 @@
     {
         _app = this;
         
+    }
+
+    private async Task ShowModal()
+    {   
+        var options = new ModalOptions()
+        {
+            DisableBackgroundCancel = true,
+            UseCustomLayout = true
+        };
+
+        var modalRef = Modal.Show<Settings>("Settings", options);
     }
 
     [JSInvokable]
