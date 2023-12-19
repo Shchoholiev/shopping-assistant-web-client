@@ -1,0 +1,112 @@
+.page {
+    position: relative;
+    width: 100%;
+    height: 96vh;
+    border: 1.5% solid;
+    padding: 1.25em;
+    background-color: #f0f0f0;
+}
+
+.sidebar-menu {
+    display: none;
+} 
+
+.right-frame {
+    position: absolute;
+    right: 1.25em;
+    left: 1.25em;
+    top: 1.25em;
+    bottom: 0em;
+    transition: 1s;
+
+    @media screen and (max-width: 900px) {
+        left: 1.25em;
+    }
+}
+
+footer {
+    height: 4vh;
+    background-color: #f0f0f0;
+}
+
+.amazon-associate {
+    position: relative;
+    left: calc(50% - 12.5em);
+    transform: translateX(-50%);
+    bottom: 0;
+    font-size: 0.7em;
+    color: #000;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+    background-color: #f0f0f0;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 96vh;
+    background-color: #f0f0f0;
+}
+
+.login-form {
+    max-width: 570px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form input[type="tel"],
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.or {
+    text-align: center;
+    color: #333;
+}
+
+.login-button,
+.back-button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.back-button {
+    background-color: #ccc;
+}
+
+.login-button:hover,
+.back-button:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+    .login-form {
+        width: 90%;
+    }
+}
+
+.error-message-container {
+    text-align: center;
+    margin: 10px 0; 
+    padding: 5px; 
+}
+
+.validation-message.error {
+    color: red;
+}
