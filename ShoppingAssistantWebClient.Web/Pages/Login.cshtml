@@ -1,0 +1,56 @@
+@page "/loginrazor"
+@model ShoppingAssistantWebClient.Web.Pages.LoginModel
+
+<head>
+    <link rel="stylesheet" href="css/Login.css" />
+</head>
+
+<div class="login-container">
+    <div class="login-form">
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="error-message-container">
+                <span class="validation-message error">@Model.ErrorMessage</span>
+            </div>
+        }
+
+        <form method="post" onsubmit="return validateForm()">
+            <input type="tel" asp-for="Input.Phone" id="phone" placeholder="Phone Number" pattern="\+?[0-9]{10,15}" />
+            <span asp-validation-for="Input.Phone" class="validation-message" id="phoneValidationMessage"></span>
+            <div class="or">or</div>
+            <input type="email" asp-for="Input.Email" id="email" placeholder="Email"/>
+            <span asp-validation-for="Input.Email" class="validation-message" id="emailValidationMessage"></span>
+            <input type="password" asp-for="Input.Password" placeholder="Password" />
+            <button class="login-button" type="submit">Login</button>
+            <button class="back-button" type="button" onclick="location.href='/'">Back</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function validateForm() {
+            var phone = document.getElementById('phone').value;
+            var email = document.getElementById('email').value;
+            var phoneValidationMessage = '';
+            var emailValidationMessage = '';
+            var isPhoneInvalid = false;
+            var isEmailInvalid = false;
+
+            if (phone && !/^\+[0-9]{1,15}$/.test(phone)) {
+                phoneValidationMessage = 'Please enter a valid phone number';
+                isPhoneInvalid = true;
+            }
+
+            if (email) {
+                emailValidationMessage = 'Please enter a valid email address';
+                isEmailInvalid = true;
+            }
+
+            document.getElementById('phoneValidationMessage').innerText = phoneValidationMessage;
+            document.getElementById('emailValidationMessage').innerText = emailValidationMessage;
+
+            return !isPhoneInvalid && !isEmailInvalid;
+        }
+    </script>
+}
