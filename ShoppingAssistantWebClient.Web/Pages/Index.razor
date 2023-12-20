@@ -11,18 +11,18 @@
         </a>
     </div>
 
-        <div class="new_chat">
+    <div class="new_chat">
         <div class="chat_message">
             <div class="title_one_frame">New chat</div>
             <div class="title_two_frame">What you're looking for</div>
 
             <div class="switch">
-                <div @onclick="Сhoose_product"class="switch_product" id="choose_product">
+                <button @onclick="Сhoose_product" class="switch_product" id="choose_product">
                     Product
-                </div>
-                <div @onclick="Сhoose_gift" class="switch_gift" id="choose_gift">
-                    Gift
-                </div>
+                </button>
+                <button text="Gift" hover-text="Сoming soon" onmouseover="showMessage()" onmouseout="hideMessage()"
+                    class="switch_gift" id="choose_gift">
+                </button>
             </div>
 
 
@@ -30,33 +30,36 @@
             </div>
 
             <div class="topic">
-                <div class="topic_one">
+                <div @onclick="() => ClickTopic(1)" class="topic_one">
                     <a class="button_topic_one">
                         Date
                     </a>
                 </div>
 
-                <div class="topic_two">
+                <div @onclick="() => ClickTopic(2)" class="topic_two">
                     <a class="button_topic_two">
                         🎃 Halloween gift
                     </a>
                 </div>
-                <div class="topic_three">
+
+                <div @onclick="() => ClickTopic(3)" class="topic_three">
                     <a class="button_topic_three">
                         🎁 Birthday gift
                     </a>
                 </div>
             </div>
 
+
         </div>
+
         <div class="chat_input">
-            <input @bind="inputValue" @onkeydown="Enter" @oninput="InputChanged" class="input_messages" type="text" id="chatInput"
-                placeholder="Describe what you are looking for...." autocomplete="off">
+            <input @bind="inputValue" @onkeydown="Enter" @oninput="InputChanged" class="input_messages" type="text"
+                id="chatInput" placeholder="Describe what you are looking for...." autocomplete="off">
             <img @onclick="CreateNewChat" class="button_sende" src="/images/send.svg" alt="Send message">
         </div>
 
     </div>
-    
+
 
 </div>
 
@@ -70,11 +73,11 @@
     var choose = "Product";
 
     function switchGift() {
-        choose_gift.style.backgroundColor = "#0052CC";
-        choose_product.style.backgroundColor = "transparent";
-        switchGi.style.color = "white";
-        switchProd.style.color = "#202124";
-        choose = "Gift";
+        // choose_gift.style.backgroundColor = "#0052CC";
+        // choose_product.style.backgroundColor = "transparent";
+        // switchGi.style.color = "white";
+        //switchProd.style.color = "#202124";
+        //choose = "Gift";
 
     }
 
@@ -88,16 +91,9 @@
     }
     function myJavaScriptFunction(wishlistId) {
 
-         UpdateMenu(wishlistId);
+        UpdateMenu(wishlistId);
 
     }
-
-
-
-
-
-
-
 
     document.getElementById('choose_gift').addEventListener('click', switchGift);
     document.getElementById('choose_product').addEventListener('click', switchProduct);
@@ -110,17 +106,31 @@
     private void Сhoose_product() {
         selectedChoice = "Product";
     }
-        private void Сhoose_gift() {
+    private void Сhoose_gift() {
         selectedChoice = "Gift";
     }
 
     private async Task UpdateSideMenu(string wishlistId)
     {
 
-    await JSRuntime.InvokeVoidAsync("myJavaScriptFunction", wishlistId);
+        await JSRuntime.InvokeVoidAsync("myJavaScriptFunction", wishlistId);
 
     }
 
+
+    public void ClickTopic(int input)
+    {
+        if (input == 1){
+            inputValue ="I need a present for a date";
+        }
+        if (input == 2){
+            inputValue ="I need a present for halloween";
+        }
+        if (input == 3){
+            inputValue ="I need a present for a birthday";
+        }
+        CreateNewChat();
+    }
     private void InputChanged(ChangeEventArgs e)
     {
         // Оновіть значення поля введення при кожному введенні тексту

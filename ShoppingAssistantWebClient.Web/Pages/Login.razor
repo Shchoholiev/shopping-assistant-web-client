@@ -1,0 +1,82 @@
+@page "/login"
+
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Components.Forms
+@using ShoppingAssistantWebClient.Web.Models.Input
+@using Models.GlobalInstances
+
+
+<head>
+    <link rel="stylesheet" href="css/Login.css" />
+</head>
+
+
+<div class="login-container">
+    <div class="login-form">
+        @if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="error-message-container">
+                <span class="validation-message error">@errorMessage</span>
+            </div>
+        }
+        <input type="tel" @bind="LoginInput.Phone" placeholder="Phone Number" pattern="\+?[0-9]{10,15}" required @bind:event="oninput" @onchange="ValidatePhone"/>
+        <span class="validation-message">@phoneValidationMessage</span>
+        <div class="or">or</div>
+        <input type="email" @bind="LoginInput.Email" placeholder="Email" required @bind:event="oninput" @onchange="ValidateEmail"/>
+        <span class="validation-message">@emailValidationMessage</span>
+        <input type="password" @bind="LoginInput.Password" placeholder="Password" />
+        <button class="login-button" @onclick="HandleLogin">Login</button>
+        <button class="back-button" @onclick="RedirectToNewChat">Back</button>
+    </div>
+</div>
+
+@code {
+    private string phoneValidationMessage = "";
+    private string emailValidationMessage = "";
+    private bool isPhoneInvalid = false;
+    private bool isEmailInvalid = false;
+
+    private LoginInputModel LoginInput = new LoginInputModel();
+
+    private void ValidatePhone()
+    {
+        if (!string.IsNullOrWhiteSpace(LoginInput.Phone) && !Regex.IsMatch(LoginInput.Phone,  @"^\+[0-9]{1,15}$"))
+        {
+            phoneValidationMessage = "Please enter a valid phone number";
+            isPhoneInvalid = true;
+        }
+        else
+        {
+            phoneValidationMessage = "";
+            isPhoneInvalid = false;
+        }
+    }
+
+    private void ValidateEmail()
+    {
+        if (!string.IsNullOrWhiteSpace(LoginInput.Email) && !Regex.IsMatch(LoginInput.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        {
+            emailValidationMessage = "Please enter a valid email address";
+            isEmailInvalid = true;
+        }
+        else
+        {
+            emailValidationMessage = "";
+            isEmailInvalid = false;
+        }
+    }
+
+    private bool HasValidationErrors()
+    {
+        return !string.IsNullOrWhiteSpace(phoneValidationMessage) || !string.IsNullOrWhiteSpace(emailValidationMessage);
+    }
+    private async Task HandleLogin()
+    {
+        if (HasValidationErrors())
+        {
+            return;
+        }
+
+        await LoginUser(LoginInput);
+    }
+}

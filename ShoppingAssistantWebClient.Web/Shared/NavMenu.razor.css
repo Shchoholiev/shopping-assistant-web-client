@@ -11,6 +11,10 @@
   display: flex;
   align-items: center;
   padding-bottom: 1.5%;
+  background-color: white;
+  margin-left: 0.3em;
+  border-radius: 0.6em 0 0em 0em;
+
 }
 
 .menu {
@@ -22,6 +26,7 @@
   border-color: #0052CC;
   border-radius: 0.6em;
   padding-top: 1.5%;
+  background-color: white;
 }
 
 .elements_wishlisht {
@@ -46,7 +51,6 @@
   display: flex;
   align-items: center;
   border-radius: 0 0 0.6em 0.6em;
-  background-color: rgb(255, 255, 255);
   height: 3.6em;
   left: 0;
   bottom: 0;
@@ -54,6 +58,9 @@
   padding-left: 1.25em;
   padding-right: 1.25em;
   border-top: 1px solid #0165FF;
+}
+.info_user:hover{
+  background-color: #e6e6e6;
 }
 
 .logo_name {
@@ -76,14 +83,16 @@
 .wishlist_name {
   padding-left: 0.7em;
   padding-right: 5em;
-  width: 10.5em;
+  width: 15.5em;
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
   height: 2.5em;
   line-height: 2.5em;
   cursor: pointer;
+  z-index: 1;
 }
+
 
 .cont_wishlist {
   margin-top: 0.4375em;
@@ -93,7 +102,7 @@
   font-size: 1.1em;
   width: 100%;
   height: 2.5em;
-
+  position: relative;
 }
 
 .cont_wishlist:hover {
@@ -119,7 +128,7 @@
   font-size: 1.1em;
   width: 100%;
   height: 2.5em;
-    background-color: #e6e6e6;
+  background-color: #e6e6e6;
   transition: 0.2s;
 
 }
@@ -165,9 +174,25 @@
   margin-top: 0.55em;
   margin-right: 1em;
   float: right;
-  visibility: hidden;
   height: 1.4em;
   width: 1.5em;
+}
+
+
+.wishlist_buttons {
+    display: none;
+    position: absolute;
+    right: 0;
+    width: 4.9em;
+    height: 2.5em;
+    background-color: #e6e6e6;
+    border-radius: 0.6em;
+    z-index: 10;
+}
+
+.cont_wishlist:hover .wishlist_buttons
+{
+  display: block;
 }
 
 .wishlist_names::-webkit-scrollbar {
@@ -177,9 +202,7 @@
 
 .wishlist_names::-webkit-scrollbar-thumb {
   background-color: #0052CC;
-  /* Колір позиції покажчика */
   border-radius: 10px;
-  /* Закруглення країв позиції покажчика */
   width: 0.2em;
 }
 
@@ -211,17 +234,18 @@
 }
 
 .user_name {
-  padding-left: 0.4375em;
-  font-size: 1em;
+  padding-left: 0.4em;
+  font-size: 1.2em;
   justify-content: center;
   align-items: center;
 }
 
 .info_user img {
   float: left;
-  border-radius: 50%;
-  width: 2.3em;
-  height: 2.3em;
+  width: 2.4em;
+  height: 2.4em;
+  margin-left: 3.3em;
+
 }
 
 .button_close_menu {

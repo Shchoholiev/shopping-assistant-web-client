@@ -1,0 +1,158 @@
+@using System.Text.RegularExpressions
+@using Models.GlobalInstances
+@using ShoppingAssistantWebClient.Web.Models
+
+@inject IHttpContextAccessor httpContextAccessor;
+@inject NavigationManager NavigationManager;
+
+<div class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal-dialog" style="z-index: 1050">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Settings</h5>
+                <button type="button" class="close" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="@ShowErrorDivClass()" role="alert">
+                    @errorMessage
+                </div>
+                <div class="@ShowUpdateDivClass()" role="alert">
+                    @updateMessage
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Enter new phone" pattern="\+?[0-9]{10,15}" required @onchange="ValidatePhone" data-toggle="tooltip" data-placement="top" title="Use format: +xxxxxxxx" value="@phone">
+                        <div class="validation-message @(isPhoneInvalid ? "active" : "")" id="phone-validation" style="color: red;">@phoneValidationMessage</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter new email" required @onchange="ValidateEmail" data-toggle="tooltip" data-placement="top" title="Use format: example@domain.com" value="@email">
+                        <div class="validation-message @(isEmailInvalid ? "active" : "")" id="email-validation" style="color: red;">@emailValidationMessage</div>
+                    </div>
+
+                    @if (!user.Roles.Any(role => role.Name == "User"))
+                    {
+                        <div class="form-group">
+                            <label for="password">New Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter new password" @onchange="OnPasswordInput">
+                        </div>
+                    }
+
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary log-in-button-left" @onclick="RedirectToLogin">Log In</button>
+                <button type="submit" class="btn btn-primary" disabled="@isApplyDisabled" @onclick="Apply">Apply</button>
+                <button type="button" class="btn btn-secondary" @onclick="Close">Cancle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip(); 
+    });
+</script>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+
+    private string phoneValidationMessage = "";
+    private string emailValidationMessage = "";
+    private bool isPhoneInvalid = false;
+    private bool isEmailInvalid = false;
+    private bool isApplyDisabled = true;
+    private string phone = "";
+    private string email = "";
+    private string password = "";
+
+    private void ValidatePhone(ChangeEventArgs e)
+    {
+        errorMessage = "";
+        phone = e.Value.ToString();
+        if (!string.IsNullOrWhiteSpace(phone) && !Regex.IsMatch(phone,  @"^\+[0-9]{1,15}$"))
+        {
+            phoneValidationMessage = "Please enter a valid phone number";
+            isPhoneInvalid = true;
+        }
+        else
+        {
+            phoneValidationMessage = "";
+            isPhoneInvalid = false;
+        }
+
+        UpdateApplyButtonState();
+    }
+
+    private void ValidateEmail(ChangeEventArgs e)
+    {
+        errorMessage = "";
+        email = e.Value.ToString();
+        if (!string.IsNullOrWhiteSpace(email) && !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        {
+            emailValidationMessage = "Please enter a valid email address.";
+            isEmailInvalid = true;
+        }
+        else
+        {
+            emailValidationMessage = "";
+            isEmailInvalid = false;
+        }
+        UpdateApplyButtonState();
+    }
+
+    private void UpdateApplyButtonState()
+    {
+        if(user.Roles.Any(role => role.Name == "User"))
+            isApplyDisabled = (string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(email)) || isPhoneInvalid || isEmailInvalid;
+        else
+            isApplyDisabled = string.IsNullOrWhiteSpace(password) || (string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(email)) || isPhoneInvalid || isEmailInvalid;
+    }
+
+    private void OnPasswordInput(ChangeEventArgs e)
+    {
+        errorMessage = "";
+        password = e.Value.ToString();
+        UpdateApplyButtonState();
+    }
+
+    private async Task Close() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    private async Task Cancel() => await BlazoredModal.CancelAsync();
+
+    private async Task Apply() {
+
+        await UpdateUser();
+        isApplyDisabled = true;
+        await GetUser();
+        StateHasChanged();
+
+        if(user.Roles.Any(role => role.Name == "User")) {
+            await Task.Delay(3000);
+            await InvokeAsync(() => {
+                updateMessage = "";
+                StateHasChanged();
+            });
+        }
+    }
+
+    private void RedirectToLogin() {
+        var url = $"/login";
+        NavigationManager.NavigateTo(url);
+    }
+
+    private string ShowErrorDivClass()
+    {
+        return string.IsNullOrEmpty(errorMessage) ? "hidden" : "alert alert-danger";
+    }
+
+    private string ShowUpdateDivClass() {
+        return string.IsNullOrEmpty(updateMessage) ? "hidden" : "alert alert-success";
+    }
+}

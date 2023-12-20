@@ -2,8 +2,10 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Components
 @using Microsoft.JSInterop
+@using ShoppingAssistantWebClient.Web.Pages
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime;
+@inject IModalService Modal;
 
 <div id="leftframe" class="left_frame">
 
@@ -39,8 +41,10 @@
 
                         <section class="cont_wishlist @(selectedWishlistId == item.Id ? "selected_wishlist" : "")">
                             <div class="wishlist_name" @onclick="() => RedirectToPage(item.Id)">@item.Name</div>
-                            <img class="button_delete_chat" @onclick="() => DeleteWishlist(item.Id)" src="/images/icon_delete.svg" alt="Delete wishlist">
-                            <img class="button_open_card" @onclick="() => RedirectToCart(item.Id)" src="/images/icon_open_card.svg" alt="Card open">
+                            <div class="wishlist_buttons">
+                                <img class="button_delete_chat" @onclick="() => DeleteWishlist(item.Id)" src="/images/icon_delete.svg" alt="Delete wishlist">
+                                <img class="button_open_card" @onclick="() => RedirectToCart(item.Id)" src="/images/icon_open_card.svg" alt="Card open">
+                            </div>
                         </section>
                     }
                 }
@@ -51,10 +55,9 @@
 
         <div class="line"></div>
         <div class="elements">
-            <div class="info_user">
-                <img src="/images/avatar.jpg" alt="Avatar user">
-                <!-- Change to name -->
-                <span class="user_name">@GlobalUser.Id</span>
+            <div class="info_user" @onclick="ShowModal" style="cursor: pointer;">
+                <img src="/images/avatar.svg" alt="Avatar user">
+                <span class="user_name">User Settings</span>
             </div>
 
         </div>
@@ -76,48 +79,65 @@
         var button_open = document.querySelector('.button_open_menu');
 
         if (transformValue === 'matrix(1, 0, 0, 1, 0, 0)') {
-            left_frame.style.transform = 'translateX(-110%)';
-            button_open.style.visibility = 'visible';
-            right_frame.style.left = '1.25em';
-            amazonAssociate.style.left ='calc(50% - 12.5em)';
+
+            // меню закрите
+            if (window.innerWidth < 1100) {
+                right_frame.style.left = '1.25em';
+                amazonAssociate.style.left ='calc(50% - 12.5em)';
+                right_frame.style.zIndex = '0';
+                left_frame.style.transform = 'translateX(-110%)';
+                button_open.style.visibility = 'visible';
+            }else{
+                amazonAssociate.style.left ='calc(50% - 12.5em)';
+                left_frame.style.transform = 'translateX(-110%)';
+                button_open.style.visibility = 'visible';
+                right_frame.style.left = '1.25em';
+            }
+
 
         } else {
-            left_frame.style.transform = 'translateX(0)';
-            button_open.style.visibility = 'hidden';
-            right_frame.style. left = '23.25em';
-            amazonAssociate.style.left ='50%';
+          
+                // меню відкрите
+            if (window.innerWidth < 1100) {
+                right_frame.style.left = '1.25em';
+                amazonAssociate.style.left ='calc(50% - 12.5em)';
+                right_frame.style.zIndex = '0';
+                left_frame.style.zIndex = '1';
+                left_frame.style.transform = 'translateX(0)';
+                button_open.style.visibility = 'hidden';
+            }else{
+                amazonAssociate.style.left ='50%';
+                left_frame.style.transform = 'translateX(0)';
+                button_open.style.visibility = 'hidden';
+                right_frame.style. left = '23.25em';
+            }
+
+
         }
     }
     document.getElementById('button_close').addEventListener('click', changetyle);
 
-/*
-    window.getScrollTop = function (element) {
-        return element.scrollTop;
-    };
-
-    window.getOffsetHeight = function (element) {
-        return element.offsetHeight;
-    };
-
-    window.getScrollHeight = function (element) {
-        return element.scrollHeight;
-    };
-
-    window.setScrollTop = function (element, scrollTop) {
-        element.scrollTop = scrollTop;
-    };
-*/
 </script>
 
 
 <script>
-    
+        var left_frame = document.querySelector('.sidebar-menu');
+        var right_frame = document.querySelector('.right-frame');
+        var amazonAssociate = document.querySelector('.amazon-associate');
+        
+        var computedStyles = getComputedStyle(left_frame);
+        var transformValue = computedStyles.transform;
+        var button_open = document.querySelector('.button_open_menu');
+
+
     function UpdateMenu(wishlistId)
     {
 
         DotNet.invokeMethodAsync('ShoppingAssistantWebClient.Web', 'Update', wishlistId);
 
     }
+
+
 
 </script>
 
@@ -135,6 +155,17 @@
     {
         _app = this;
         
+    }
+
+    private async Task ShowModal()
+    {   
+        var options = new ModalOptions()
+        {
+            DisableBackgroundCancel = true,
+            UseCustomLayout = true
+        };
+
+        var modalRef = Modal.Show<Settings>("Settings", options);
     }
 
     [JSInvokable]
@@ -159,8 +190,17 @@
     }
     private async void DeleteWishlist(string itemId) {
 
-        await DeleteWish(itemId);
+        var options = new ModalOptions
+        { 
+            UseCustomLayout = true 
+        };
 
+        var parameters = new ModalParameters();
+
+        var result = await Modal.Show<ConfirmationModal>("", parameters, options).Result;
+
+        if (!result.Cancelled)
+            await DeleteWish(itemId);
     }
 /*
     private int savedScrollTop = 0;
@@ -182,7 +222,5 @@
         }
     }
 */
-
-
 
 }
