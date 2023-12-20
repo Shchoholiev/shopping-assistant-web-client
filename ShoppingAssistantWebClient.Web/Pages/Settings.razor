@@ -3,6 +3,7 @@
 @using ShoppingAssistantWebClient.Web.Models
 
 @inject IHttpContextAccessor httpContextAccessor;
+@inject NavigationManager NavigationManager;
 
 <div class="modal fade show d-block" tabindex="-1" role="dialog">
     <div class="modal-backdrop fade show"></div>
@@ -24,13 +25,13 @@
                 <form>
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="tel" class="form-control" id="phone" placeholder="Enter new phone" pattern="\+?[0-9]{10,15}" required @onchange="ValidatePhone" data-toggle="tooltip" data-placement="top" title="Use format: +xxxxxxxx">
+                        <input type="tel" class="form-control" id="phone" placeholder="Enter new phone" pattern="\+?[0-9]{10,15}" required @onchange="ValidatePhone" data-toggle="tooltip" data-placement="top" title="Use format: +xxxxxxxx" value="@phone">
                         <div class="validation-message @(isPhoneInvalid ? "active" : "")" id="phone-validation" style="color: red;">@phoneValidationMessage</div>
                     </div>
 
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter new email" required @onchange="ValidateEmail" data-toggle="tooltip" data-placement="top" title="Use format: example@domain.com">
+                        <input type="email" class="form-control" id="email" placeholder="Enter new email" required @onchange="ValidateEmail" data-toggle="tooltip" data-placement="top" title="Use format: example@domain.com" value="@email">
                         <div class="validation-message @(isEmailInvalid ? "active" : "")" id="email-validation" style="color: red;">@emailValidationMessage</div>
                     </div>
 
@@ -46,7 +47,7 @@
             </div>
             <div class="modal-footer">
 
-                <button type="button" class="btn btn-primary log-in-button-left">Log In</button>
+                <button type="button" class="btn btn-primary log-in-button-left" @onclick="RedirectToLogin">Log In</button>
                 <button type="submit" class="btn btn-primary" disabled="@isApplyDisabled" @onclick="Apply">Apply</button>
                 <button type="button" class="btn btn-secondary" @onclick="Close">Cancle</button>
             </div>
@@ -139,6 +140,11 @@
                 StateHasChanged();
             });
         }
+    }
+
+    private void RedirectToLogin() {
+        var url = $"/login";
+        NavigationManager.NavigateTo(url);
     }
 
     private string ShowErrorDivClass()

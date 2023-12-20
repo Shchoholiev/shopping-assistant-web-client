@@ -55,6 +55,10 @@ public partial class Settings : ComponentBase
             this.user = JsonConvert.DeserializeObject<User>(jsonCategoriesResponse);
             user.GuestId = _httpContextAccessor.HttpContext.Request.Cookies["guestId"];
 
+            this.phone = user.Phone;
+            this.email = user.Email;
+            StateHasChanged();
+
         }
         catch(Exception ex)
         {
