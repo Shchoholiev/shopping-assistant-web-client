@@ -40,10 +40,10 @@ public partial class TopDeals : ComponentBase
         TopDealsGift.Add(new TopDealsProduct
         {
             Id = "3",
-            Name = "Amazfit GTS 3 Smart",
-            Price = 70.21,
-            ImagesUrls = "https://m.media-amazon.com/images/I/61v3RM+Y9-L._AC_SL1500_.jpg",
-            Url = "https://www.amazon.com/Amazfit-Android-Fitness-Display-Tracking/dp/B09H5TWZQT?pf_rd_r=F00JZCSF46A9QDAJQ16B&pf_rd_t=Events&pf_rd_i=cybermonday&pf_rd_p=b5d7c894-3da1-49e6-8e23-1993d3fa6730&pf_rd_s=slot-6&ref=dlx_cyber_gd_dcl_img_4_d2b1e900_dt_sl6_30&th=1"
+            Name = "Worry Free Zone: Unveiling the Warrior",
+            Price = 12.99,
+            ImagesUrls = "https://m.media-amazon.com/images/W/MEDIAX_792452-T1/images/I/61aNo5BbeiL._SL1499_.jpg",
+            Url = "https://www.amazon.com/dp/B0CQGL641N?peakEvent=4&dealEvent=1&linkCode=ll1&tag=cartaid-20&linkId=0bfc06738234553ab6ab9394d4a41e6e&language=en_US&ref_=as_li_ss_tl"
         });
 
         TopDealsGaming.Add(new TopDealsProduct
